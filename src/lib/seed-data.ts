@@ -7,7 +7,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     name: "GDG Bengaluru: Building Production GenAI with Gemini 1.5 & Vertex AI",
     category: "AI & ML",
     organizer: "Google Developer Group Bangalore",
-    description: "Deep dive into production architectures for LLM systems, multimodal reasoning with Gemini 1.5 Pro, and building autonomous agentic workflows on Vertex AI. Includes live code demonstrations, architectural blueprints, and Q&A with Google Cloud ML engineers.",
+    description: "Deep dive into production architectures for LLM systems, multimodal reasoning with Gemini 1.5 Pro, and building autonomous agentic workflows on Vertex AI. Includes live code walkthroughs and open Q&A with community ML engineers.",
     start_at: "2026-10-25T10:30:00+05:30",
     end_at: "2026-10-25T14:30:00+05:30",
     timezone: "Asia/Kolkata",
@@ -23,17 +23,17 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_url: "https://gdg.community.dev/events/details/developer-group-bangalore-presents-genai-production-summit/",
     registration_status: "approval_required",
     approval_required: true,
-    goodies_status: "confirmed",
-    goodies_details: "Official Google Developer Group t-shirt, stickers pack, and Google Cloud credit voucher for verified in-person check-ins.",
-    certificate_status: "confirmed",
-    certificate_format: "digital",
-    certificate_requirements: "Issued via Google Developers Credential profile upon QR code check-in and session feedback completion.",
-    food_status: "complimentary_meals_confirmed",
-    food_details: "Catered Indian buffet lunch, afternoon high-tea, filter coffee, and assorted refreshments provided gratis.",
+    goodies_status: "unverified",
+    goodies_details: null,
+    certificate_status: "not_provided",
+    certificate_format: "none",
+    certificate_requirements: null,
+    food_status: "refreshments_confirmed",
+    food_details: "Evening tea, filter coffee, and light snacks hosted at venue.",
     source_urls: [
       "https://gdg.community.dev/gdg-bangalore/"
     ],
-    verification_notes: "Directly verified via GDG Bangalore official Bevy portal. Building entry requires photo ID matching RSVP confirmation email.",
+    verification_notes: "Directly verified via GDG Bangalore official Bevy portal. Free community meetup. Campus entry requires photo ID matching RSVP confirmation email.",
     last_verified_at: "2026-10-19T10:00:00+05:30",
     publication_status: "published",
     who_should_attend: [
@@ -43,18 +43,17 @@ export const SEED_EVENTS: OrbitEvent[] = [
       "Engineering leaders evaluating Vertex AI enterprise infra"
     ],
     topics_covered: [
-      "Gemini 1.5 Pro 2M Context Window Architecture",
-      "Grounding with Google Search & Custom Knowledge Bases",
-      "Function Calling & Autonomous Tool Execution",
+      "Gemini 1.5 Pro Context Architecture",
+      "Grounding with Custom Knowledge Bases",
+      "Function Calling & Tool Execution",
       "Latency & Cost Optimization in Production"
     ],
-    prerequisites: "Basic familiarity with Python or JavaScript REST calls. Laptop optional for follow-along notebook sessions.",
+    prerequisites: "Basic familiarity with Python or JavaScript REST APIs.",
     agenda: [
       { time: "10:30 AM", title: "Security Check-in & Coffee Networking" },
-      { time: "11:00 AM", title: "Keynote: Gemini 1.5 Architecture & Agentic Design Patterns", speaker: "Staff ML Engineer, Google" },
-      { time: "12:15 PM", title: "Hands-on Deep Dive: Multimodal Pipelines on Vertex AI", speaker: "GDE Machine Learning" },
-      { time: "01:15 PM", title: "Networking Buffet Lunch & Open Q&A" },
-      { time: "02:15 PM", title: "Swag Distribution & Wrap-up" }
+      { time: "11:00 AM", title: "Gemini 1.5 Architecture & Agentic Design Patterns", speaker: "Community ML Speaker" },
+      { time: "12:15 PM", title: "Hands-on Deep Dive: Multimodal Pipelines on Vertex AI", speaker: "ML Community Contributor" },
+      { time: "01:30 PM", title: "Open Community Discussions & Q&A" }
     ],
     featured: true,
     created_at: "2026-10-15T09:00:00+05:30",
@@ -66,7 +65,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     name: "AWS User Group Bengaluru: Serverless GenAI & Amazon Bedrock Deep Dive",
     category: "Cloud",
     organizer: "AWS User Group Bengaluru",
-    description: "Architecting zero-maintenance generative AI workflows using Amazon Bedrock, AWS Lambda, Step Functions, and vector search on Amazon OpenSearch Serverless. Learn how top Bengaluru hyper-growth startups scale their generative pipelines reliably.",
+    description: "Architecting zero-maintenance generative AI workflows using Amazon Bedrock, AWS Lambda, Step Functions, and vector search on Amazon OpenSearch Serverless. Learn how Bengaluru tech teams scale their generative pipelines reliably.",
     start_at: "2026-10-31T14:00:00+05:30",
     end_at: "2026-10-31T17:30:00+05:30",
     timezone: "Asia/Kolkata",
@@ -82,13 +81,13 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_url: "https://www.meetup.com/awsugblr/events/303918291/",
     registration_status: "open",
     approval_required: false,
-    goodies_status: "confirmed",
-    goodies_details: "AWS Community die-cut laptop vinyl stickers and $25 AWS Promotional Credit codes.",
+    goodies_status: "limited",
+    goodies_details: "Community stickers subject to desk availability.",
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
-    food_details: "Hot filter coffee, tea, biscuits, and evening samosas during networking break.",
+    food_details: "Filter coffee, tea, and biscuits during networking break.",
     source_urls: [
       "https://www.meetup.com/awsugblr/"
     ],
@@ -99,20 +98,20 @@ export const SEED_EVENTS: OrbitEvent[] = [
       "DevOps and Cloud Engineers",
       "Backend Developers using Node.js or Python",
       "Solutions Architects",
-      "Engineering Managers exploring cloud spend optimization"
+      "Engineering Managers exploring cloud architectures"
     ],
     topics_covered: [
       "Amazon Bedrock Foundation Models & Knowledge Bases",
       "Cold-start optimization for Lambda container images",
       "RAG using OpenSearch Serverless Vector Engine",
-      "Real-world architecture teardown: 10M prompts/day"
+      "Real-world architecture patterns"
     ],
     prerequisites: "General AWS knowledge (S3, Lambda, IAM basics).",
     agenda: [
       { time: "02:00 PM", title: "Registrations & Welcome Address" },
-      { time: "02:20 PM", title: "Serverless Architecture for GenAI Apps", speaker: "AWS Community Hero" },
-      { time: "03:30 PM", title: "Break: High Tea, Filter Coffee & Networking" },
-      { time: "04:00 PM", title: "Real-time Vector Search at Scale with OpenSearch", speaker: "Principal Cloud Architect" },
+      { time: "02:20 PM", title: "Serverless Architecture for GenAI Apps", speaker: "Community Architect" },
+      { time: "03:30 PM", title: "Break: Tea, Filter Coffee & Networking" },
+      { time: "04:00 PM", title: "Real-time Vector Search with OpenSearch", speaker: "Cloud Engineer" },
       { time: "05:00 PM", title: "Open Mic & Lightning Talks" }
     ],
     featured: true,
@@ -141,37 +140,37 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_url: "https://fossunited.org/events/bangalore-monthly",
     registration_status: "open",
     approval_required: false,
-    goodies_status: "confirmed",
-    goodies_details: "Official FOSS United mascot stickers, pins, and community open source zines.",
+    goodies_status: "limited",
+    goodies_details: "Community open source stickers on sign-in table.",
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
-    food_details: "Famous Bengaluru filter coffee, cutting chai, snacks, and biscuits served post-talks.",
+    food_details: "Filter coffee, tea, and local snacks served during break.",
     source_urls: [
       "https://fossunited.org/events/bengaluru"
     ],
-    verification_notes: "Verified on FOSS United official forum. Free open-door event, no entry fee ever charged.",
+    verification_notes: "Verified on FOSS United official forum. Free open-door event, no entry fee.",
     last_verified_at: "2026-10-18T14:20:00+05:30",
     publication_status: "published",
     who_should_attend: [
       "Open Source Contributors & Hackers",
       "Systems Developers (Rust, Go, C, C++)",
       "Students looking to make their first GitHub contributions",
-      "Software craftsmen who care about open software principles"
+      "Software engineers passionate about open source"
     ],
     topics_covered: [
       "Writing Linux eBPF probes in modern Rust",
-      "How Zerodha scales internal microservices with FOSS",
-      "Show & Tell: 3 open-source devtools built in BLR"
+      "Scaling internal microservices with open source tools",
+      "Show & Tell: Community devtools built in BLR"
     ],
-    prerequisites: "Curiosity and respect for the open source philosophy. No prerequisites required.",
+    prerequisites: "Curiosity and interest in open source development.",
     agenda: [
       { time: "10:00 AM", title: "Doors Open & Community Introduction" },
-      { time: "10:30 AM", title: "Talk 1: High-Performance Networking with Rust & io_uring", speaker: "Core Contributor" },
-      { time: "11:20 AM", title: "Talk 2: Lessons Scaling Self-Hosted Postgres to Petabytes", speaker: "Infra Engineer, Zerodha" },
+      { time: "10:30 AM", title: "Talk 1: High-Performance Networking with Rust", speaker: "Community Contributor" },
+      { time: "11:20 AM", title: "Talk 2: Lessons Scaling Postgres to High Throughput", speaker: "Infrastructure Engineer" },
       { time: "12:15 PM", title: "Community Demos & Open Lightning Talks" },
-      { time: "01:00 PM", title: "Chai, Samosas & Networking" }
+      { time: "01:00 PM", title: "Chai & Networking" }
     ],
     featured: true,
     created_at: "2026-10-14T08:00:00+05:30",
@@ -183,7 +182,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     name: "React Bangalore: React 19, Server Actions & High-Concurrency Systems",
     category: "Developer",
     organizer: "React Bangalore",
-    description: "Explore the bleeding edge of React 19, React Server Components (RSC), asynchronous state actions, and optimizing client-side bundle performance for low-bandwidth mobile networks across India.",
+    description: "Explore React 19, React Server Components (RSC), asynchronous state actions, and optimizing client-side performance for responsive web applications.",
     start_at: "2026-11-01T10:00:00+05:30",
     end_at: "2026-11-01T13:30:00+05:30",
     timezone: "Asia/Kolkata",
@@ -200,12 +199,12 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_status: "open",
     approval_required: false,
     goodies_status: "limited",
-    goodies_details: "React Bangalore stickers available on sign-in desk.",
+    goodies_details: "React Bangalore community stickers on sign-in desk.",
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
-    food_details: "Pizza slices, soft drinks, cold brew, and cookies provided during networking.",
+    food_details: "Light refreshments and drinks provided during networking.",
     source_urls: [
       "https://lu.ma/react-bangalore"
     ],
@@ -220,15 +219,15 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     topics_covered: [
       "React 19 Actions: useActionState, useOptimistic, and useFormStatus",
-      "Streaming SSR & Suspense architecture under heavy loads",
+      "Streaming SSR & Suspense architecture",
       "Optimizing Core Web Vitals (INP and LCP) in React apps"
     ],
     prerequisites: "Basic experience building with React and modern JavaScript.",
     agenda: [
       { time: "10:00 AM", title: "Registration & Welcome" },
-      { time: "10:30 AM", title: "React 19 in Production: What Changed & Why It Matters", speaker: "Staff Frontend Architect" },
-      { time: "11:30 AM", title: "Taming Next.js App Router Cache & Server Actions", speaker: "Principal Engineer" },
-      { time: "12:30 PM", title: "Pizza Party & Tech Networking" }
+      { time: "10:30 AM", title: "React 19 in Production: What Changed & Why It Matters", speaker: "Frontend Architect" },
+      { time: "11:30 AM", title: "Next.js App Router Cache & Server Actions", speaker: "Web Engineer" },
+      { time: "12:30 PM", title: "Networking & Community Discussions" }
     ],
     featured: false,
     created_at: "2026-10-12T10:00:00+05:30",
@@ -240,7 +239,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     name: "CNCF Bengaluru: Cloud Native Security, Cilium & eBPF Deep Dive",
     category: "Cloud",
     organizer: "Cloud Native Computing Foundation (CNCF) Bangalore Chapter",
-    description: "Hands-on technical session on zero-trust Kubernetes architectures, kernel-level observability with Cilium Tetragon, and securing microservices communication at wire speed without sidecar proxies.",
+    description: "Hands-on technical session on zero-trust Kubernetes architectures, kernel-level observability with Cilium Tetragon, and securing microservices communication.",
     start_at: "2026-11-07T10:30:00+05:30",
     end_at: "2026-11-07T14:30:00+05:30",
     timezone: "Asia/Kolkata",
@@ -249,20 +248,20 @@ export const SEED_EVENTS: OrbitEvent[] = [
     area: "Bellandur / Outer Ring Road",
     address: "Building 11, Cessna Business Park, Kadubeesanahalli, Varthur Hobli, Outer Ring Road, Bengaluru 560103",
     landmark: "Near New Horizon College of Engineering",
-    metro_station: "Upcoming Kadubeesanahalli Metro / Currently reached via ORR buses",
+    metro_station: "Upcoming Kadubeesanahalli Metro / Reached via ORR buses",
     map_url: "https://maps.google.com/?q=Cisco+Cessna+Business+Park+Bangalore",
     is_in_person: true,
     is_free: true,
     registration_url: "https://community.cncf.io/events/details/cncf-bangalore-presents-ebpf-cilium-deep-dive/",
     registration_status: "approval_required",
     approval_required: true,
-    goodies_status: "confirmed",
-    goodies_details: "Official CNCF stickers, Kubernetes community enamel pins, and Cisco developer pens.",
-    certificate_status: "conditional",
-    certificate_format: "digital",
-    certificate_requirements: "Digital Certificate of Participation issued by CNCF Bangalore chapter to attendees who complete the live eBPF hands-on lab on their laptops.",
-    food_status: "complimentary_meals_confirmed",
-    food_details: "Complimentary hot executive buffet lunch provided at Cisco cafeteria, plus morning tea & cookies.",
+    goodies_status: "limited",
+    goodies_details: "CNCF community stickers subject to availability.",
+    certificate_status: "not_provided",
+    certificate_format: "none",
+    certificate_requirements: null,
+    food_status: "refreshments_confirmed",
+    food_details: "Mid-day refreshments and tea provided during networking break.",
     source_urls: [
       "https://community.cncf.io/bangalore/"
     ],
@@ -276,17 +275,16 @@ export const SEED_EVENTS: OrbitEvent[] = [
       "Infrastructure software developers"
     ],
     topics_covered: [
-      "eBPF fundamentals: How it hooks into Linux kernel subsystems",
-      "Cilium Service Mesh: Replacing Envoy sidecars with eBPF sockets",
-      "Tetragon real-time runtime security enforcement against rootkits"
+      "eBPF fundamentals and Linux kernel observability",
+      "Cilium Service Mesh architecture",
+      "Runtime security enforcement with Tetragon"
     ],
-    prerequisites: "Working knowledge of Docker, Linux command line, and basic Kubernetes pods/services concepts.",
+    prerequisites: "Working knowledge of Docker, Linux command line, and basic Kubernetes concepts.",
     agenda: [
       { time: "10:30 AM", title: "Campus Security Entry & Check-in" },
-      { time: "11:00 AM", title: "Cilium & eBPF: Why the Future of Cloud Native Has No Sidecars", speaker: "Cisco Principal Architect" },
-      { time: "12:15 PM", title: "Hands-on Lab: Enforcing Zero-Trust with Tetragon", speaker: "Isovalent / Red Hat Engineer" },
-      { time: "01:15 PM", title: "Buffet Lunch & Sponsor Pavilion" },
-      { time: "02:15 PM", title: "Quiz, Swag Awards & Group Photo" }
+      { time: "11:00 AM", title: "Cilium & eBPF: Evolution of Cloud Native Networking", speaker: "Cloud Architect" },
+      { time: "12:15 PM", title: "Hands-on Lab: Observability with Tetragon", speaker: "DevOps Engineer" },
+      { time: "01:30 PM", title: "Networking & Group Discussion" }
     ],
     featured: true,
     created_at: "2026-10-15T14:00:00+05:30",
@@ -298,7 +296,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     name: "BangPypers: Python for LLM Quantization & Distributed vLLM Serving",
     category: "Data Science",
     organizer: "BangPypers (Bangalore Python User Group)",
-    description: "Deep dive into state-of-the-art Python inference runtimes: AWQ and GGUF quantization, PagedAttention inside vLLM, and serving open-source models (Llama 3, Mistral, Qwen) with sub-10ms time-to-first-token on commodity GPU clusters.",
+    description: "Deep dive into state-of-the-art Python inference runtimes: AWQ and GGUF quantization, PagedAttention inside vLLM, and serving open-source models with low latency on commodity hardware.",
     start_at: "2026-11-08T14:30:00+05:30",
     end_at: "2026-11-08T18:00:00+05:30",
     timezone: "Asia/Kolkata",
@@ -314,13 +312,13 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_url: "https://www.meetup.com/BangPypers/events/304112930/",
     registration_status: "open",
     approval_required: false,
-    goodies_status: "unverified",
+    goodies_status: "not_provided",
     goodies_details: null,
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
-    food_details: "Complimentary hot tea, Mysore filter coffee, samosas, and biscuits served mid-afternoon.",
+    food_details: "Hot tea, filter coffee, and biscuits served mid-afternoon.",
     source_urls: [
       "https://www.meetup.com/BangPypers/"
     ],
@@ -330,20 +328,19 @@ export const SEED_EVENTS: OrbitEvent[] = [
     who_should_attend: [
       "Data Scientists and ML Engineers",
       "Python Developers working with AI",
-      "Quant and AI researchers",
       "Backend developers deploying self-hosted LLMs"
     ],
     topics_covered: [
       "vLLM architecture: PagedAttention and continuous batching",
-      "Benchmarking AWQ vs GPTQ vs FP8 on modern NVIDIA hardware",
-      "Building production-grade OpenAI-compatible APIs in FastAPI"
+      "Quantization formats: AWQ, GPTQ, and FP8",
+      "Building OpenAI-compatible APIs in FastAPI"
     ],
-    prerequisites: "Intermediate Python proficiency. Familiarity with PyTorch tensors is helpful.",
+    prerequisites: "Intermediate Python proficiency.",
     agenda: [
       { time: "02:30 PM", title: "Check-in & Welcome" },
       { time: "03:00 PM", title: "Demystifying PagedAttention in vLLM", speaker: "AI Research Engineer" },
       { time: "04:15 PM", title: "Tea Break & Community Discussions" },
-      { time: "04:45 PM", title: "Quantization in Practice: Running 70B Models on a Budget", speaker: "MLOps Lead" },
+      { time: "04:45 PM", title: "Quantization in Practice: Running Models on a Budget", speaker: "MLOps Engineer" },
       { time: "05:45 PM", title: "Open Mic & Lightning Talks" }
     ],
     featured: false,
@@ -353,10 +350,10 @@ export const SEED_EVENTS: OrbitEvent[] = [
   {
     id: "evt-genai-hsr-bhive",
     slug: "bengaluru-genai-builders-demo-night-hsr",
-    name: "Bengaluru GenAI Builders: Production Agent Showcase",
+    name: "Bengaluru GenAI Builders: Demo Night & Hack Showcase",
     category: "AI & ML",
     organizer: "Luma AI Builders Collective",
-    description: "Experience 10 fast-paced 5-minute live product demos from Bengaluru indie founders, researchers, and engineers building autonomous agents, audio synthesis, and vertical AI tooling. No pitch decks, strictly live code and working software.",
+    description: "Fast-paced live product demos from Bengaluru founders, researchers, and engineers building autonomous agents, audio synthesis, and vertical AI tooling. Strictly live code and working software.",
     start_at: "2026-11-14T17:00:00+05:30",
     end_at: "2026-11-14T20:30:00+05:30",
     timezone: "Asia/Kolkata",
@@ -372,13 +369,13 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_url: "https://lu.ma/blr-genai-demo-night",
     registration_status: "open",
     approval_required: false,
-    goodies_status: "confirmed",
-    goodies_details: "AI Builder community vinyl stickers and $50 API credits for selected cloud AI inference platforms.",
+    goodies_status: "unverified",
+    goodies_details: null,
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
-    food_details: "Fresh South Indian filter coffee, chai, and hot savoury cocktail snacks served during open networking.",
+    food_details: "Filter coffee, chai, and light evening snacks served during open networking.",
     source_urls: [
       "https://lu.ma/blr-genai-demo-night"
     ],
@@ -386,23 +383,21 @@ export const SEED_EVENTS: OrbitEvent[] = [
     last_verified_at: "2026-10-18T19:00:00+05:30",
     publication_status: "published",
     who_should_attend: [
-      "Indie Hackers and Solo Founders",
+      "Indie Hackers and Technical Founders",
       "AI / Prompt Engineers",
-      "Early-stage venture scouts looking for technical talent",
-      "Engineers interested in testing edge-case AI applications"
+      "Engineers interested in testing experimental AI applications"
     ],
     topics_covered: [
-      "Multi-agent orchestration with AutoGen and CrewAI",
-      "Voice AI latency minimization under 200ms",
-      "Browser automation agents and synthetic data generation"
+      "Multi-agent orchestration frameworks",
+      "Voice AI latency minimization",
+      "Browser automation agents and workflow execution"
     ],
-    prerequisites: "None. Open to anyone enthusiastic about generative tech.",
+    prerequisites: "None. Open to anyone interested in generative tech.",
     agenda: [
       { time: "05:00 PM", title: "Doors Open, Tea & Coffee" },
-      { time: "05:45 PM", title: "Opening Remarks & Demo Rules" },
-      { time: "06:00 PM", title: "Live Demos (10 teams x 5 mins demo + 3 mins Q&A)" },
-      { time: "07:30 PM", title: "Community Voting for Best Demo" },
-      { time: "07:45 PM", title: "Networking & Collaborative Ideation" }
+      { time: "05:45 PM", title: "Opening Remarks & Demo Guidelines" },
+      { time: "06:00 PM", title: "Live Community Demos" },
+      { time: "07:30 PM", title: "Networking & Open Discussions" }
     ],
     featured: true,
     created_at: "2026-10-16T12:00:00+05:30",
@@ -414,7 +409,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     name: "Null Bangalore: Offensive Security & Web3 Smart Contract Audits",
     category: "Cybersecurity",
     organizer: "Null The Open Security Community",
-    description: "India's largest open security community monthly Bangalore meet. In-depth technical teardowns of real-world smart contract reentrancy bugs, EVM bytecode decompilation, and offensive AWS cloud posture exploitation.",
+    description: "India's largest open security community monthly Bangalore meet. Technical teardowns of real-world smart contract vulnerabilities, EVM bytecode decompilation, and cloud security posture analysis.",
     start_at: "2026-11-21T09:30:00+05:30",
     end_at: "2026-11-21T13:30:00+05:30",
     timezone: "Asia/Kolkata",
@@ -423,20 +418,20 @@ export const SEED_EVENTS: OrbitEvent[] = [
     area: "Koramangala",
     address: "Thoughtworks Technologies India, 2nd Floor, Block I, ACROPOLIS, 28/4 Koramangala, Bengaluru 560034",
     landmark: "Behind Sony World Signal",
-    metro_station: "Koramangala Metro (Under construction) / Nearest: South End Circle",
+    metro_station: "South End Circle Metro / Koramangala bus stop",
     map_url: "https://maps.google.com/?q=Thoughtworks+Koramangala+Bangalore",
     is_in_person: true,
     is_free: true,
     registration_url: "https://null.community/chapters/1-bangalore",
     registration_status: "open",
     approval_required: false,
-    goodies_status: "unverified",
+    goodies_status: "not_provided",
     goodies_details: null,
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
-    food_details: "Tea, filter coffee, and assorted biscuits provided by host sponsor Thoughtworks.",
+    food_details: "Tea, filter coffee, and biscuits provided by host sponsor Thoughtworks.",
     source_urls: [
       "https://null.community/chapters/1-bangalore"
     ],
@@ -447,20 +442,20 @@ export const SEED_EVENTS: OrbitEvent[] = [
       "Security Analysts, Pentesters & Bug Bounty Hunters",
       "Smart Contract Developers & Web3 Builders",
       "Cloud Security Engineers",
-      "College students interested in ethical hacking careers"
+      "Students interested in cybersecurity careers"
     ],
     topics_covered: [
-      "Flash loan exploitation vectors & reentrancy 2.0",
-      "Privilege escalation in AWS IAM through assumed-role trust policies",
-      "Live bug bounty walkthrough of recently disclosed vulnerabilities"
+      "Smart contract vulnerability patterns",
+      "Privilege escalation analysis in cloud environments",
+      "Live bug walkthrough of disclosed vulnerabilities"
     ],
-    prerequisites: "Basic networking (TCP/IP), Web application basics (HTTP headers, cookies), and basic Linux shell.",
+    prerequisites: "Basic networking (TCP/IP) and Linux command line fundamentals.",
     agenda: [
       { time: "09:30 AM", title: "Registrations & Welcome to Null" },
-      { time: "10:00 AM", title: "Session 1: Advanced Smart Contract Vulnerability Patterns", speaker: "Lead Web3 Auditor" },
-      { time: "11:15 AM", title: "Break & Security Networking" },
-      { time: "11:45 AM", title: "Session 2: Weaponizing Subtle IAM Flaws in Multi-Account AWS", speaker: "Cloud Pentester" },
-      { time: "12:45 PM", title: "Show-and-Tell & Career Guidance for Students" }
+      { time: "10:00 AM", title: "Session 1: Smart Contract Vulnerability Patterns", speaker: "Security Researcher" },
+      { time: "11:15 AM", title: "Break & Networking" },
+      { time: "11:45 AM", title: "Session 2: Cloud IAM Security Misconfigurations", speaker: "Cloud Pentester" },
+      { time: "12:45 PM", title: "Show-and-Tell & Career Guidance" }
     ],
     featured: false,
     created_at: "2026-10-14T11:30:00+05:30",
@@ -472,7 +467,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     name: "KCD Bengaluru Warmup Workshop: Hands-on Cloud Native Platform Engineering",
     category: "Workshops",
     organizer: "Kubernetes Community Days (KCD) Bengaluru",
-    description: "Official pre-conference hands-on workshop building internal developer platforms (IDP) with Backstage, Crossplane, and ArgoCD on multi-tenant Kubernetes clusters. Laptop required.",
+    description: "Official pre-conference hands-on workshop building internal developer platforms (IDP) with Backstage, Crossplane, and ArgoCD on multi-tenant Kubernetes clusters. Bring your own laptop.",
     start_at: "2026-11-28T09:00:00+05:30",
     end_at: "2026-11-28T16:00:00+05:30",
     timezone: "Asia/Kolkata",
@@ -488,38 +483,38 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_url: "https://kcdbangalore.in/workshop-warmup",
     registration_status: "waitlist",
     approval_required: true,
-    goodies_status: "confirmed",
-    goodies_details: "Official KCD Bengaluru cotton t-shirt, custom conference badge lanyard, laptop sticker sheet, and water bottle.",
-    certificate_status: "confirmed",
-    certificate_format: "digital",
-    certificate_requirements: "Official CNCF KCD digital workshop completion certificate with verifiable cryptographic badge.",
-    food_status: "complimentary_meals_confirmed",
-    food_details: "Welcome breakfast (Idli, Vada, Upma & coffee), mid-morning juice, buffet lunch at SAP cafeteria, and evening tea.",
+    goodies_status: "unverified",
+    goodies_details: null,
+    certificate_status: "not_provided",
+    certificate_format: "none",
+    certificate_requirements: null,
+    food_status: "refreshments_confirmed",
+    food_details: "Refreshments and tea served during workshop breaks.",
     source_urls: [
       "https://kcdbangalore.in"
     ],
-    verification_notes: "Jointly organized by KCD organizers and hosted by SAP Labs. Free admission confirmed, currently in waitlist mode due to room capacity.",
+    verification_notes: "Jointly organized by KCD community organizers. Free admission confirmed, currently in waitlist mode due to room capacity.",
     last_verified_at: "2026-10-19T10:00:00+05:30",
     publication_status: "published",
     who_should_attend: [
       "Platform Engineers building internal tools",
       "Senior DevOps Engineers",
       "Kubernetes infrastructure administrators",
-      "Staff Engineers establishing golden paths"
+      "Engineers establishing cloud golden paths"
     ],
     topics_covered: [
       "Crossplane: Composing cloud infrastructure as Kubernetes CRDs",
       "Spotify Backstage software catalog configuration",
       "ArgoCD GitOps deployment rings & automated rollback"
     ],
-    prerequisites: "Bring your own laptop with min 8GB RAM, Docker desktop / Minikube installed, and Git configured.",
+    prerequisites: "Laptop with min 8GB RAM, Docker desktop or Minikube installed.",
     agenda: [
-      { time: "09:00 AM", title: "Security Badge Pickup & Breakfast Buffet" },
-      { time: "10:00 AM", title: "Module 1: Principles of Platform Engineering & Golden Paths", speaker: "KCD BLR Co-Chair" },
-      { time: "11:30 AM", title: "Module 2: Hands-on Crossplane & Cloud Resource Composition" },
-      { time: "01:00 PM", title: "Executive Lunch at SAP Cafeteria" },
+      { time: "09:00 AM", title: "Security Badge Pickup & Check-in" },
+      { time: "10:00 AM", title: "Module 1: Principles of Platform Engineering", speaker: "Platform Architect" },
+      { time: "11:30 AM", title: "Module 2: Hands-on Crossplane & Resource Composition" },
+      { time: "01:00 PM", title: "Lunch Break (Cafeteria facilities available)" },
       { time: "02:00 PM", title: "Module 3: ArgoCD Progressive Delivery with Flagger" },
-      { time: "03:45 PM", title: "Certificate Verification, Swag Distribution & Group Photo" }
+      { time: "03:45 PM", title: "Wrap-up & Group Photo" }
     ],
     featured: true,
     created_at: "2026-10-15T18:00:00+05:30",
@@ -531,7 +526,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     name: "IISc Robotics & Autonomous Systems Open Lab & Tech Showcase",
     category: "Robotics",
     organizer: "Indian Institute of Science (IISc) Robotics Club & IEEE RAS",
-    description: "Explore humanoid robotics research, quadrupedal locomotion, and ROS 2 autonomous navigation stacks developed at India's premier research institution. Live robot demonstrations and interactions with leading robotics researchers.",
+    description: "Explore humanoid robotics research, quadrupedal locomotion, and ROS 2 autonomous navigation stacks developed at India's premier research institution. Live robot demonstrations and interactions with robotics researchers.",
     start_at: "2026-12-05T10:00:00+05:30",
     end_at: "2026-12-05T15:30:00+05:30",
     timezone: "Asia/Kolkata",
@@ -547,17 +542,17 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_url: "https://iisc.ac.in/events/robotics-showcase-2026",
     registration_status: "open",
     approval_required: true,
-    goodies_status: "limited",
-    goodies_details: "IISc IEEE chapter commemorative pins and technical literature brochures.",
-    certificate_status: "confirmed",
-    certificate_format: "digital",
-    certificate_requirements: "IISc IEEE Student Branch attendance certificate provided to registered attendees.",
+    goodies_status: "not_provided",
+    goodies_details: null,
+    certificate_status: "not_provided",
+    certificate_format: "none",
+    certificate_requirements: null,
     food_status: "refreshments_confirmed",
-    food_details: "Morning tea, biscuits, and afternoon traditional south Indian snacks.",
+    food_details: "Morning tea, biscuits, and afternoon traditional snacks.",
     source_urls: [
       "https://iisc.ac.in"
     ],
-    verification_notes: "Official university public technical open day. Free admission for students and industry professionals with prior registration.",
+    verification_notes: "Official university public technical open day. Free admission with prior online registration.",
     last_verified_at: "2026-10-18T12:00:00+05:30",
     publication_status: "published",
     who_should_attend: [
@@ -567,18 +562,18 @@ export const SEED_EVENTS: OrbitEvent[] = [
       "STEM University Students"
     ],
     topics_covered: [
-      "ROS 2 Humble to Jazzy migration for real-time robotic controls",
-      "Reinforcement Learning for quadruped balance on uneven terrain",
-      "SLAM and LiDAR point cloud processing in warehouse environments"
+      "ROS 2 navigation for autonomous robotic controls",
+      "Reinforcement Learning for quadruped balance",
+      "LiDAR point cloud processing in warehouse environments"
     ],
     prerequisites: "General interest in robotics and physical automation.",
     agenda: [
       { time: "10:00 AM", title: "Registration & Welcome Address at Faculty Hall" },
-      { time: "10:30 AM", title: "Keynote: Next Decade of Robotics in India", speaker: "Professor, IISc Dept of Mechanical Eng" },
-      { time: "11:45 AM", title: "Live Lab Demonstration: Autonomous Quadruped Obstacle Course" },
-      { time: "01:00 PM", title: "Lunch Break (Campus Dining / Refreshments provided)" },
+      { time: "10:30 AM", title: "Overview: Next Decade of Autonomous Robotics", speaker: "Robotics Faculty" },
+      { time: "11:45 AM", title: "Live Lab Demonstration: Autonomous Systems Obstacle Course" },
+      { time: "01:00 PM", title: "Lunch Break (Campus Dining / Refreshments)" },
       { time: "02:00 PM", title: "Student Research Poster Sessions & Tech Showcase" },
-      { time: "03:15 PM", title: "Certificate Distribution" }
+      { time: "03:15 PM", title: "Open Q&A & Wrap-up" }
     ],
     featured: false,
     created_at: "2026-10-14T09:00:00+05:30",
