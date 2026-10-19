@@ -1,21 +1,21 @@
 import React from "react";
 import Link from "next/link";
-import { ShieldCheck, Heart, Terminal, Sparkles, MapPin } from "lucide-react";
+import { ShieldCheck, Heart, MapPin } from "lucide-react";
 import { BENGALURU_AREAS } from "@/types/event";
 
 export default function Footer() {
   return (
     <footer className="border-t border-orbit-border bg-orbit-surface/70 mt-20 text-xs text-orbit-muted">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
           {/* Col 1: Brand & Mission */}
-          <div className="space-y-3 md:col-span-1">
+          <div className="space-y-3 md:col-span-5">
             <div className="flex items-center gap-2">
               <span className="font-display font-black text-lg tracking-wider text-orbit-text">
                 ORBIT <span className="text-orbit-signal">BLR</span>
               </span>
             </div>
-            <p className="text-orbit-muted leading-relaxed text-xs">
+            <p className="text-orbit-muted leading-relaxed text-xs max-w-sm">
               Bengaluru&apos;s verified directory for 100% free, in-person technology meetups, workshops, and networking events.
             </p>
             <div className="pt-2 text-[11px] font-mono text-orbit-subtle flex items-center gap-1.5">
@@ -25,7 +25,7 @@ export default function Footer() {
           </div>
 
           {/* Col 2: Navigation */}
-          <div>
+          <div className="md:col-span-3">
             <h4 className="font-mono text-xs uppercase tracking-wider text-orbit-text font-bold mb-3">
               Platform
             </h4>
@@ -59,13 +59,13 @@ export default function Footer() {
           </div>
 
           {/* Col 3: Bengaluru Tech Hubs */}
-          <div>
+          <div className="md:col-span-4">
             <h4 className="font-mono text-xs uppercase tracking-wider text-orbit-text font-bold mb-3 flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-orbit-signal" />
               <span>Bengaluru Hubs</span>
             </h4>
             <div className="flex flex-wrap gap-1.5 font-mono text-[11px]">
-              {BENGALURU_AREAS.slice(0, 8).map((area) => (
+              {BENGALURU_AREAS.slice(0, 10).map((area) => (
                 <Link
                   key={area}
                   href={`/explore?area=${encodeURIComponent(area)}`}
@@ -74,34 +74,6 @@ export default function Footer() {
                   {area}
                 </Link>
               ))}
-            </div>
-          </div>
-
-          {/* Col 4: For Automations & AI */}
-          <div>
-            <h4 className="font-mono text-xs uppercase tracking-wider text-orbit-text font-bold mb-3 flex items-center gap-1.5">
-              <Terminal className="w-3.5 h-3.5 text-orbit-highlight" />
-              <span>External AI & Ops</span>
-            </h4>
-            <p className="text-xs text-orbit-muted mb-3 leading-relaxed">
-              Automated event ingestion endpoint built for ChatGPT, scripts, and verified community bots.
-            </p>
-            <div className="space-y-2">
-              <Link
-                href="/docs/ai-integration"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orbit-card border border-orbit-border hover:border-orbit-highlight text-orbit-text text-xs font-mono transition-all"
-              >
-                <Sparkles className="w-3 h-3 text-orbit-highlight" />
-                <span>AI Ingestion Docs</span>
-              </Link>
-              <div>
-                <Link
-                  href="/admin"
-                  className="inline-flex items-center gap-1 text-[11px] font-mono text-orbit-subtle hover:text-orbit-signal transition-colors mt-2"
-                >
-                  <span>Admin Operations Portal →</span>
-                </Link>
-              </div>
             </div>
           </div>
         </div>

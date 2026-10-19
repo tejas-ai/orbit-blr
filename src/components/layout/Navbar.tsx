@@ -11,8 +11,6 @@ import {
   ShieldCheck,
   Menu,
   X,
-  Lock,
-  Terminal,
 } from "lucide-react";
 
 export default function Navbar() {
@@ -24,7 +22,6 @@ export default function Navbar() {
     { label: "Explore Events", href: "/explore", icon: Compass },
     { label: "How It Works", href: "/about#verification", icon: ShieldCheck },
     { label: "About Orbit", href: "/about", icon: null },
-    { label: "AI Integration API", href: "/docs/ai-integration", icon: Terminal },
   ];
 
   const isActive = (href: string) => {
@@ -108,15 +105,6 @@ export default function Navbar() {
             <span>Suggest Event</span>
           </Link>
 
-          {/* Admin shortcut icon */}
-          <Link
-            href="/admin"
-            className="p-2 rounded-xl text-orbit-subtle hover:text-orbit-signal transition-colors"
-            title="Admin Portal"
-          >
-            <Lock className="w-4 h-4" />
-          </Link>
-
           {/* Mobile hamburger */}
           <button
             type="button"
@@ -155,14 +143,6 @@ export default function Navbar() {
             >
               <PlusCircle className="w-4 h-4" />
               <span>Suggest Free Tech Event</span>
-            </Link>
-            <Link
-              href="/admin"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-xl text-xs font-mono text-orbit-subtle flex items-center gap-2 pt-2 border-t border-orbit-border/50"
-            >
-              <Lock className="w-3.5 h-3.5" />
-              <span>Admin Management Dashboard</span>
             </Link>
           </div>
         </div>

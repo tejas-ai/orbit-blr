@@ -6,10 +6,9 @@ import {
   CheckCircle2,
   Compass,
   Building2,
-  Terminal,
   HelpCircle,
-  ExternalLink,
   Users,
+  ArrowRight,
 } from "lucide-react";
 import VerificationEngineExplainer from "@/components/home/VerificationEngineExplainer";
 
@@ -34,8 +33,8 @@ export default function AboutPage() {
       a: "Many premier corporate tech offices in Bengaluru (such as Google RMZ Infinity, Amazon WTC, Cisco Cessna BP) require physical security pre-clearance. While registration is 100% free, you must wait for the organiser to approve your RSVP and send a confirmation email before arriving at the gate.",
     },
     {
-      q: "Can I connect an external AI agent or script to submit events?",
-      a: "Yes! ORBIT BLR features a dedicated server-side REST API (`POST /api/admin/events/import`) with Bearer token authentication, idempotent deduplication, and schema validation. Read our AI Integration Guide for complete instructions.",
+      q: "How can community members submit or suggest an event?",
+      a: "Anyone in the Bengaluru developer community can submit events via our 'Suggest an Event' form. Every submission enters our verification review queue and undergoes strict manual checks before going live.",
     },
     {
       q: "Is ORBIT BLR affiliated with Google, AWS, Microsoft, or other organizers?",
@@ -111,27 +110,27 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* External Integration CTA */}
+      {/* Community Suggest Event CTA */}
       <div className="p-8 rounded-3xl bg-gradient-to-r from-orbit-surface via-orbit-card to-orbit-surface border border-orbit-border flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-card">
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono text-orbit-highlight">
-            <Terminal className="w-4 h-4" />
-            <span>Developer & AI API Access</span>
+          <div className="flex items-center gap-2 text-xs font-mono text-orbit-signal">
+            <Users className="w-4 h-4" />
+            <span>Community Contributions</span>
           </div>
           <h3 className="font-display font-bold text-xl text-orbit-text">
-            Automate Event Submissions with ChatGPT
+            Know an authentic free tech event in Bengaluru?
           </h3>
           <p className="text-xs text-orbit-muted max-w-lg leading-relaxed">
-            We provide an authenticated REST ingestion endpoint for AI automations, community bots, and scheduled event crawlers.
+            Help the ecosystem discover worthwhile meetups, open-source workshops, and hackathons. All submissions undergo our strict 7-point verification audit before publishing.
           </p>
         </div>
 
         <Link
-          href="/docs/ai-integration"
+          href="/suggest"
           className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-mono font-bold bg-orbit-signal text-orbit-bg hover:bg-orbit-signalHover transition-all shrink-0"
         >
-          <span>View API Docs</span>
-          <ExternalLink className="w-3.5 h-3.5" />
+          <span>Suggest an Event</span>
+          <ArrowRight className="w-3.5 h-3.5" />
         </Link>
       </div>
     </div>

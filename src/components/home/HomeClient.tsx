@@ -281,12 +281,6 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
                 >
                   Submit an Event with Evidence
                 </Link>
-                <Link
-                  href="/admin"
-                  className="px-5 py-2.5 rounded-xl text-xs font-mono font-medium text-orbit-text bg-orbit-surface hover:bg-orbit-border border border-orbit-border transition-all"
-                >
-                  Admin Review Portal
-                </Link>
               </div>
             </div>
           ) : (

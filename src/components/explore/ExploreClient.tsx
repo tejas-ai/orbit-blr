@@ -244,12 +244,6 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
             >
               Submit an Event for Review
             </Link>
-            <Link
-              href="/admin"
-              className="px-5 py-2.5 rounded-xl text-xs font-mono font-medium text-orbit-text bg-orbit-surface hover:bg-orbit-border border border-orbit-border transition-all"
-            >
-              Admin Dashboard
-            </Link>
           </div>
         </div>
       ) : (
