@@ -7,7 +7,15 @@ Write-Host "Get your connection string from your Neon console:" -ForegroundColor
 Write-Host "https://console.neon.tech/app/projects/broad-tooth-55681211" -ForegroundColor Gray
 Write-Host ""
 
-$conn = Read-Host "Paste your Neon PostgreSQL connection string here (starts with postgresql://)"
+$connSecure = Read-Host "Paste your Neon PostgreSQL connection string (input hidden)" -AsSecureString
+if (-not $connSecure) {
+    Write-Host "❌ No connection string provided." -ForegroundColor Red
+    exit 1
+}
+
+$bstr = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($connSecure)
+$conn = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($bstr)
+[System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
 $conn = $conn.Trim().Trim('"').Trim("'")
 
 if (-not $conn.StartsWith("postgresql://") -and -not $conn.StartsWith("postgres://")) {
@@ -29,7 +37,7 @@ if ($content -match "DATABASE_URL=.*") {
 }
 
 [System.IO.File]::WriteAllText($envFile, $updated)
-Write-Host "✅ .env.local updated successfully." -ForegroundColor Green
+Write-Host "✅ .env.local updated securely (masked in console)." -ForegroundColor Green
 Write-Host ""
 
 Write-Host "🔍 Verifying connection and syncing database schema & audited events..." -ForegroundColor Cyan

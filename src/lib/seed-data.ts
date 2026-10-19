@@ -35,7 +35,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Directly verified via GDG Bangalore official Bevy portal. Free community meetup. Campus entry requires photo ID matching RSVP confirmation email.",
     last_verified_at: "2026-10-19T10:00:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "Software Engineers transitioning into AI/ML",
       "Cloud Architects designing LLM pipelines",
@@ -93,7 +93,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Organizer confirmed via meetup.com and community chapter. Free registration on first-come, first-seated basis.",
     last_verified_at: "2026-10-19T09:15:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "DevOps and Cloud Engineers",
       "Backend Developers using Node.js or Python",
@@ -152,7 +152,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Verified on FOSS United official forum. Free open-door event, no entry fee.",
     last_verified_at: "2026-10-18T14:20:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "Open Source Contributors & Hackers",
       "Systems Developers (Rust, Go, C, C++)",
@@ -210,7 +210,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Verified through Luma event registration page hosted at Razorpay HQ. Free admission confirmed.",
     last_verified_at: "2026-10-19T08:00:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "Frontend Engineers & Fullstack Developers",
       "React Native and Next.js developers",
@@ -267,7 +267,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Confirmed through CNCF official Bevy platform. Entry restricted to registered attendees carrying government ID.",
     last_verified_at: "2026-10-18T16:00:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "Site Reliability Engineers (SREs)",
       "Cloud Security Engineers & DevSecOps",
@@ -324,7 +324,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Verified with BangPypers core team organizers. Completely free community meetup since 2010.",
     last_verified_at: "2026-10-19T09:45:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "Data Scientists and ML Engineers",
       "Python Developers working with AI",
@@ -381,7 +381,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Verified on Luma and confirmed by BHIVE events coordinator. In-person registration is free.",
     last_verified_at: "2026-10-18T19:00:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "Indie Hackers and Technical Founders",
       "AI / Prompt Engineers",
@@ -437,7 +437,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Null community strictly follows an open, free, non-commercial policy. No vendor pitches allowed.",
     last_verified_at: "2026-10-17T11:00:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "Security Analysts, Pentesters & Bug Bounty Hunters",
       "Smart Contract Developers & Web3 Builders",
@@ -495,7 +495,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Jointly organized by KCD community organizers. Free admission confirmed, currently in waitlist mode due to room capacity.",
     last_verified_at: "2026-10-19T10:00:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "Platform Engineers building internal tools",
       "Senior DevOps Engineers",
@@ -554,7 +554,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     verification_notes: "Official university public technical open day. Free admission with prior online registration.",
     last_verified_at: "2026-10-18T12:00:00+05:30",
-    publication_status: "published",
+    publication_status: "pending_review",
     who_should_attend: [
       "Robotics Engineers & Mechatronics Specialists",
       "Computer Vision Researchers",

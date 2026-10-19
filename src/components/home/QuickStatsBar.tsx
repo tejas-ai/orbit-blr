@@ -20,28 +20,28 @@ export default function QuickStatsBar({
       value: totalEvents,
       icon: Zap,
       color: "text-orbit-signal",
-      sub: "100% Free RSVP",
+      sub: totalEvents > 0 ? "100% Free RSVP" : "Awaiting Organizer Verification",
     },
     {
       label: "Confirmed Free Swags",
       value: swagCount,
       icon: Gift,
       color: "text-orbit-signal",
-      sub: "T-Shirts, Stickers & Cloud Credits",
+      sub: swagCount > 0 ? "Organizer Verified" : "Zero Unverified Claims",
     },
     {
       label: "Confirmed Certificates",
       value: certCount,
       icon: Award,
       color: "text-orbit-secondary",
-      sub: "Digital & Cryptographic Badges",
+      sub: certCount > 0 ? "Verifiable Credentials" : "Strict Evidence Standard",
     },
     {
       label: "Bengaluru Tech Hubs",
       value: hubCount,
       icon: MapPin,
       color: "text-orbit-highlight",
-      sub: "Koramangala, HSR, ORR & more",
+      sub: hubCount > 0 ? "Koramangala, HSR, ORR & more" : "Monitored Active Hubs",
     },
   ];
 
@@ -58,7 +58,7 @@ export default function QuickStatsBar({
           <div>
             <div className="text-2xl font-display font-black text-orbit-text tracking-tight flex items-baseline gap-1">
               <span>{stat.value}</span>
-              <span className="text-xs font-mono font-normal text-orbit-subtle">+</span>
+              {stat.value > 0 && <span className="text-xs font-mono font-normal text-orbit-subtle">+</span>}
             </div>
             <div className="text-xs font-mono text-orbit-text font-semibold mt-0.5">
               {stat.label}

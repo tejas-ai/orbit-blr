@@ -155,13 +155,18 @@ async function run() {
       ]);
     }
 
-    const res = await client.query("SELECT COUNT(*) FROM events");
-    console.log(`✅ Successfully seeded ${res.rows[0].count} verified events into PostgreSQL!`);
+    // Enforce 100% zero-unverified policy: Move any published events to pending_review
+    await client.query("UPDATE events SET publication_status = 'pending_review' WHERE publication_status = 'published'");
 
-    // Verify retrieval
-    const sample = await client.query("SELECT name, area, registration_url, goodies_status, certificate_status FROM events LIMIT 3");
-    console.log("Sample verified records from PostgreSQL:");
-    sample.rows.forEach(r => console.log(`   - [${r.area}] ${r.name} (Goodies: ${r.goodies_status}, Cert: ${r.certificate_status})`));
+    const res = await client.query("SELECT COUNT(*) FROM events");
+    const pubRes = await client.query("SELECT COUNT(*) FROM events WHERE publication_status = 'published'");
+    const revRes = await client.query("SELECT COUNT(*) FROM events WHERE publication_status = 'pending_review'");
+    console.log(`✅ PostgreSQL synced: ${res.rows[0].count} total events (${pubRes.rows[0].count} published, ${revRes.rows[0].count} in review queue).`);
+
+    // Verify sample records
+    const sample = await client.query("SELECT name, area, registration_url, goodies_status, certificate_status, publication_status FROM events LIMIT 3");
+    console.log("Sample records from PostgreSQL review queue:");
+    sample.rows.forEach(r => console.log(`   - [${r.area}] ${r.name} (Status: ${r.publication_status}, Goodies: ${r.goodies_status}, Cert: ${r.certificate_status})`));
 
   } finally {
     client.release();
@@ -169,7 +174,13 @@ async function run() {
   }
 }
 
-run().catch((err) => {
-  console.error("❌ Seed run failed:", err);
-  process.exit(1);
-});
+export { run };
+
+// If executed directly
+if (process.argv[1] && process.argv[1].endsWith("seed-cloud-db.mjs")) {
+  run().catch((err) => {
+    console.error("❌ Seed run failed:", err);
+    process.exit(1);
+  });
+}
+

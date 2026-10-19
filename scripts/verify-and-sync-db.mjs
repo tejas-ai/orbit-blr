@@ -49,20 +49,29 @@ async function verifyAndSync() {
     console.log("✅ Events table exists.");
   }
 
-  // Check count of events
-  const countRes = await pool.query("SELECT COUNT(*) FROM events");
-  const count = parseInt(countRes.rows[0].count, 10);
-  console.log(`📊 Current events in database: ${count}`);
+  console.log("🌱 Syncing schema and verified event review queue with PostgreSQL...");
+  const { run } = await import("./seed-cloud-db.mjs");
+  await run();
 
-  if (count === 0) {
-    console.log("🌱 Database is empty. Seeding 10 audited genuine Bengaluru tech events...");
-    // Import seed-cloud-db logic
-    const seedScript = await import("./seed-cloud-db.mjs");
-    console.log("✅ Seeding complete.");
+  // Test persistent write and read
+  console.log("✍️ Testing persistent database write and read access...");
+  const testId = `test-verify-${Date.now()}`;
+  await pool.query(
+    "INSERT INTO suggestions (id, event_url, notes, status, created_at) VALUES ($1, $2, $3, $4, NOW())",
+    [testId, "https://orbit-blr.vercel.app/test", "Persistence verification check", "pending"]
+  );
+  const verifyWrite = await pool.query("SELECT id FROM suggestions WHERE id = $1", [testId]);
+  if (verifyWrite.rows.length === 1) {
+    console.log("✅ Verified persistent PostgreSQL writes and reads!");
+    await pool.query("DELETE FROM suggestions WHERE id = $1", [testId]);
+  } else {
+    throw new Error("Persistent write verification failed.");
   }
 
   const finalCountRes = await pool.query("SELECT COUNT(*) FROM events");
-  console.log(`🎉 Verified database storage: ${finalCountRes.rows[0].count} events ready.`);
+  const pubCountRes = await pool.query("SELECT COUNT(*) FROM events WHERE publication_status = 'published'");
+  const revCountRes = await pool.query("SELECT COUNT(*) FROM events WHERE publication_status = 'pending_review'");
+  console.log(`🎉 Verified database storage: ${finalCountRes.rows[0].count} total events (${pubCountRes.rows[0].count} published, ${revCountRes.rows[0].count} in review queue).`);
 
   await pool.end();
 }

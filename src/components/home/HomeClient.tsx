@@ -204,11 +204,11 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-orbit-signal" />
               <h2 className="text-xl sm:text-2xl font-display font-black text-orbit-text tracking-tight">
-                Spotlight: High-Perk Verified Free Events
+                Spotlight: Featured Free Events
               </h2>
             </div>
             <span className="text-xs font-mono text-orbit-signal font-semibold hidden sm:inline">
-              Confirmed Swag & Verified Access
+              Verified In-Person Tech Access
             </span>
           </div>
 
@@ -262,6 +262,32 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
                   onToggleSave={toggleSave}
                 />
               ))}
+            </div>
+          ) : initialEvents.length === 0 ? (
+            <div className="bg-orbit-card/60 border border-orbit-signal/30 rounded-2xl p-8 sm:p-12 text-center max-w-xl mx-auto shadow-glow">
+              <div className="w-12 h-12 rounded-full bg-orbit-surface flex items-center justify-center mx-auto mb-4 border border-orbit-signal/40">
+                <ShieldCheck className="w-6 h-6 text-orbit-signal" />
+              </div>
+              <h3 className="font-display font-bold text-xl text-orbit-text">
+                Strict Verification Active — Review Queue in Progress
+              </h3>
+              <p className="text-xs sm:text-sm text-orbit-muted mt-2 leading-relaxed">
+                ORBIT BLR enforces a 100% zero-unverified event policy. All submitted and researched tech events are held in the verification queue until direct official organizer registration links and perk evidence are independently confirmed.
+              </p>
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                <Link
+                  href="/suggest"
+                  className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-orbit-signal hover:bg-orbit-signalHover text-orbit-bg transition-all"
+                >
+                  Submit an Event with Evidence
+                </Link>
+                <Link
+                  href="/admin"
+                  className="px-5 py-2.5 rounded-xl text-xs font-mono font-medium text-orbit-text bg-orbit-surface hover:bg-orbit-border border border-orbit-border transition-all"
+                >
+                  Admin Review Portal
+                </Link>
+              </div>
             </div>
           ) : (
             <div className="bg-orbit-card/60 border border-orbit-border rounded-2xl p-12 text-center max-w-lg mx-auto">

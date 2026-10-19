@@ -6,7 +6,7 @@ import { OrbitEvent, EventFilters as FilterStateType } from "@/types/event";
 import EventFiltersBar from "@/components/events/EventFilters";
 import EventCard from "@/components/events/EventCard";
 import { useSavedEvents } from "@/lib/useSavedEvents";
-import { Compass, LayoutGrid, List, SearchX } from "lucide-react";
+import { Compass, LayoutGrid, List, SearchX, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 interface ExploreClientProps {
@@ -225,6 +225,32 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
               onToggleSave={toggleSave}
             />
           ))}
+        </div>
+      ) : initialEvents.length === 0 ? (
+        <div className="bg-orbit-card/60 border border-orbit-signal/30 rounded-2xl p-8 sm:p-12 text-center max-w-xl mx-auto my-8 shadow-glow">
+          <div className="w-12 h-12 rounded-full bg-orbit-surface flex items-center justify-center mx-auto mb-4 border border-orbit-signal/40">
+            <ShieldCheck className="w-6 h-6 text-orbit-signal" />
+          </div>
+          <h3 className="font-display font-bold text-xl text-orbit-text">
+            Strict Verification Active — Review Queue in Progress
+          </h3>
+          <p className="text-xs sm:text-sm text-orbit-muted mt-2 leading-relaxed">
+            All submitted community events are currently in the review queue awaiting direct organizer verification. We do not publish events with unconfirmed perks or unverified links.
+          </p>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <Link
+              href="/suggest"
+              className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-orbit-signal hover:bg-orbit-signalHover text-orbit-bg transition-all"
+            >
+              Submit an Event for Review
+            </Link>
+            <Link
+              href="/admin"
+              className="px-5 py-2.5 rounded-xl text-xs font-mono font-medium text-orbit-text bg-orbit-surface hover:bg-orbit-border border border-orbit-border transition-all"
+            >
+              Admin Dashboard
+            </Link>
+          </div>
         </div>
       ) : (
         <div className="bg-orbit-card/60 border border-orbit-border rounded-2xl p-12 text-center max-w-lg mx-auto my-8">

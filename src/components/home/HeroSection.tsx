@@ -59,7 +59,7 @@ export default function HeroSection({ onSelectCategory, onExploreClick }: HeroSe
               <span className="text-orbit-signal">✓</span> Zero Registration Fee
             </span>
             <span className="px-2.5 py-1 rounded-lg bg-orbit-surface/80 border border-orbit-border flex items-center gap-1.5 text-orbit-text">
-              <span className="text-orbit-signal">✓</span> Verified Swag & Certificates
+              <span className="text-orbit-signal">✓</span> 100% Verified Evidence Policy
             </span>
             <span className="px-2.5 py-1 rounded-lg bg-orbit-surface/80 border border-orbit-border flex items-center gap-1.5 text-orbit-text">
               <span className="text-orbit-signal">✓</span> Direct Organiser Links
