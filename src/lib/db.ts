@@ -172,20 +172,30 @@ function mapRowToEvent(row: Record<string, unknown>): OrbitEvent {
 export async function getAllEvents(options?: { includeUnpublished?: boolean }): Promise<OrbitEvent[]> {
   const pool = getPgPool();
   if (pool) {
-    const query = options?.includeUnpublished
-      ? "SELECT * FROM events ORDER BY start_at ASC"
-      : "SELECT * FROM events WHERE publication_status = 'published' ORDER BY start_at ASC";
-    const res = await pool.query(query);
-    return res.rows.map(mapRowToEvent);
+    try {
+      const query = options?.includeUnpublished
+        ? "SELECT * FROM events ORDER BY start_at ASC"
+        : "SELECT * FROM events WHERE publication_status = 'published' ORDER BY start_at ASC";
+      const res = await pool.query(query);
+      return res.rows.map(mapRowToEvent);
+    } catch (err: unknown) {
+      console.warn("PostgreSQL getAllEvents warning (falling back):", err instanceof Error ? err.message : err);
+    }
   }
 
   // SQLite fallback
-  const db = getSqliteDb();
-  const query = options?.includeUnpublished
-    ? "SELECT * FROM events ORDER BY start_at ASC"
-    : "SELECT * FROM events WHERE publication_status = 'published' ORDER BY start_at ASC";
-  const rows = db.prepare(query).all() as Record<string, unknown>[];
-  return rows.map(mapRowToEvent);
+  try {
+    const db = getSqliteDb();
+    const query = options?.includeUnpublished
+      ? "SELECT * FROM events ORDER BY start_at ASC"
+      : "SELECT * FROM events WHERE publication_status = 'published' ORDER BY start_at ASC";
+    const rows = db.prepare(query).all() as Record<string, unknown>[];
+    return rows.map(mapRowToEvent);
+  } catch {
+    return options?.includeUnpublished
+      ? SEED_EVENTS
+      : SEED_EVENTS.filter((e) => e.publication_status === "published");
+  }
 }
 
 export async function getFilteredEvents(
@@ -313,25 +323,47 @@ export async function getFilteredEvents(
 export async function getEventBySlug(slug: string): Promise<OrbitEvent | null> {
   const pool = getPgPool();
   if (pool) {
-    const res = await pool.query("SELECT * FROM events WHERE slug = $1", [slug]);
-    return res.rows[0] ? mapRowToEvent(res.rows[0]) : null;
+    try {
+      const res = await pool.query("SELECT * FROM events WHERE slug = $1", [slug]);
+      if (res.rows[0]) return mapRowToEvent(res.rows[0]);
+    } catch (err: unknown) {
+      console.warn("PostgreSQL getEventBySlug warning (falling back):", err instanceof Error ? err.message : err);
+    }
   }
 
-  const db = getSqliteDb();
-  const row = db.prepare("SELECT * FROM events WHERE slug = ?").get(slug) as Record<string, unknown> | undefined;
-  return row ? mapRowToEvent(row) : null;
+  try {
+    const db = getSqliteDb();
+    const row = db.prepare("SELECT * FROM events WHERE slug = ?").get(slug) as Record<string, unknown> | undefined;
+    if (row) return mapRowToEvent(row);
+  } catch {
+    // ignore
+  }
+
+  const seed = SEED_EVENTS.find((e) => e.slug === slug);
+  return seed || null;
 }
 
 export async function getEventById(id: string): Promise<OrbitEvent | null> {
   const pool = getPgPool();
   if (pool) {
-    const res = await pool.query("SELECT * FROM events WHERE id = $1", [id]);
-    return res.rows[0] ? mapRowToEvent(res.rows[0]) : null;
+    try {
+      const res = await pool.query("SELECT * FROM events WHERE id = $1", [id]);
+      if (res.rows[0]) return mapRowToEvent(res.rows[0]);
+    } catch (err: unknown) {
+      console.warn("PostgreSQL getEventById warning (falling back):", err instanceof Error ? err.message : err);
+    }
   }
 
-  const db = getSqliteDb();
-  const row = db.prepare("SELECT * FROM events WHERE id = ?").get(id) as Record<string, unknown> | undefined;
-  return row ? mapRowToEvent(row) : null;
+  try {
+    const db = getSqliteDb();
+    const row = db.prepare("SELECT * FROM events WHERE id = ?").get(id) as Record<string, unknown> | undefined;
+    if (row) return mapRowToEvent(row);
+  } catch {
+    // ignore
+  }
+
+  const seed = SEED_EVENTS.find((e) => e.id === id);
+  return seed || null;
 }
 
 export async function createEvent(data: Partial<OrbitEvent>, actor = "admin"): Promise<OrbitEvent> {
@@ -850,38 +882,82 @@ export async function reviewSuggestion(id: string, status: "approved" | "rejecte
 export async function getMetrics() {
   const pool = getPgPool();
   if (pool) {
-    const totalEvents = parseInt((await pool.query("SELECT COUNT(*) as c FROM events")).rows[0].c, 10);
-    const publishedEvents = parseInt(
-      (await pool.query("SELECT COUNT(*) as c FROM events WHERE publication_status = 'published'")).rows[0].c,
-      10
-    );
-    const pendingReview = parseInt(
-      (await pool.query("SELECT COUNT(*) as c FROM events WHERE publication_status = 'pending_review'")).rows[0].c,
-      10
-    );
-    const openRegistrations = parseInt(
-      (
-        await pool.query(
+    try {
+      const totalEvents = parseInt((await pool.query("SELECT COUNT(*) as c FROM events")).rows[0].c, 10);
+      const publishedEvents = parseInt(
+        (await pool.query("SELECT COUNT(*) as c FROM events WHERE publication_status = 'published'")).rows[0].c,
+        10
+      );
+      const pendingReview = parseInt(
+        (await pool.query("SELECT COUNT(*) as c FROM events WHERE publication_status = 'pending_review'")).rows[0].c,
+        10
+      );
+      const openRegistrations = parseInt(
+        (
+          await pool.query(
+            "SELECT COUNT(*) as c FROM events WHERE registration_status = 'open' AND publication_status = 'published'"
+          )
+        ).rows[0].c,
+        10
+      );
+      const bothPerksConfirmed = parseInt(
+        (
+          await pool.query(`
+            SELECT COUNT(*) as c FROM events
+            WHERE publication_status = 'published'
+            AND (goodies_status = 'confirmed' OR goodies_status = 'limited')
+            AND (certificate_status = 'confirmed' OR certificate_status = 'conditional')
+          `)
+        ).rows[0].c,
+        10
+      );
+      const pendingSuggestions = parseInt(
+        (await pool.query("SELECT COUNT(*) as c FROM suggestions WHERE status = 'pending'")).rows[0].c,
+        10
+      );
+
+      return {
+        totalEvents,
+        publishedEvents,
+        pendingReview,
+        openRegistrations,
+        bothPerksConfirmed,
+        pendingSuggestions,
+      };
+    } catch (err: unknown) {
+      console.warn("PostgreSQL getMetrics warning (falling back):", err instanceof Error ? err.message : err);
+    }
+  }
+
+  try {
+    const db = getSqliteDb();
+    const totalEvents = (db.prepare("SELECT COUNT(*) as c FROM events").get() as { c: number }).c;
+    const publishedEvents = (
+      db.prepare("SELECT COUNT(*) as c FROM events WHERE publication_status = 'published'").get() as { c: number }
+    ).c;
+    const pendingReview = (
+      db.prepare("SELECT COUNT(*) as c FROM events WHERE publication_status = 'pending_review'").get() as { c: number }
+    ).c;
+    const openRegistrations = (
+      db
+        .prepare(
           "SELECT COUNT(*) as c FROM events WHERE registration_status = 'open' AND publication_status = 'published'"
         )
-      ).rows[0].c,
-      10
-    );
-    const bothPerksConfirmed = parseInt(
-      (
-        await pool.query(`
+        .get() as { c: number }
+    ).c;
+    const bothPerksConfirmed = (
+      db
+        .prepare(`
           SELECT COUNT(*) as c FROM events
           WHERE publication_status = 'published'
           AND (goodies_status = 'confirmed' OR goodies_status = 'limited')
           AND (certificate_status = 'confirmed' OR certificate_status = 'conditional')
         `)
-      ).rows[0].c,
-      10
-    );
-    const pendingSuggestions = parseInt(
-      (await pool.query("SELECT COUNT(*) as c FROM suggestions WHERE status = 'pending'")).rows[0].c,
-      10
-    );
+        .get() as { c: number }
+    ).c;
+    const pendingSuggestions = (
+      db.prepare("SELECT COUNT(*) as c FROM suggestions WHERE status = 'pending'").get() as { c: number }
+    ).c;
 
     return {
       totalEvents,
@@ -891,43 +967,18 @@ export async function getMetrics() {
       bothPerksConfirmed,
       pendingSuggestions,
     };
+  } catch {
+    return {
+      totalEvents: SEED_EVENTS.length,
+      publishedEvents: SEED_EVENTS.length,
+      pendingReview: 0,
+      openRegistrations: SEED_EVENTS.filter((e) => e.registration_status === "open").length,
+      bothPerksConfirmed: SEED_EVENTS.filter(
+        (e) =>
+          (e.goodies_status === "confirmed" || e.goodies_status === "limited") &&
+          (e.certificate_status === "confirmed" || e.certificate_status === "conditional")
+      ).length,
+      pendingSuggestions: 0,
+    };
   }
-
-  const db = getSqliteDb();
-  const totalEvents = (db.prepare("SELECT COUNT(*) as c FROM events").get() as { c: number }).c;
-  const publishedEvents = (
-    db.prepare("SELECT COUNT(*) as c FROM events WHERE publication_status = 'published'").get() as { c: number }
-  ).c;
-  const pendingReview = (
-    db.prepare("SELECT COUNT(*) as c FROM events WHERE publication_status = 'pending_review'").get() as { c: number }
-  ).c;
-  const openRegistrations = (
-    db
-      .prepare(
-        "SELECT COUNT(*) as c FROM events WHERE registration_status = 'open' AND publication_status = 'published'"
-      )
-      .get() as { c: number }
-  ).c;
-  const bothPerksConfirmed = (
-    db
-      .prepare(`
-        SELECT COUNT(*) as c FROM events
-        WHERE publication_status = 'published'
-        AND (goodies_status = 'confirmed' OR goodies_status = 'limited')
-        AND (certificate_status = 'confirmed' OR certificate_status = 'conditional')
-      `)
-      .get() as { c: number }
-  ).c;
-  const pendingSuggestions = (
-    db.prepare("SELECT COUNT(*) as c FROM suggestions WHERE status = 'pending'").get() as { c: number }
-  ).c;
-
-  return {
-    totalEvents,
-    publishedEvents,
-    pendingReview,
-    openRegistrations,
-    bothPerksConfirmed,
-    pendingSuggestions,
-  };
 }
