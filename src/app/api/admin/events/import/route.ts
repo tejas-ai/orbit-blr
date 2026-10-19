@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     const actor = authHeader?.includes("Bearer") ? "external_ai_api" : "admin_dashboard";
 
     // 2. Perform Idempotent Upsert & Deduplication Batch
-    const result = upsertEventsBatch(rawEvents, actor);
+    const result = await upsertEventsBatch(rawEvents, actor);
 
     return NextResponse.json({
       success: true,

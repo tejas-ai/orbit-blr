@@ -1,17 +1,40 @@
+import pg from "pg";
 import { DatabaseSync } from "node:sqlite";
 import fs from "node:fs";
 import path from "node:path";
-import { OrbitEvent, EventSuggestion, AuditLogEntry, EventFilters, PublicationStatus } from "@/types/event";
+import {
+  OrbitEvent,
+  EventSuggestion,
+  AuditLogEntry,
+  EventFilters,
+  PublicationStatus,
+} from "@/types/event";
 import { SEED_EVENTS } from "./seed-data";
 
-// Interface for global singleton in Next.js development
+const { Pool } = pg;
+
+// Global singleton for Next.js hot-reloading
 const globalForDb = globalThis as unknown as {
-  orbitDbInstance?: DatabaseSync;
+  orbitPgPool?: pg.Pool;
+  orbitSqliteDb?: DatabaseSync;
 };
 
-function getDatabase(): DatabaseSync {
-  if (globalForDb.orbitDbInstance) {
-    return globalForDb.orbitDbInstance;
+function getPgPool(): pg.Pool | null {
+  const connString = process.env.DATABASE_URL?.trim().replace(/^["']|["']$/g, "");
+  if (!connString) return null;
+
+  if (!globalForDb.orbitPgPool) {
+    globalForDb.orbitPgPool = new Pool({
+      connectionString: connString,
+      ssl: { rejectUnauthorized: false },
+    });
+  }
+  return globalForDb.orbitPgPool;
+}
+
+function getSqliteDb(): DatabaseSync {
+  if (globalForDb.orbitSqliteDb) {
+    return globalForDb.orbitSqliteDb;
   }
 
   const dataDir = path.join(process.cwd(), "data");
@@ -22,7 +45,7 @@ function getDatabase(): DatabaseSync {
   const dbPath = path.join(dataDir, "orbit.db");
   const db = new DatabaseSync(dbPath);
 
-  // Initialize Schema
+  // Initialize SQLite Schema
   db.exec(`
     CREATE TABLE IF NOT EXISTS events (
       id TEXT PRIMARY KEY,
@@ -85,95 +108,24 @@ function getDatabase(): DatabaseSync {
       actor TEXT NOT NULL DEFAULT 'system',
       timestamp TEXT NOT NULL
     );
-
-    CREATE TABLE IF NOT EXISTS subscribers (
-      id TEXT PRIMARY KEY,
-      email TEXT UNIQUE NOT NULL,
-      preferences TEXT NOT NULL DEFAULT 'all',
-      created_at TEXT NOT NULL
-    );
-
-    CREATE INDEX IF NOT EXISTS idx_events_start_at ON events(start_at);
-    CREATE INDEX IF NOT EXISTS idx_events_category ON events(category);
-    CREATE INDEX IF NOT EXISTS idx_events_area ON events(area);
-    CREATE INDEX IF NOT EXISTS idx_events_reg_status ON events(registration_status);
-    CREATE INDEX IF NOT EXISTS idx_events_pub_status ON events(publication_status);
   `);
 
-  // Check if events table is empty; if so, populate with authentic seed data
-  const countRow = db.prepare("SELECT COUNT(*) as count FROM events").get() as { count: number };
-  if (countRow.count === 0) {
-    const insertStmt = db.prepare(`
-      INSERT INTO events (
-        id, slug, name, category, organizer, description, start_at, end_at, timezone,
-        venue, venue_type, area, address, landmark, metro_station, map_url,
-        is_in_person, is_free, registration_url, registration_status, approval_required,
-        goodies_status, goodies_details, certificate_status, certificate_format, certificate_requirements,
-        food_status, food_details, source_urls, verification_notes, last_verified_at,
-        publication_status, who_should_attend, topics_covered, prerequisites, agenda, featured,
-        created_at, updated_at
-      ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?, ?, ?,
-        ?, ?, ?, ?, ?, ?, ?,
-        ?, ?, ?, ?, ?,
-        ?, ?, ?, ?, ?,
-        ?, ?, ?, ?, ?,
-        ?, ?, ?, ?, ?, ?,
-        ?, ?
-      )
-    `);
-
-    for (const evt of SEED_EVENTS) {
-      insertStmt.run(
-        evt.id,
-        evt.slug,
-        evt.name,
-        evt.category,
-        evt.organizer,
-        evt.description,
-        evt.start_at,
-        evt.end_at,
-        evt.timezone || "Asia/Kolkata",
-        evt.venue,
-        evt.venue_type || null,
-        evt.area,
-        evt.address || null,
-        evt.landmark || null,
-        evt.metro_station || null,
-        evt.map_url || null,
-        evt.is_in_person ? 1 : 0,
-        evt.is_free ? 1 : 0,
-        evt.registration_url,
-        evt.registration_status,
-        evt.approval_required ? 1 : 0,
-        evt.goodies_status,
-        evt.goodies_details || null,
-        evt.certificate_status,
-        evt.certificate_format || null,
-        evt.certificate_requirements || null,
-        evt.food_status,
-        evt.food_details || null,
-        JSON.stringify(evt.source_urls || []),
-        evt.verification_notes || null,
-        evt.last_verified_at || null,
-        evt.publication_status,
-        JSON.stringify(evt.who_should_attend || []),
-        JSON.stringify(evt.topics_covered || []),
-        evt.prerequisites || null,
-        JSON.stringify(evt.agenda || []),
-        evt.featured ? 1 : 0,
-        evt.created_at,
-        evt.updated_at
-      );
-    }
-  }
-
-  globalForDb.orbitDbInstance = db;
+  globalForDb.orbitSqliteDb = db;
   return db;
 }
 
-// Convert SQLite row back to typed OrbitEvent
+// Convert DB row to typed OrbitEvent
 function mapRowToEvent(row: Record<string, unknown>): OrbitEvent {
+  const parseJsonField = (val: unknown) => {
+    if (!val) return [];
+    if (typeof val === "object") return val as any;
+    try {
+      return JSON.parse(String(val));
+    } catch {
+      return [];
+    }
+  };
+
   return {
     id: String(row.id),
     slug: String(row.slug),
@@ -181,8 +133,8 @@ function mapRowToEvent(row: Record<string, unknown>): OrbitEvent {
     category: row.category as OrbitEvent["category"],
     organizer: String(row.organizer),
     description: String(row.description),
-    start_at: String(row.start_at),
-    end_at: String(row.end_at),
+    start_at: new Date(String(row.start_at)).toISOString(),
+    end_at: new Date(String(row.end_at)).toISOString(),
     timezone: String(row.timezone || "Asia/Kolkata"),
     venue: String(row.venue),
     venue_type: (row.venue_type as OrbitEvent["venue_type"]) || undefined,
@@ -203,43 +155,56 @@ function mapRowToEvent(row: Record<string, unknown>): OrbitEvent {
     certificate_requirements: row.certificate_requirements ? String(row.certificate_requirements) : null,
     food_status: row.food_status as OrbitEvent["food_status"],
     food_details: row.food_details ? String(row.food_details) : null,
-    source_urls: row.source_urls ? JSON.parse(String(row.source_urls)) : [],
+    source_urls: parseJsonField(row.source_urls),
     verification_notes: row.verification_notes ? String(row.verification_notes) : null,
-    last_verified_at: row.last_verified_at ? String(row.last_verified_at) : null,
+    last_verified_at: row.last_verified_at ? new Date(String(row.last_verified_at)).toISOString() : null,
     publication_status: row.publication_status as OrbitEvent["publication_status"],
-    who_should_attend: row.who_should_attend ? JSON.parse(String(row.who_should_attend)) : undefined,
-    topics_covered: row.topics_covered ? JSON.parse(String(row.topics_covered)) : undefined,
+    who_should_attend: parseJsonField(row.who_should_attend),
+    topics_covered: parseJsonField(row.topics_covered),
     prerequisites: row.prerequisites ? String(row.prerequisites) : null,
-    agenda: row.agenda ? JSON.parse(String(row.agenda)) : undefined,
+    agenda: parseJsonField(row.agenda),
     featured: Boolean(row.featured),
-    created_at: String(row.created_at),
-    updated_at: String(row.updated_at),
+    created_at: new Date(String(row.created_at || Date.now())).toISOString(),
+    updated_at: new Date(String(row.updated_at || Date.now())).toISOString(),
   };
 }
 
-export function getAllEvents(options?: { includeUnpublished?: boolean }): OrbitEvent[] {
-  const db = getDatabase();
+export async function getAllEvents(options?: { includeUnpublished?: boolean }): Promise<OrbitEvent[]> {
+  const pool = getPgPool();
+  if (pool) {
+    const query = options?.includeUnpublished
+      ? "SELECT * FROM events ORDER BY start_at ASC"
+      : "SELECT * FROM events WHERE publication_status = 'published' ORDER BY start_at ASC";
+    const res = await pool.query(query);
+    return res.rows.map(mapRowToEvent);
+  }
+
+  // SQLite fallback
+  const db = getSqliteDb();
   const query = options?.includeUnpublished
     ? "SELECT * FROM events ORDER BY start_at ASC"
     : "SELECT * FROM events WHERE publication_status = 'published' ORDER BY start_at ASC";
-
   const rows = db.prepare(query).all() as Record<string, unknown>[];
   return rows.map(mapRowToEvent);
 }
 
-export function getFilteredEvents(filters: EventFilters, options?: { includeUnpublished?: boolean }): OrbitEvent[] {
-  let events = getAllEvents(options);
+export async function getFilteredEvents(
+  filters: EventFilters,
+  options?: { includeUnpublished?: boolean }
+): Promise<OrbitEvent[]> {
+  let events = await getAllEvents(options);
 
   if (filters.search && filters.search.trim() !== "") {
     const q = filters.search.toLowerCase().trim();
-    events = events.filter((e) =>
-      e.name.toLowerCase().includes(q) ||
-      e.description.toLowerCase().includes(q) ||
-      e.organizer.toLowerCase().includes(q) ||
-      e.venue.toLowerCase().includes(q) ||
-      e.area.toLowerCase().includes(q) ||
-      e.category.toLowerCase().includes(q) ||
-      (e.topics_covered && e.topics_covered.some((t) => t.toLowerCase().includes(q)))
+    events = events.filter(
+      (e) =>
+        e.name.toLowerCase().includes(q) ||
+        e.description.toLowerCase().includes(q) ||
+        e.organizer.toLowerCase().includes(q) ||
+        e.venue.toLowerCase().includes(q) ||
+        e.area.toLowerCase().includes(q) ||
+        e.category.toLowerCase().includes(q) ||
+        (e.topics_covered && e.topics_covered.some((t) => t.toLowerCase().includes(q)))
     );
   }
 
@@ -271,12 +236,11 @@ export function getFilteredEvents(filters: EventFilters, options?: { includeUnpu
         (e) => e.certificate_status === "confirmed" || e.certificate_status === "conditional"
       );
     } else if (filters.benefits === "goodies_confirmed") {
-      events = events.filter(
-        (e) => e.goodies_status === "confirmed" || e.goodies_status === "limited"
-      );
+      events = events.filter((e) => e.goodies_status === "confirmed" || e.goodies_status === "limited");
     } else if (filters.benefits === "complimentary_food") {
       events = events.filter(
-        (e) => e.food_status === "complimentary_meals_confirmed" || e.food_status === "refreshments_confirmed"
+        (e) =>
+          e.food_status === "complimentary_meals_confirmed" || e.food_status === "refreshments_confirmed"
       );
     }
   }
@@ -289,9 +253,7 @@ export function getFilteredEvents(filters: EventFilters, options?: { includeUnpu
       const eventDateStr = e.start_at.split("T")[0];
       const eventDate = new Date(e.start_at);
 
-      if (filters.dateFilter === "today") {
-        return eventDateStr === todayStr;
-      }
+      if (filters.dateFilter === "today") return eventDateStr === todayStr;
       if (filters.dateFilter === "tomorrow") {
         const tomorrow = new Date(now);
         tomorrow.setDate(now.getDate() + 1);
@@ -299,7 +261,7 @@ export function getFilteredEvents(filters: EventFilters, options?: { includeUnpu
       }
       if (filters.dateFilter === "weekend") {
         const day = eventDate.getDay();
-        return day === 0 || day === 6; // Sunday or Saturday
+        return day === 0 || day === 6;
       }
       if (filters.dateFilter === "next_7_days") {
         const next7 = new Date(now);
@@ -322,7 +284,6 @@ export function getFilteredEvents(filters: EventFilters, options?: { includeUnpu
   } else if (filters.sortBy === "date_desc") {
     events.sort((a, b) => new Date(b.start_at).getTime() - new Date(a.start_at).getTime());
   } else if (filters.sortBy === "urgency") {
-    // Open registrations first, then approval required, waitlist, etc.
     const priority: Record<string, number> = {
       open: 1,
       approval_required: 2,
@@ -333,7 +294,6 @@ export function getFilteredEvents(filters: EventFilters, options?: { includeUnpu
     };
     events.sort((a, b) => (priority[a.registration_status] || 99) - (priority[b.registration_status] || 99));
   } else if (filters.sortBy === "benefits") {
-    // Both confirmed first
     const score = (e: OrbitEvent) => {
       let s = 0;
       if (e.goodies_status === "confirmed") s += 3;
@@ -350,20 +310,31 @@ export function getFilteredEvents(filters: EventFilters, options?: { includeUnpu
   return events;
 }
 
-export function getEventBySlug(slug: string): OrbitEvent | null {
-  const db = getDatabase();
+export async function getEventBySlug(slug: string): Promise<OrbitEvent | null> {
+  const pool = getPgPool();
+  if (pool) {
+    const res = await pool.query("SELECT * FROM events WHERE slug = $1", [slug]);
+    return res.rows[0] ? mapRowToEvent(res.rows[0]) : null;
+  }
+
+  const db = getSqliteDb();
   const row = db.prepare("SELECT * FROM events WHERE slug = ?").get(slug) as Record<string, unknown> | undefined;
   return row ? mapRowToEvent(row) : null;
 }
 
-export function getEventById(id: string): OrbitEvent | null {
-  const db = getDatabase();
+export async function getEventById(id: string): Promise<OrbitEvent | null> {
+  const pool = getPgPool();
+  if (pool) {
+    const res = await pool.query("SELECT * FROM events WHERE id = $1", [id]);
+    return res.rows[0] ? mapRowToEvent(res.rows[0]) : null;
+  }
+
+  const db = getSqliteDb();
   const row = db.prepare("SELECT * FROM events WHERE id = ?").get(id) as Record<string, unknown> | undefined;
   return row ? mapRowToEvent(row) : null;
 }
 
-export function createEvent(data: Partial<OrbitEvent>, actor = "admin"): OrbitEvent {
-  const db = getDatabase();
+export async function createEvent(data: Partial<OrbitEvent>, actor = "admin"): Promise<OrbitEvent> {
   const now = new Date().toISOString();
   const id = data.id || `evt-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
   const slug =
@@ -373,6 +344,76 @@ export function createEvent(data: Partial<OrbitEvent>, actor = "admin"): OrbitEv
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
 
+  const pool = getPgPool();
+  if (pool) {
+    const insertQuery = `
+      INSERT INTO events (
+        id, slug, name, category, organizer, description, start_at, end_at, timezone,
+        venue, venue_type, area, address, landmark, metro_station, map_url,
+        is_in_person, is_free, registration_url, registration_status, approval_required,
+        goodies_status, goodies_details, certificate_status, certificate_format, certificate_requirements,
+        food_status, food_details, source_urls, verification_notes, last_verified_at,
+        publication_status, who_should_attend, topics_covered, prerequisites, agenda, featured,
+        created_at, updated_at
+      ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9,
+        $10, $11, $12, $13, $14, $15, $16,
+        $17, $18, $19, $20, $21,
+        $22, $23, $24, $25, $26,
+        $27, $28, $29, $30, $31,
+        $32, $33, $34, $35, $36, $37,
+        $38, $39
+      ) RETURNING *;
+    `;
+
+    const res = await pool.query(insertQuery, [
+      id,
+      slug,
+      data.name || "Untitled Tech Event",
+      data.category || "Developer",
+      data.organizer || "Independent Community",
+      data.description || "",
+      data.start_at || now,
+      data.end_at || now,
+      data.timezone || "Asia/Kolkata",
+      data.venue || "Bengaluru Venue TBA",
+      data.venue_type || null,
+      data.area || "Bengaluru",
+      data.address || null,
+      data.landmark || null,
+      data.metro_station || null,
+      data.map_url || null,
+      data.is_in_person === false ? false : true,
+      data.is_free === false ? false : true,
+      data.registration_url || "https://example.com",
+      data.registration_status || "open",
+      data.approval_required ? true : false,
+      data.goodies_status || "unverified",
+      data.goodies_details || null,
+      data.certificate_status || "unverified",
+      data.certificate_format || null,
+      data.certificate_requirements || null,
+      data.food_status || "unverified",
+      data.food_details || null,
+      JSON.stringify(data.source_urls || []),
+      data.verification_notes || null,
+      data.last_verified_at || now,
+      data.publication_status || "pending_review",
+      JSON.stringify(data.who_should_attend || []),
+      JSON.stringify(data.topics_covered || []),
+      data.prerequisites || null,
+      JSON.stringify(data.agenda || []),
+      data.featured ? true : false,
+      now,
+      now,
+    ]);
+
+    await logAudit(id, "create", `Created event "${data.name}"`, actor);
+    return mapRowToEvent(res.rows[0]);
+  }
+
+  // SQLite fallback
+  const db = getSqliteDb();
   const stmt = db.prepare(`
     INSERT INTO events (
       id, slug, name, category, organizer, description, start_at, end_at, timezone,
@@ -435,15 +476,16 @@ export function createEvent(data: Partial<OrbitEvent>, actor = "admin"): OrbitEv
     now
   );
 
-  // Log audit
-  logAudit(id, "create", `Created event "${data.name}"`, actor);
-
-  return getEventById(id)!;
+  await logAudit(id, "create", `Created event "${data.name}"`, actor);
+  return (await getEventById(id))!;
 }
 
-export function updateEvent(id: string, data: Partial<OrbitEvent>, actor = "admin"): OrbitEvent | null {
-  const db = getDatabase();
-  const existing = getEventById(id);
+export async function updateEvent(
+  id: string,
+  data: Partial<OrbitEvent>,
+  actor = "admin"
+): Promise<OrbitEvent | null> {
+  const existing = await getEventById(id);
   if (!existing) return null;
 
   const now = new Date().toISOString();
@@ -453,6 +495,68 @@ export function updateEvent(id: string, data: Partial<OrbitEvent>, actor = "admi
     updated_at: now,
   };
 
+  const pool = getPgPool();
+  if (pool) {
+    const updateQuery = `
+      UPDATE events SET
+        slug = $1, name = $2, category = $3, organizer = $4, description = $5,
+        start_at = $6, end_at = $7, timezone = $8, venue = $9, venue_type = $10,
+        area = $11, address = $12, landmark = $13, metro_station = $14, map_url = $15,
+        is_in_person = $16, is_free = $17, registration_url = $18, registration_status = $19, approval_required = $20,
+        goodies_status = $21, goodies_details = $22, certificate_status = $23, certificate_format = $24, certificate_requirements = $25,
+        food_status = $26, food_details = $27, source_urls = $28, verification_notes = $29, last_verified_at = $30,
+        publication_status = $31, who_should_attend = $32, topics_covered = $33, prerequisites = $34, agenda = $35,
+        featured = $36, updated_at = $37
+      WHERE id = $38 RETURNING *;
+    `;
+
+    const res = await pool.query(updateQuery, [
+      merged.slug,
+      merged.name,
+      merged.category,
+      merged.organizer,
+      merged.description,
+      merged.start_at,
+      merged.end_at,
+      merged.timezone,
+      merged.venue,
+      merged.venue_type || null,
+      merged.area,
+      merged.address || null,
+      merged.landmark || null,
+      merged.metro_station || null,
+      merged.map_url || null,
+      merged.is_in_person ? true : false,
+      merged.is_free ? true : false,
+      merged.registration_url,
+      merged.registration_status,
+      merged.approval_required ? true : false,
+      merged.goodies_status,
+      merged.goodies_details || null,
+      merged.certificate_status,
+      merged.certificate_format || null,
+      merged.certificate_requirements || null,
+      merged.food_status,
+      merged.food_details || null,
+      JSON.stringify(merged.source_urls || []),
+      merged.verification_notes || null,
+      merged.last_verified_at || null,
+      merged.publication_status,
+      JSON.stringify(merged.who_should_attend || []),
+      JSON.stringify(merged.topics_covered || []),
+      merged.prerequisites || null,
+      JSON.stringify(merged.agenda || []),
+      merged.featured ? true : false,
+      now,
+      id,
+    ]);
+
+    await logAudit(id, "update", `Updated event fields: ${Object.keys(data).join(", ")}`, actor);
+    return mapRowToEvent(res.rows[0]);
+  }
+
+  // SQLite fallback
+  const db = getSqliteDb();
   const stmt = db.prepare(`
     UPDATE events SET
       slug = ?, name = ?, category = ?, organizer = ?, description = ?,
@@ -507,17 +611,24 @@ export function updateEvent(id: string, data: Partial<OrbitEvent>, actor = "admi
     id
   );
 
-  logAudit(id, "update", `Updated event fields: ${Object.keys(data).join(", ")}`, actor);
-  return getEventById(id);
+  await logAudit(id, "update", `Updated event fields: ${Object.keys(data).join(", ")}`, actor);
+  return (await getEventById(id))!;
 }
 
-export function deleteEvent(id: string, actor = "admin"): boolean {
-  const db = getDatabase();
-  const existing = getEventById(id);
+export async function deleteEvent(id: string, actor = "admin"): Promise<boolean> {
+  const existing = await getEventById(id);
   if (!existing) return false;
 
+  const pool = getPgPool();
+  if (pool) {
+    await pool.query("DELETE FROM events WHERE id = $1", [id]);
+    await logAudit(id, "update", `Deleted event "${existing.name}"`, actor);
+    return true;
+  }
+
+  const db = getSqliteDb();
   db.prepare("DELETE FROM events WHERE id = ?").run(id);
-  logAudit(id, "update", `Deleted event "${existing.name}"`, actor);
+  await logAudit(id, "update", `Deleted event "${existing.name}"`, actor);
   return true;
 }
 
@@ -528,8 +639,10 @@ export interface ImportResult {
   errors: string[];
 }
 
-export function upsertEventsBatch(events: Partial<OrbitEvent>[], actor = "automation"): ImportResult {
-  const db = getDatabase();
+export async function upsertEventsBatch(
+  events: Partial<OrbitEvent>[],
+  actor = "automation"
+): Promise<ImportResult> {
   const result: ImportResult = { created: 0, updated: 0, skipped: 0, errors: [] };
 
   for (const item of events) {
@@ -540,23 +653,39 @@ export function upsertEventsBatch(events: Partial<OrbitEvent>[], actor = "automa
         continue;
       }
 
-      // Check duplicate by registration_url or id or slug
-      let existing: Record<string, unknown> | undefined;
-      if (item.id) {
-        existing = db.prepare("SELECT * FROM events WHERE id = ?").get(item.id) as Record<string, unknown> | undefined;
-      }
+      // Check duplicates by registration_url, id, or slug
+      let existing: OrbitEvent | null = null;
+      if (item.id) existing = await getEventById(item.id);
+      if (!existing && item.slug) existing = await getEventBySlug(item.slug);
       if (!existing && item.registration_url) {
-        existing = db.prepare("SELECT * FROM events WHERE registration_url = ?").get(item.registration_url) as Record<string, unknown> | undefined;
-      }
-      if (!existing && item.slug) {
-        existing = db.prepare("SELECT * FROM events WHERE slug = ?").get(item.slug) as Record<string, unknown> | undefined;
+        const pool = getPgPool();
+        if (pool) {
+          const res = await pool.query("SELECT * FROM events WHERE registration_url = $1", [
+            item.registration_url,
+          ]);
+          if (res.rows[0]) existing = mapRowToEvent(res.rows[0]);
+        } else {
+          const db = getSqliteDb();
+          const row = db
+            .prepare("SELECT * FROM events WHERE registration_url = ?")
+            .get(item.registration_url) as Record<string, unknown> | undefined;
+          if (row) existing = mapRowToEvent(row);
+        }
       }
 
       if (existing) {
-        updateEvent(String(existing.id), item, actor);
+        await updateEvent(existing.id, item, actor);
         result.updated++;
       } else {
-        createEvent(item, actor);
+        // Enforce review queue for unverified or external automated submissions
+        const eventToCreate = {
+          ...item,
+          publication_status:
+            item.publication_status && item.source_urls && item.source_urls.length > 0
+              ? item.publication_status
+              : ("pending_review" as PublicationStatus),
+        };
+        await createEvent(eventToCreate, actor);
         result.created++;
       }
     } catch (err: unknown) {
@@ -569,11 +698,26 @@ export function upsertEventsBatch(events: Partial<OrbitEvent>[], actor = "automa
   return result;
 }
 
-export function logAudit(eventId: string, action: AuditLogEntry["action"], details: string, actor = "system") {
+export async function logAudit(
+  eventId: string,
+  action: AuditLogEntry["action"],
+  details: string,
+  actor = "system"
+) {
   try {
-    const db = getDatabase();
     const id = `aud-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
     const now = new Date().toISOString();
+
+    const pool = getPgPool();
+    if (pool) {
+      await pool.query(
+        "INSERT INTO audit_logs (id, event_id, action, details, actor, timestamp) VALUES ($1, $2, $3, $4, $5, $6)",
+        [id, eventId, action, details, actor, now]
+      );
+      return;
+    }
+
+    const db = getSqliteDb();
     db.prepare(`
       INSERT INTO audit_logs (id, event_id, action, details, actor, timestamp)
       VALUES (?, ?, ?, ?, ?, ?)
@@ -583,9 +727,25 @@ export function logAudit(eventId: string, action: AuditLogEntry["action"], detai
   }
 }
 
-export function getAuditLogs(limit = 50): AuditLogEntry[] {
-  const db = getDatabase();
-  const rows = db.prepare("SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT ?").all(limit) as Record<string, unknown>[];
+export async function getAuditLogs(limit = 50): Promise<AuditLogEntry[]> {
+  const pool = getPgPool();
+  if (pool) {
+    const res = await pool.query("SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT $1", [limit]);
+    return res.rows.map((r) => ({
+      id: String(r.id),
+      event_id: String(r.event_id),
+      action: r.action as AuditLogEntry["action"],
+      details: String(r.details),
+      actor: String(r.actor),
+      timestamp: String(r.timestamp),
+    }));
+  }
+
+  const db = getSqliteDb();
+  const rows = db.prepare("SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT ?").all(limit) as Record<
+    string,
+    unknown
+  >[];
   return rows.map((r) => ({
     id: String(r.id),
     event_id: String(r.event_id),
@@ -596,24 +756,39 @@ export function getAuditLogs(limit = 50): AuditLogEntry[] {
   }));
 }
 
-// Community Suggestions
-export function createSuggestion(suggestion: Partial<EventSuggestion>): EventSuggestion {
-  const db = getDatabase();
+export async function createSuggestion(suggestion: Partial<EventSuggestion>): Promise<EventSuggestion> {
   const id = `sug-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
   const now = new Date().toISOString();
 
-  db.prepare(`
-    INSERT INTO suggestions (id, event_url, event_name, organizer, notes, submitter_email, status, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)
-  `).run(
-    id,
-    suggestion.event_url || "",
-    suggestion.event_name || null,
-    suggestion.organizer || null,
-    suggestion.notes || null,
-    suggestion.submitter_email || null,
-    now
-  );
+  const pool = getPgPool();
+  if (pool) {
+    await pool.query(
+      "INSERT INTO suggestions (id, event_url, event_name, organizer, notes, submitter_email, status, created_at) VALUES ($1, $2, $3, $4, $5, $6, 'pending', $7)",
+      [
+        id,
+        suggestion.event_url || "",
+        suggestion.event_name || null,
+        suggestion.organizer || null,
+        suggestion.notes || null,
+        suggestion.submitter_email || null,
+        now,
+      ]
+    );
+  } else {
+    const db = getSqliteDb();
+    db.prepare(`
+      INSERT INTO suggestions (id, event_url, event_name, organizer, notes, submitter_email, status, created_at)
+      VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)
+    `).run(
+      id,
+      suggestion.event_url || "",
+      suggestion.event_name || null,
+      suggestion.organizer || null,
+      suggestion.notes || null,
+      suggestion.submitter_email || null,
+      now
+    );
+  }
 
   return {
     id,
@@ -627,9 +802,27 @@ export function createSuggestion(suggestion: Partial<EventSuggestion>): EventSug
   };
 }
 
-export function getAllSuggestions(): EventSuggestion[] {
-  const db = getDatabase();
-  const rows = db.prepare("SELECT * FROM suggestions ORDER BY created_at DESC").all() as Record<string, unknown>[];
+export async function getAllSuggestions(): Promise<EventSuggestion[]> {
+  const pool = getPgPool();
+  if (pool) {
+    const res = await pool.query("SELECT * FROM suggestions ORDER BY created_at DESC");
+    return res.rows.map((r) => ({
+      id: String(r.id),
+      event_url: String(r.event_url),
+      event_name: r.event_name ? String(r.event_name) : null,
+      organizer: r.organizer ? String(r.organizer) : null,
+      notes: r.notes ? String(r.notes) : null,
+      submitter_email: r.submitter_email ? String(r.submitter_email) : null,
+      status: r.status as EventSuggestion["status"],
+      created_at: String(r.created_at),
+    }));
+  }
+
+  const db = getSqliteDb();
+  const rows = db.prepare("SELECT * FROM suggestions ORDER BY created_at DESC").all() as Record<
+    string,
+    unknown
+  >[];
   return rows.map((r) => ({
     id: String(r.id),
     event_url: String(r.event_url),
@@ -642,26 +835,92 @@ export function getAllSuggestions(): EventSuggestion[] {
   }));
 }
 
-export function reviewSuggestion(id: string, status: "approved" | "rejected"): boolean {
-  const db = getDatabase();
+export async function reviewSuggestion(id: string, status: "approved" | "rejected"): Promise<boolean> {
+  const pool = getPgPool();
+  if (pool) {
+    await pool.query("UPDATE suggestions SET status = $1 WHERE id = $2", [status, id]);
+    return true;
+  }
+
+  const db = getSqliteDb();
   db.prepare("UPDATE suggestions SET status = ? WHERE id = ?").run(status, id);
   return true;
 }
 
-// Metrics for Admin Dashboard
-export function getMetrics() {
-  const db = getDatabase();
+export async function getMetrics() {
+  const pool = getPgPool();
+  if (pool) {
+    const totalEvents = parseInt((await pool.query("SELECT COUNT(*) as c FROM events")).rows[0].c, 10);
+    const publishedEvents = parseInt(
+      (await pool.query("SELECT COUNT(*) as c FROM events WHERE publication_status = 'published'")).rows[0].c,
+      10
+    );
+    const pendingReview = parseInt(
+      (await pool.query("SELECT COUNT(*) as c FROM events WHERE publication_status = 'pending_review'")).rows[0].c,
+      10
+    );
+    const openRegistrations = parseInt(
+      (
+        await pool.query(
+          "SELECT COUNT(*) as c FROM events WHERE registration_status = 'open' AND publication_status = 'published'"
+        )
+      ).rows[0].c,
+      10
+    );
+    const bothPerksConfirmed = parseInt(
+      (
+        await pool.query(`
+          SELECT COUNT(*) as c FROM events
+          WHERE publication_status = 'published'
+          AND (goodies_status = 'confirmed' OR goodies_status = 'limited')
+          AND (certificate_status = 'confirmed' OR certificate_status = 'conditional')
+        `)
+      ).rows[0].c,
+      10
+    );
+    const pendingSuggestions = parseInt(
+      (await pool.query("SELECT COUNT(*) as c FROM suggestions WHERE status = 'pending'")).rows[0].c,
+      10
+    );
+
+    return {
+      totalEvents,
+      publishedEvents,
+      pendingReview,
+      openRegistrations,
+      bothPerksConfirmed,
+      pendingSuggestions,
+    };
+  }
+
+  const db = getSqliteDb();
   const totalEvents = (db.prepare("SELECT COUNT(*) as c FROM events").get() as { c: number }).c;
-  const publishedEvents = (db.prepare("SELECT COUNT(*) as c FROM events WHERE publication_status = 'published'").get() as { c: number }).c;
-  const pendingReview = (db.prepare("SELECT COUNT(*) as c FROM events WHERE publication_status = 'pending_review'").get() as { c: number }).c;
-  const openRegistrations = (db.prepare("SELECT COUNT(*) as c FROM events WHERE registration_status = 'open' AND publication_status = 'published'").get() as { c: number }).c;
-  const bothPerksConfirmed = (db.prepare(`
-    SELECT COUNT(*) as c FROM events
-    WHERE publication_status = 'published'
-    AND (goodies_status = 'confirmed' OR goodies_status = 'limited')
-    AND (certificate_status = 'confirmed' OR certificate_status = 'conditional')
-  `).get() as { c: number }).c;
-  const pendingSuggestions = (db.prepare("SELECT COUNT(*) as c FROM suggestions WHERE status = 'pending'").get() as { c: number }).c;
+  const publishedEvents = (
+    db.prepare("SELECT COUNT(*) as c FROM events WHERE publication_status = 'published'").get() as { c: number }
+  ).c;
+  const pendingReview = (
+    db.prepare("SELECT COUNT(*) as c FROM events WHERE publication_status = 'pending_review'").get() as { c: number }
+  ).c;
+  const openRegistrations = (
+    db
+      .prepare(
+        "SELECT COUNT(*) as c FROM events WHERE registration_status = 'open' AND publication_status = 'published'"
+      )
+      .get() as { c: number }
+  ).c;
+  const bothPerksConfirmed = (
+    db
+      .prepare(`
+        SELECT COUNT(*) as c FROM events
+        WHERE publication_status = 'published'
+        AND (goodies_status = 'confirmed' OR goodies_status = 'limited')
+        AND (certificate_status = 'confirmed' OR certificate_status = 'conditional')
+      `)
+      .get() as { c: number }
+  ).c;
+  const pendingSuggestions = (
+    db.prepare("SELECT COUNT(*) as c FROM suggestions WHERE status = 'pending'").get() as { c: number }
+  ).c;
 
   return {
     totalEvents,

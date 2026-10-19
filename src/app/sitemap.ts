@@ -1,9 +1,9 @@
 import { MetadataRoute } from "next";
 import { getAllEvents } from "@/lib/db";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://orbitblr.in";
-  const events = getAllEvents({ includeUnpublished: false });
+  const events = await getAllEvents({ includeUnpublished: false });
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {

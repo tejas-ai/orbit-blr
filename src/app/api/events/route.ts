@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
       sortBy: (searchParams.get("sort") as any) || "date_asc",
     };
 
-    const events = getFilteredEvents(filters, { includeUnpublished: false });
+    const events = await getFilteredEvents(filters, { includeUnpublished: false });
 
     return NextResponse.json({
       success: true,

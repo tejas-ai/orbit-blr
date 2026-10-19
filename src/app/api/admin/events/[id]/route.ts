@@ -14,7 +14,7 @@ export async function GET(request: NextRequest, { params }: RouteProps) {
   }
 
   const { id } = await params;
-  const event = getEventById(id);
+  const event = await getEventById(id);
 
   if (!event) {
     return NextResponse.json({ success: false, error: "Event not found" }, { status: 404 });
@@ -32,7 +32,7 @@ export async function PUT(request: NextRequest, { params }: RouteProps) {
   const { id } = await params;
   try {
     const data: Partial<OrbitEvent> = await request.json();
-    const updated = updateEvent(id, data, "admin_editor");
+    const updated = await updateEvent(id, data, "admin_editor");
 
     if (!updated) {
       return NextResponse.json({ success: false, error: "Event not found" }, { status: 404 });
@@ -52,7 +52,7 @@ export async function DELETE(request: NextRequest, { params }: RouteProps) {
   }
 
   const { id } = await params;
-  const success = deleteEvent(id, "admin_deletion");
+  const success = await deleteEvent(id, "admin_deletion");
 
   if (!success) {
     return NextResponse.json({ success: false, error: "Event not found" }, { status: 404 });

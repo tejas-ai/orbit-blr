@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: "event_id is required" }, { status: 400 });
     }
 
-    const existing = getEventById(event_id);
+    const existing = await getEventById(event_id);
     if (!existing) {
       return NextResponse.json({ success: false, error: "Event not found" }, { status: 404 });
     }
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     if (food_details !== undefined) updates.food_details = food_details;
     if (verification_notes !== undefined) updates.verification_notes = verification_notes;
 
-    const updated = updateEvent(event_id, updates, "admin_status_update");
+    const updated = await updateEvent(event_id, updates, "admin_status_update");
 
     return NextResponse.json({
       success: true,

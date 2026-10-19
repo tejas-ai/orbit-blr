@@ -21,7 +21,7 @@ export default async function EditEventPage({ params }: EditEventPageProps) {
   }
 
   const { id } = await params;
-  const event = getEventById(id);
+  const event = await getEventById(id);
 
   if (!event) {
     notFound();

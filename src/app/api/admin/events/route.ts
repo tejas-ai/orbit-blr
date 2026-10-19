@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const events = getAllEvents({ includeUnpublished: true });
+  const events = await getAllEvents({ includeUnpublished: true });
 
   return NextResponse.json({
     success: true,
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const created = createEvent(data, "admin_portal");
+    const created = await createEvent(data, "admin_portal");
 
     return NextResponse.json({
       success: true,

@@ -22,10 +22,10 @@ export default async function AdminPage() {
     return <AdminLoginForm />;
   }
 
-  const events = getAllEvents({ includeUnpublished: true });
-  const suggestions = getAllSuggestions();
-  const auditLogs = getAuditLogs(50);
-  const metrics = getMetrics();
+  const events = await getAllEvents({ includeUnpublished: true });
+  const suggestions = await getAllSuggestions();
+  const auditLogs = await getAuditLogs(50);
+  const metrics = await getMetrics();
 
   return (
     <AdminDashboardClient

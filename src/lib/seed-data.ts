@@ -31,11 +31,10 @@ export const SEED_EVENTS: OrbitEvent[] = [
     food_status: "complimentary_meals_confirmed",
     food_details: "Catered Indian buffet lunch, afternoon high-tea, filter coffee, and assorted refreshments provided gratis.",
     source_urls: [
-      "https://gdg.community.dev/gdg-bangalore/",
-      "https://twitter.com/GDGBangalore/status/1845019283"
+      "https://gdg.community.dev/gdg-bangalore/"
     ],
-    verification_notes: "Directly verified via GDG Bangalore official portal. Building entry requires photo ID matching RSVP confirmation email.",
-    last_verified_at: "2026-10-18T18:30:00+05:30",
+    verification_notes: "Directly verified via GDG Bangalore official Bevy portal. Building entry requires photo ID matching RSVP confirmation email.",
+    last_verified_at: "2026-10-19T10:00:00+05:30",
     publication_status: "published",
     who_should_attend: [
       "Software Engineers transitioning into AI/ML",
@@ -59,7 +58,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     ],
     featured: true,
     created_at: "2026-10-15T09:00:00+05:30",
-    updated_at: "2026-10-18T18:30:00+05:30"
+    updated_at: "2026-10-19T10:00:00+05:30"
   },
   {
     id: "evt-aws-ug-blr",
@@ -84,17 +83,16 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_status: "open",
     approval_required: false,
     goodies_status: "confirmed",
-    goodies_details: "AWS Community die-cut laptop vinyl stickers, laptop webcam privacy covers, and $25 AWS Promotional Credit codes.",
+    goodies_details: "AWS Community die-cut laptop vinyl stickers and $25 AWS Promotional Credit codes.",
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
     food_details: "Hot filter coffee, tea, biscuits, and evening samosas during networking break.",
     source_urls: [
-      "https://www.meetup.com/awsugblr/",
-      "https://awsugblr.in"
+      "https://www.meetup.com/awsugblr/"
     ],
-    verification_notes: "Organizer confirmed via meetup.com and community Slack channel. Free registration on first-come, first-seated basis.",
+    verification_notes: "Organizer confirmed via meetup.com and community chapter. Free registration on first-come, first-seated basis.",
     last_verified_at: "2026-10-19T09:15:00+05:30",
     publication_status: "published",
     who_should_attend: [
@@ -124,7 +122,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
   {
     id: "evt-foss-blr-zerodha",
     slug: "foss-united-bangalore-monthly-meetup",
-    name: "FOSS United Bangalore: Open Source Hack & Systems Engineering",
+    name: "FOSS United Bangalore: Systems Engineering & Decentralised Architecture",
     category: "Developer",
     organizer: "FOSS United",
     description: "Monthly gathering of open source contributors, kernel enthusiasts, and systems engineers in Bengaluru. Talks on building decentralised developer tools, Rust in production, and contributing to high-impact Indian FOSS projects.",
@@ -151,8 +149,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     food_status: "refreshments_confirmed",
     food_details: "Famous Bengaluru filter coffee, cutting chai, snacks, and biscuits served post-talks.",
     source_urls: [
-      "https://fossunited.org/events/bengaluru",
-      "https://forum.fossunited.org/"
+      "https://fossunited.org/events/bengaluru"
     ],
     verification_notes: "Verified on FOSS United official forum. Free open-door event, no entry fee ever charged.",
     last_verified_at: "2026-10-18T14:20:00+05:30",
@@ -166,15 +163,14 @@ export const SEED_EVENTS: OrbitEvent[] = [
     topics_covered: [
       "Writing Linux eBPF probes in modern Rust",
       "How Zerodha scales internal microservices with FOSS",
-      "Show & Tell: 3 open-source devtools built in BLR",
-      "FOSS Hack grants and funding for student creators"
+      "Show & Tell: 3 open-source devtools built in BLR"
     ],
     prerequisites: "Curiosity and respect for the open source philosophy. No prerequisites required.",
     agenda: [
       { time: "10:00 AM", title: "Doors Open & Community Introduction" },
       { time: "10:30 AM", title: "Talk 1: High-Performance Networking with Rust & io_uring", speaker: "Core Contributor" },
       { time: "11:20 AM", title: "Talk 2: Lessons Scaling Self-Hosted Postgres to Petabytes", speaker: "Infra Engineer, Zerodha" },
-      { time: "12:15 PM", title: "Community Demos & Open Lightning Talks (5 mins each)" },
+      { time: "12:15 PM", title: "Community Demos & Open Lightning Talks" },
       { time: "01:00 PM", title: "Chai, Samosas & Networking" }
     ],
     featured: true,
@@ -204,15 +200,14 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_status: "open",
     approval_required: false,
     goodies_status: "limited",
-    goodies_details: "React Bangalore stickers for all; raffle for limited edition conference hoodies and books.",
+    goodies_details: "React Bangalore stickers available on sign-in desk.",
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
-    food_details: "Gourmet woodfired pizza slices, soda, cold brew, and cookies during networking.",
+    food_details: "Pizza slices, soft drinks, cold brew, and cookies provided during networking.",
     source_urls: [
-      "https://lu.ma/react-bangalore",
-      "https://twitter.com/react_blr"
+      "https://lu.ma/react-bangalore"
     ],
     verification_notes: "Verified through Luma event registration page hosted at Razorpay HQ. Free admission confirmed.",
     last_verified_at: "2026-10-19T08:00:00+05:30",
@@ -269,8 +264,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     food_status: "complimentary_meals_confirmed",
     food_details: "Complimentary hot executive buffet lunch provided at Cisco cafeteria, plus morning tea & cookies.",
     source_urls: [
-      "https://community.cncf.io/bangalore/",
-      "https://github.com/cncf-bangalore"
+      "https://community.cncf.io/bangalore/"
     ],
     verification_notes: "Confirmed through CNCF official Bevy platform. Entry restricted to registered attendees carrying government ID.",
     last_verified_at: "2026-10-18T16:00:00+05:30",
@@ -321,15 +315,14 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_status: "open",
     approval_required: false,
     goodies_status: "unverified",
-    goodies_details: "Microsoft Reactor stickers are typically made available on the welcome desk, but not formally guaranteed.",
+    goodies_details: null,
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
     food_details: "Complimentary hot tea, Mysore filter coffee, samosas, and biscuits served mid-afternoon.",
     source_urls: [
-      "https://www.meetup.com/BangPypers/",
-      "https://developer.microsoft.com/reactor/location/bengaluru"
+      "https://www.meetup.com/BangPypers/"
     ],
     verification_notes: "Verified with BangPypers core team organizers. Completely free community meetup since 2010.",
     last_verified_at: "2026-10-19T09:45:00+05:30",
@@ -360,7 +353,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
   {
     id: "evt-genai-hsr-bhive",
     slug: "bengaluru-genai-builders-demo-night-hsr",
-    name: "Bengaluru GenAI Builders: Demo Night & Hack Showcase",
+    name: "Bengaluru GenAI Builders: Production Agent Showcase",
     category: "AI & ML",
     organizer: "Luma AI Builders Collective",
     description: "Experience 10 fast-paced 5-minute live product demos from Bengaluru indie founders, researchers, and engineers building autonomous agents, audio synthesis, and vertical AI tooling. No pitch decks, strictly live code and working software.",
@@ -387,8 +380,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     food_status: "refreshments_confirmed",
     food_details: "Fresh South Indian filter coffee, chai, and hot savoury cocktail snacks served during open networking.",
     source_urls: [
-      "https://lu.ma/blr-genai-demo-night",
-      "https://twitter.com/BlrGenAI"
+      "https://lu.ma/blr-genai-demo-night"
     ],
     verification_notes: "Verified on Luma and confirmed by BHIVE events coordinator. In-person registration is free.",
     last_verified_at: "2026-10-18T19:00:00+05:30",
@@ -409,7 +401,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
       { time: "05:00 PM", title: "Doors Open, Tea & Coffee" },
       { time: "05:45 PM", title: "Opening Remarks & Demo Rules" },
       { time: "06:00 PM", title: "Live Demos (10 teams x 5 mins demo + 3 mins Q&A)" },
-      { time: "07:30 PM", title: "Community Voting for Best Hack" },
+      { time: "07:30 PM", title: "Community Voting for Best Demo" },
       { time: "07:45 PM", title: "Networking & Collaborative Ideation" }
     ],
     featured: true,
@@ -439,15 +431,14 @@ export const SEED_EVENTS: OrbitEvent[] = [
     registration_status: "open",
     approval_required: false,
     goodies_status: "unverified",
-    goodies_details: "Stickers occasionally brought by community members; no formal goodies guaranteed.",
+    goodies_details: null,
     certificate_status: "not_provided",
     certificate_format: "none",
     certificate_requirements: null,
     food_status: "refreshments_confirmed",
     food_details: "Tea, filter coffee, and assorted biscuits provided by host sponsor Thoughtworks.",
     source_urls: [
-      "https://null.community/chapters/1-bangalore",
-      "https://twitter.com/nullbengaluru"
+      "https://null.community/chapters/1-bangalore"
     ],
     verification_notes: "Null community strictly follows an open, free, non-commercial policy. No vendor pitches allowed.",
     last_verified_at: "2026-10-17T11:00:00+05:30",
@@ -505,8 +496,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     food_status: "complimentary_meals_confirmed",
     food_details: "Welcome breakfast (Idli, Vada, Upma & coffee), mid-morning juice, buffet lunch at SAP cafeteria, and evening tea.",
     source_urls: [
-      "https://kcdbangalore.in",
-      "https://community.cncf.io/bangalore/"
+      "https://kcdbangalore.in"
     ],
     verification_notes: "Jointly organized by KCD organizers and hosted by SAP Labs. Free admission confirmed, currently in waitlist mode due to room capacity.",
     last_verified_at: "2026-10-19T10:00:00+05:30",
@@ -565,8 +555,7 @@ export const SEED_EVENTS: OrbitEvent[] = [
     food_status: "refreshments_confirmed",
     food_details: "Morning tea, biscuits, and afternoon traditional south Indian snacks.",
     source_urls: [
-      "https://iisc.ac.in",
-      "https://ieee-ras.org"
+      "https://iisc.ac.in"
     ],
     verification_notes: "Official university public technical open day. Free admission for students and industry professionals with prior registration.",
     last_verified_at: "2026-10-18T12:00:00+05:30",
@@ -594,63 +583,5 @@ export const SEED_EVENTS: OrbitEvent[] = [
     featured: false,
     created_at: "2026-10-14T09:00:00+05:30",
     updated_at: "2026-10-18T12:00:00+05:30"
-  },
-  {
-    id: "evt-founder-mixer-dsh",
-    slug: "bengaluru-founder-tech-mixer-early-stage-builders",
-    name: "Bengaluru Founder & Tech Mixer: Early Stage Builders",
-    category: "Networking",
-    organizer: "The Product Folks & Draper Startup House",
-    description: "Curated networking evening connecting technical founders, CTOs, product designers, and early-stage angel investors in the heart of Koramangala. Pitch your startup during 60-second open-mic or find your technical co-founder.",
-    start_at: "2026-12-11T18:00:00+05:30",
-    end_at: "2026-12-11T21:30:00+05:30",
-    timezone: "Asia/Kolkata",
-    venue: "Draper Startup House, Koramangala",
-    venue_type: "Coworking Space",
-    area: "Koramangala",
-    address: "Draper Startup House, 133, 1st A Cross Rd, 5th Block, Koramangala, Bengaluru 560095",
-    landmark: "Near Jyoti Nivas College Road",
-    metro_station: "South End Circle / Jayanagar Metro - 4km (Cab recommended)",
-    map_url: "https://maps.google.com/?q=Draper+Startup+House+Koramangala",
-    is_in_person: true,
-    is_free: true,
-    registration_url: "https://theproductfolks.com/events/blr-mixer",
-    registration_status: "approval_required",
-    approval_required: true,
-    goodies_status: "not_provided",
-    goodies_details: null,
-    certificate_status: "not_provided",
-    certificate_format: "none",
-    certificate_requirements: null,
-    food_status: "paid",
-    food_details: "Entry is 100% free with RSVP; cafe drinks and dining menu available for individual purchase.",
-    source_urls: [
-      "https://theproductfolks.com",
-      "https://draperstartuphouse.com"
-    ],
-    verification_notes: "Confirmed by The Product Folks community team. No ticket fee; RSVP vetted to ensure genuine builders.",
-    last_verified_at: "2026-10-19T07:30:00+05:30",
-    publication_status: "published",
-    who_should_attend: [
-      "Technical Founders & Solopreneurs",
-      "Engineers seeking co-founders",
-      "Product Managers at early-stage ventures",
-      "Angel investors and early team hires"
-    ],
-    topics_covered: [
-      "Finding product-market fit in India vs Global SaaS",
-      "Bootstrapping vs VC funding trade-offs in 2026",
-      "Hiring the first 5 engineers in Bengaluru"
-    ],
-    prerequisites: "Must have a live product, prototype, or active technical project.",
-    agenda: [
-      { time: "06:00 PM", title: "Arrivals & Icebreaker Bingo" },
-      { time: "06:45 PM", title: "Fireside Chat: From 0 to $1M ARR from Koramangala", speaker: "SaaS Founder" },
-      { time: "07:30 PM", title: "60-Second Rapid Fire Elevator Pitches" },
-      { time: "08:15 PM", title: "Unstructured High-Impact Networking" }
-    ],
-    featured: false,
-    created_at: "2026-10-16T15:00:00+05:30",
-    updated_at: "2026-10-19T07:30:00+05:30"
   }
 ];

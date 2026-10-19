@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const suggestion = createSuggestion({
+    const suggestion = await createSuggestion({
       event_url: event_url.trim(),
       event_name: event_name?.trim() || null,
       organizer: organizer?.trim() || null,

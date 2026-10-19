@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     else if (action === "archive") publication_status = "archived";
     else if (action === "cancel") publication_status = "cancelled";
 
-    const updated = updateEvent(
+    const updated = await updateEvent(
       event_id,
       {
         publication_status,

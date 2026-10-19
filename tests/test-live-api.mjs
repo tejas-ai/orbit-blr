@@ -8,7 +8,7 @@ if (fs.existsSync(envPath)) {
   for (const line of lines) {
     const match = line.match(/^([^=]+)=(.*)$/);
     if (match) {
-      process.env[match[1].trim()] = match[2].trim();
+      process.env[match[1].trim()] = match[2].trim().replace(/^["']|["']$/g, "");
     }
   }
 }
@@ -73,11 +73,10 @@ async function runTests() {
     },
     body: JSON.stringify({
       events: [
-        // 1 new event
+        // 1 new event with timestamped identifier
         {
-          id: "evt-test-new-meetup",
-          slug: "bengaluru-rust-systems-hacknight",
-          name: "Bengaluru Rust Systems Hacknight",
+          slug: `bengaluru-rust-systems-${Date.now()}`,
+          name: `Bengaluru Rust Systems Hacknight #${Date.now().toString().slice(-4)}`,
           category: "Developer",
           organizer: "Rust Bangalore",
           description: "Hands-on systems programming in Rust: async runtime and memory models.",
@@ -85,7 +84,7 @@ async function runTests() {
           end_at: "2026-11-20T21:00:00+05:30",
           venue: "HasGeek House, Indiranagar",
           area: "Indiranagar",
-          registration_url: "https://hasgeek.com/events/rust-blr-hacknight",
+          registration_url: `https://hasgeek.com/events/rust-blr-${Date.now()}`,
           registration_status: "open",
           goodies_status: "confirmed",
           goodies_details: "Ferris the Crab vinyl stickers",
