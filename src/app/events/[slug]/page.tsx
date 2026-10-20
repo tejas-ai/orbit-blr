@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { getEventBySlug } from "@/lib/db";
 import { getEventThumbnail } from "@/lib/thumbnails";
+import { isHackathonEvent, extractHackathonDetails } from "@/lib/hackathons";
 import {
   RegistrationBadge,
   GoodiesBadge,
@@ -32,7 +33,10 @@ import {
   Sparkles,
   Navigation,
   FileCheck2,
-  Check,
+  Zap,
+  Timer,
+  GraduationCap,
+  AlertTriangle,
 } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -87,6 +91,9 @@ export default async function EventPage({ params }: EventPageProps) {
   }
 
   const thumbnailData = getEventThumbnail(event);
+  const isHack = isHackathonEvent(event);
+  const hackathon = extractHackathonDetails(event);
+  const displayCategory = isHack ? "Hackathons" : event.category;
 
   // Schema.org Event structured data
   const jsonLd = {
@@ -128,6 +135,7 @@ export default async function EventPage({ params }: EventPageProps) {
 
   const navSections = [
     { id: "overview", label: "Overview" },
+    ...(hackathon.isHackathon ? [{ id: "hackathon", label: "Hackathon Format" }] : []),
     ...(event.topics_covered?.length || event.who_should_attend?.length
       ? [{ id: "topics", label: "Topics & Audience" }]
       : []),
@@ -179,9 +187,19 @@ export default async function EventPage({ params }: EventPageProps) {
             {/* Top Overlay Badges */}
             <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
               <div className="flex flex-wrap items-center gap-2 pointer-events-auto">
-                <span className="px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase bg-orbit-bg/90 backdrop-blur-md text-orbit-highlight border border-orbit-signal/30 shadow-sm flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-orbit-signal animate-pulse" />
-                  <span>{event.category}</span>
+                <span
+                  className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase backdrop-blur-md shadow-sm flex items-center gap-1.5 ${
+                    isHack
+                      ? "bg-amber-950/90 text-amber-300 border border-amber-500/40"
+                      : "bg-orbit-bg/90 text-orbit-highlight border border-orbit-signal/30"
+                  }`}
+                >
+                  {isHack ? (
+                    <Zap className="w-3.5 h-3.5 text-amber-400" />
+                  ) : (
+                    <span className="w-2 h-2 rounded-full bg-orbit-signal animate-pulse" />
+                  )}
+                  <span>{displayCategory}</span>
                 </span>
                 <FreeEntryPill />
               </div>
@@ -245,7 +263,7 @@ export default async function EventPage({ params }: EventPageProps) {
         {/* ============================================================== */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* ------------------------------------------------------------ */}
-          {/* Left Column: Event Overview, Topics, Agenda, Perks, Audit    */}
+          {/* Left Column: Event Overview, Hackathon Rules, Agenda, Perks  */}
           {/* ------------------------------------------------------------ */}
           <div className="lg:col-span-8 space-y-8">
             {/* 3.1 Overview / Description */}
@@ -257,12 +275,88 @@ export default async function EventPage({ params }: EventPageProps) {
                 <BookOpen className="w-5 h-5 text-orbit-signal" />
                 <span>About This Event</span>
               </h2>
-              <div className="text-sm text-orbit-muted leading-relaxed space-y-3 font-normal whitespace-pre-line">
+              <div className="text-sm text-orbit-muted leading-relaxed space-y-3 font-normal whitespace-pre-line font-sans">
                 {event.description}
+              </div>
+
+              {/* Explicit Host Admission Rule Disclaimer */}
+              <div className="mt-4 p-4 rounded-2xl bg-orbit-surface/70 border border-orbit-border/80 text-xs text-orbit-muted space-y-1">
+                <div className="flex items-center gap-2 text-white font-bold font-mono">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                  <span>Official Admission Protocol</span>
+                </div>
+                <p className="leading-relaxed">
+                  Registration happens directly on the verified organiser&apos;s website. An open RSVP or application does not guarantee physical entry unless the host confirms your ticket or approval email. ORBIT BLR does not issue tickets or charge fees.
+                </p>
               </div>
             </section>
 
-            {/* 3.2 Topics & Audience */}
+            {/* 3.2 Hackathon Specific Specifications (If Hackathon) */}
+            {hackathon.isHackathon && (
+              <section
+                id="hackathon"
+                className="scroll-mt-28 bg-orbit-card border border-amber-500/40 rounded-3xl p-6 sm:p-8 shadow-card space-y-5"
+              >
+                <div className="flex items-center gap-2 text-amber-400 font-bold">
+                  <Zap className="w-5 h-5" />
+                  <h2 className="text-xl font-display font-bold text-white tracking-tight">
+                    Hackathon Specifications & Rules
+                  </h2>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {hackathon.teamSize && (
+                    <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-1">
+                      <span className="text-[10px] font-mono uppercase text-amber-300 font-bold block">
+                        Team Formation
+                      </span>
+                      <strong className="text-sm text-white font-mono flex items-center gap-1.5">
+                        <Users className="w-4 h-4 text-amber-400" />
+                        <span>{hackathon.teamSize}</span>
+                      </strong>
+                    </div>
+                  )}
+
+                  {hackathon.registrationDeadline && (
+                    <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-1">
+                      <span className="text-[10px] font-mono uppercase text-amber-300 font-bold block">
+                        Application Deadline
+                      </span>
+                      <strong className="text-sm text-white font-mono flex items-center gap-1.5">
+                        <Timer className="w-4 h-4 text-amber-400" />
+                        <span>{hackathon.registrationDeadline}</span>
+                      </strong>
+                    </div>
+                  )}
+
+                  {hackathon.duration && (
+                    <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-1">
+                      <span className="text-[10px] font-mono uppercase text-amber-300 font-bold block">
+                        Sprint Duration
+                      </span>
+                      <strong className="text-sm text-white font-mono flex items-center gap-1.5">
+                        <Clock className="w-4 h-4 text-amber-400" />
+                        <span>{hackathon.duration}</span>
+                      </strong>
+                    </div>
+                  )}
+
+                  {hackathon.eligibility && (
+                    <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 space-y-1 sm:col-span-2 lg:col-span-3">
+                      <span className="text-[10px] font-mono uppercase text-amber-300 font-bold block">
+                        Eligibility & Participant Criteria
+                      </span>
+                      <strong className="text-xs text-white font-mono flex items-center gap-1.5">
+                        <GraduationCap className="w-4 h-4 text-amber-400" />
+                        <span>{hackathon.eligibility}</span>
+                      </strong>
+                    </div>
+                  )}
+                </div>
+              </section>
+            )}
+
+            {/* 3.3 Topics & Audience */}
             {(event.topics_covered?.length || event.who_should_attend?.length || event.prerequisites) && (
               <section
                 id="topics"
@@ -327,7 +421,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </section>
             )}
 
-            {/* 3.3 Schedule / Agenda */}
+            {/* 3.4 Schedule / Agenda */}
             {event.agenda && event.agenda.length > 0 && (
               <section
                 id="schedule"
@@ -362,7 +456,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </section>
             )}
 
-            {/* 3.4 Verified Perks & Evidence Matrix */}
+            {/* 3.5 Verified Perks & Evidence Matrix */}
             <section
               id="perks"
               className="scroll-mt-28 bg-orbit-card border border-orbit-border rounded-3xl p-6 sm:p-8 shadow-card space-y-6"
@@ -424,7 +518,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
             </section>
 
-            {/* 3.5 Venue & Transit Section */}
+            {/* 3.6 Venue & Transit Section */}
             <section
               id="venue"
               className="scroll-mt-28 bg-orbit-card border border-orbit-border rounded-3xl p-6 sm:p-8 shadow-card space-y-6"
@@ -505,7 +599,7 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
             </section>
 
-            {/* 3.6 Verification Audit Trail */}
+            {/* 3.7 Verification Audit Trail */}
             <section
               id="audit"
               className="scroll-mt-28 bg-orbit-card/60 border border-orbit-border rounded-3xl p-6 sm:p-8 text-xs text-orbit-muted space-y-4"
@@ -521,8 +615,8 @@ export default async function EventPage({ params }: EventPageProps) {
               </div>
 
               {event.verification_notes && (
-                <p className="text-xs text-orbit-muted leading-relaxed bg-orbit-surface/40 p-3.5 rounded-xl border border-orbit-border/60">
-                  <strong className="text-orbit-text">Audit Notes:</strong> {event.verification_notes}
+                <p className="text-xs text-orbit-muted leading-relaxed bg-orbit-surface/40 p-3.5 rounded-xl border border-orbit-border/60 font-sans">
+                  <strong className="text-orbit-text font-mono">Audit Notes:</strong> {event.verification_notes}
                 </p>
               )}
 

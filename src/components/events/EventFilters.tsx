@@ -21,6 +21,7 @@ import {
   ChevronDown,
   X,
   Check,
+  Zap,
 } from "lucide-react";
 
 interface EventFiltersProps {
@@ -176,13 +177,16 @@ export default function EventFiltersBar({ filters, onChange, totalResults }: Eve
             key={cat}
             type="button"
             onClick={() => update({ category: cat })}
-            className={`px-4 py-2 rounded-full transition-all shrink-0 border text-xs font-medium ${
+            className={`px-4 py-2 rounded-full transition-all shrink-0 border text-xs font-medium flex items-center gap-1.5 ${
               filters.category?.toLowerCase() === cat.toLowerCase()
                 ? "bg-gradient-to-r from-orbit-signal to-orbit-signalHover text-orbit-bg font-extrabold border-orbit-signal shadow-glow"
+                : cat === "Hackathons"
+                ? "bg-amber-950/40 text-amber-300 border-amber-500/40 hover:border-amber-400"
                 : "bg-orbit-card text-orbit-muted border-orbit-border hover:border-orbit-signal/40 hover:text-white"
             }`}
           >
-            {cat}
+            {cat === "Hackathons" && <Zap className="w-3.5 h-3.5 text-amber-400" />}
+            <span>{cat}</span>
           </button>
         ))}
       </div>

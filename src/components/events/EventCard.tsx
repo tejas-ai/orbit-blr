@@ -11,6 +11,7 @@ import {
   FoodBadge,
 } from "./VerificationBadges";
 import { formatEventDate, formatEventTime, formatRelativeTime } from "@/lib/utils";
+import { extractHackathonDetails } from "@/lib/hackathons";
 import {
   Calendar,
   MapPin,
@@ -21,6 +22,11 @@ import {
   Train,
   ArrowRight,
   Clock,
+  Zap,
+  Users,
+  Timer,
+  GraduationCap,
+  AlertCircle,
 } from "lucide-react";
 
 interface EventCardProps {
@@ -42,10 +48,12 @@ export default function EventCard({
   const isWaitlist = event.registration_status === "waitlist";
   const isApprovalRequired = event.registration_status === "approval_required";
 
+  const hackathon = extractHackathonDetails(event);
+
   const getRegisterLabel = () => {
     if (isClosed) return "Closed";
     if (isWaitlist) return "Join Waitlist";
-    if (isApprovalRequired) return "Request RSVP";
+    if (isApprovalRequired) return "Apply to Attend";
     return "Register Free";
   };
 
@@ -130,6 +138,36 @@ export default function EventCard({
             {event.description}
           </p>
 
+          {/* Dedicated Hackathon Specifications */}
+          {hackathon.isHackathon && (
+            <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-1.5 text-[11px] font-mono">
+              <div className="flex items-center gap-1.5 text-amber-300 font-bold">
+                <Zap className="w-3.5 h-3.5 text-amber-400" />
+                <span>Verified In-Person Hackathon {hackathon.duration ? `• ${hackathon.duration}` : ""}</span>
+              </div>
+              <div className="flex flex-wrap gap-x-3 gap-y-1 text-amber-200/90 text-[10px]">
+                {hackathon.teamSize && (
+                  <span className="flex items-center gap-1">
+                    <Users className="w-3 h-3 text-amber-400" />
+                    <span>{hackathon.teamSize}</span>
+                  </span>
+                )}
+                {hackathon.registrationDeadline && (
+                  <span className="flex items-center gap-1">
+                    <Timer className="w-3 h-3 text-amber-400" />
+                    <span>Deadline: {hackathon.registrationDeadline}</span>
+                  </span>
+                )}
+                {hackathon.eligibility && (
+                  <span className="flex items-center gap-1">
+                    <GraduationCap className="w-3 h-3 text-amber-400" />
+                    <span>{hackathon.eligibility}</span>
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Perks & Benefits Verification Matrix */}
           <div className="pt-3 border-t border-orbit-border/60">
             <div className="text-[10px] font-mono uppercase tracking-wider text-orbit-subtle mb-2 flex items-center justify-between">
@@ -148,13 +186,21 @@ export default function EventCard({
         </div>
 
         {/* 3. Footer Actions & Verification Status */}
-        <div className="pt-3.5 border-t border-orbit-border/80 space-y-3">
+        <div className="pt-3.5 border-t border-orbit-border/80 space-y-2.5">
           <div className="flex items-center justify-between text-[11px] font-mono text-orbit-muted">
             <RegistrationBadge status={event.registration_status} />
             <span className="text-[10px] text-orbit-subtle">
               {formatRelativeTime(event.last_verified_at)}
             </span>
           </div>
+
+          {/* Admission guarantee disclaimer if approval required */}
+          {isApprovalRequired && (
+            <div className="text-[10px] text-amber-300/90 font-mono flex items-center gap-1.5 bg-amber-500/10 px-2 py-1 rounded-lg border border-amber-500/20">
+              <AlertCircle className="w-3 h-3 shrink-0 text-amber-400" />
+              <span>Host selection required • RSVP does not guarantee entry</span>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-2">
             <Link

@@ -6,7 +6,8 @@ import { OrbitEvent, EventFilters as FilterStateType } from "@/types/event";
 import EventFiltersBar from "@/components/events/EventFilters";
 import EventCard from "@/components/events/EventCard";
 import { useSavedEvents } from "@/lib/useSavedEvents";
-import { Compass, LayoutGrid, List, SearchX, ShieldCheck } from "lucide-react";
+import { isHackathonEvent } from "@/lib/hackathons";
+import { Compass, LayoutGrid, List, SearchX, ShieldCheck, Zap } from "lucide-react";
 import Link from "next/link";
 
 interface ExploreClientProps {
@@ -29,12 +30,14 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
     sortBy: (searchParams.get("sort") as any) || "date_asc",
   });
 
-  // Sync with searchParams if navigated from external link
+  // Sync with searchParams if navigated from external link or hackathon button
   useEffect(() => {
     const areaParam = searchParams.get("area");
     const catParam = searchParams.get("category");
+    const qParam = searchParams.get("q");
     if (areaParam) setFilters((prev) => ({ ...prev, area: areaParam }));
     if (catParam) setFilters((prev) => ({ ...prev, category: catParam as any }));
+    if (qParam) setFilters((prev) => ({ ...prev, search: qParam }));
   }, [searchParams]);
 
   const filteredEvents = useMemo(() => {
@@ -50,12 +53,17 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
           e.venue.toLowerCase().includes(q) ||
           e.area.toLowerCase().includes(q) ||
           e.category.toLowerCase().includes(q) ||
+          (q.includes("hack") && isHackathonEvent(e)) ||
           (e.topics_covered && e.topics_covered.some((t) => t.toLowerCase().includes(q)))
       );
     }
 
     if (filters.category && filters.category !== "all") {
-      result = result.filter((e) => e.category === filters.category);
+      if (filters.category === "Hackathons") {
+        result = result.filter((e) => isHackathonEvent(e));
+      } else {
+        result = result.filter((e) => e.category.toLowerCase() === filters.category!.toLowerCase());
+      }
     }
 
     if (filters.area && filters.area !== "all") {
@@ -87,7 +95,9 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
         );
       } else if (filters.benefits === "complimentary_food") {
         result = result.filter(
-          (e) => e.food_status === "complimentary_meals_confirmed" || e.food_status === "refreshments_confirmed"
+          (e) =>
+            e.food_status === "complimentary_meals_confirmed" ||
+            e.food_status === "refreshments_confirmed"
         );
       }
     }
@@ -116,7 +126,10 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
           return eventDate >= now && eventDate <= next7;
         }
         if (filters.dateFilter === "this_month") {
-          return eventDate.getMonth() === now.getMonth() && eventDate.getFullYear() === now.getFullYear();
+          return (
+            eventDate.getMonth() === now.getMonth() &&
+            eventDate.getFullYear() === now.getFullYear()
+          );
         }
         return true;
       });
@@ -153,21 +166,40 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
     return result;
   }, [initialEvents, filters]);
 
+  const isHackathonMode = filters.category === "Hackathons";
+
   return (
-    <div className="space-y-8 py-4">
+    <div className="space-y-8 py-4 pb-24 lg:pb-12">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orbit-border/80 pb-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider mb-1">
-            <Compass className="w-3.5 h-3.5" />
-            <span>Bengaluru Verified Gallery</span>
-          </div>
-          <h1 className="text-3xl sm:text-5xl font-display font-black text-orbit-text tracking-tight uppercase">
-            YOUR NEXT BIG OPPORTUNITY STARTS HERE.
-          </h1>
-          <p className="text-xs sm:text-sm text-orbit-muted mt-1.5 font-normal max-w-2xl">
-            Filter through verified developer meetups, AI workshops, and founder mixers with authentic event posters and 100% free admission.
-          </p>
+          {isHackathonMode ? (
+            <>
+              <div className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-300 uppercase tracking-wider mb-1">
+                <Zap className="w-3.5 h-3.5 text-amber-400" />
+                <span>Bengaluru Hackathons & Build Sprints</span>
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase">
+                HACKATHONS IN BENGALURU.
+              </h1>
+              <p className="text-xs sm:text-sm text-orbit-muted mt-1.5 font-normal max-w-2xl font-sans">
+                Build cool things, meet creators, and compete — only genuinely free in-person student & developer hackathons in Bengaluru.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider mb-1">
+                <Compass className="w-3.5 h-3.5 text-orbit-signal" />
+                <span>Bengaluru Verified Gallery</span>
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase">
+                EXPLORE FREE TECH EVENTS.
+              </h1>
+              <p className="text-xs sm:text-sm text-orbit-muted mt-1.5 font-normal max-w-2xl font-sans">
+                Filter through verified developer meetups, AI workshops, and founder mixers with authentic event posters and 100% free admission.
+              </p>
+            </>
+          )}
         </div>
 
         {/* View Switcher */}
@@ -213,7 +245,7 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
         <div
           className={
             viewMode === "grid"
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
               : "space-y-4"
           }
         >
@@ -234,15 +266,15 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
           <h3 className="font-display font-bold text-xl text-orbit-text">
             Strict Verification Active — Review Queue in Progress
           </h3>
-          <p className="text-xs sm:text-sm text-orbit-muted mt-2 leading-relaxed">
+          <p className="text-xs sm:text-sm text-orbit-muted mt-2 leading-relaxed font-sans">
             All submitted community events are currently in the review queue awaiting direct organizer verification. We do not publish events with unconfirmed perks or unverified links.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/suggest"
-              className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-orbit-signal hover:bg-orbit-signalHover text-orbit-bg transition-all"
+              className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-orbit-signal text-orbit-bg shadow-glow hover:bg-orbit-signalHover transition-all"
             >
-              Submit an Event for Review
+              Submit an Event with Evidence
             </Link>
           </div>
         </div>
@@ -251,11 +283,11 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
           <div className="w-12 h-12 rounded-full bg-orbit-surface flex items-center justify-center mx-auto mb-4 border border-orbit-border">
             <SearchX className="w-6 h-6 text-orbit-muted" />
           </div>
-          <h3 className="font-display font-bold text-lg text-orbit-text">
-            No matching events found
+          <h3 className="font-display font-bold text-lg text-white">
+            No events match your criteria
           </h3>
-          <p className="text-xs text-orbit-muted mt-1.5 leading-relaxed">
-            We couldn&apos;t find any events matching your current filter combinations. Try clearing some filters or submitting a new event.
+          <p className="text-xs text-orbit-muted mt-1.5 leading-relaxed font-sans">
+            Try resetting your filters or exploring another category or area.
           </p>
           <div className="mt-5 flex items-center justify-center gap-3">
             <button
@@ -272,13 +304,13 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
                   sortBy: "date_asc",
                 })
               }
-              className="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-orbit-signal text-orbit-bg"
+              className="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-orbit-signal text-orbit-bg shadow-sm"
             >
-              Reset Filters
+              Reset All Filters
             </button>
             <Link
               href="/suggest"
-              className="px-4 py-2 rounded-xl text-xs font-mono font-medium text-orbit-text bg-orbit-surface border border-orbit-border"
+              className="px-4 py-2 rounded-xl text-xs font-mono font-medium text-white bg-orbit-surface border border-orbit-border hover:bg-orbit-surfaceHover"
             >
               Suggest an Event
             </Link>

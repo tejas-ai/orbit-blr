@@ -36,14 +36,14 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
   const getRegisterCtaText = () => {
     if (isClosed) return "REGISTRATION CLOSED";
     if (isWaitlist) return "JOIN OFFICIAL WAITLIST";
-    if (isApprovalRequired) return "REQUEST INVITATION";
+    if (isApprovalRequired) return "APPLY ON OFFICIAL SITE";
     return "REGISTER ON OFFICIAL SITE";
   };
 
   const getMobileCtaText = () => {
     if (isClosed) return "Closed";
-    if (isWaitlist) return "Waitlist";
-    if (isApprovalRequired) return "Request RSVP";
+    if (isWaitlist) return "Join Waitlist";
+    if (isApprovalRequired) return "Apply to Attend";
     return "Register Free";
   };
 
@@ -174,8 +174,10 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
           <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200">
             <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5 text-amber-400" />
             <div className="space-y-0.5 leading-relaxed">
-              <strong className="block text-amber-300">Campus Pre-Clearance Required:</strong>
-              <span>Host reviews RSVPs. Approval email is strictly mandatory for campus entry.</span>
+              <strong className="block text-amber-300">Host Pre-Clearance & Selection:</strong>
+              <span>
+                Host reviews RSVPs. An application or RSVP does not guarantee entry unless the organiser confirms your acceptance via email.
+              </span>
             </div>
           </div>
         )}

@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { OrbitEvent } from "@/types/event";
 import { getEventThumbnail } from "@/lib/thumbnails";
-import { ShieldCheck, Sparkles, CheckCircle2, Clock, AlertTriangle, Lock } from "lucide-react";
+import { isHackathonEvent } from "@/lib/hackathons";
+import { ShieldCheck, Sparkles, CheckCircle2, Clock, AlertTriangle, Lock, Zap } from "lucide-react";
 
 interface EventThumbnailProps {
   event: OrbitEvent;
@@ -19,6 +20,8 @@ export default function EventThumbnail({
   showBadges = true,
 }: EventThumbnailProps) {
   const thumbnailData = getEventThumbnail(event);
+  const isHack = isHackathonEvent(event);
+  const displayCategory = isHack ? "Hackathons" : event.category;
   const [imgSrc, setImgSrc] = useState(thumbnailData.src);
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -67,9 +70,19 @@ export default function EventThumbnail({
         <>
           {/* Top-Left: Category Badge + ₹0 Free Pill */}
           <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 flex-wrap max-w-[78%]">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase bg-orbit-bg/90 backdrop-blur-md text-orbit-highlight border border-orbit-signal/30 shadow-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-orbit-signal animate-pulse" />
-              <span>{event.category}</span>
+            <span
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase backdrop-blur-md shadow-sm ${
+                isHack
+                  ? "bg-amber-950/85 text-amber-300 border border-amber-500/40"
+                  : "bg-orbit-bg/90 text-orbit-highlight border border-orbit-signal/30"
+              }`}
+            >
+              {isHack ? (
+                <Zap className="w-3 h-3 text-amber-400" />
+              ) : (
+                <span className="w-1.5 h-1.5 rounded-full bg-orbit-signal animate-pulse" />
+              )}
+              <span>{displayCategory}</span>
             </span>
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-extrabold tracking-wider bg-emerald-500/25 backdrop-blur-md text-emerald-300 border border-emerald-400/50 shadow-[0_0_15px_rgba(16,185,129,0.35)]">
               <span>₹0 FREE</span>

@@ -1,4 +1,5 @@
 export type EventCategory =
+  | "Hackathons"
   | "AI & ML"
   | "Cloud"
   | "Cybersecurity"
@@ -160,6 +161,7 @@ export const BENGALURU_AREAS = [
 ] as const;
 
 export const CATEGORIES: EventCategory[] = [
+  "Hackathons",
   "AI & ML",
   "Cloud",
   "Cybersecurity",

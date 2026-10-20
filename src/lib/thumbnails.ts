@@ -1,4 +1,5 @@
 import { OrbitEvent, EventCategory } from "@/types/event";
+import { isHackathonEvent } from "@/lib/hackathons";
 
 /**
  * Clean, original, high-fidelity SVG artwork for ORBIT BLR categories.
@@ -94,6 +95,17 @@ function generateCategorySvg(
 
 // Category fallback SVGs
 const CATEGORY_FALLBACKS: Record<string, string> = {
+  Hackathons: generateCategorySvg(
+    "Hackathon & Build Sprint",
+    "#FFB347",
+    "#FF2D8D",
+    `<!-- Hackathon Lightning & Code -->
+    <polygon points="175,40 125,130 160,130 140,220 205,115 170,115" fill="#FFB347"/>
+    <path d="M 85 100 L 60 130 L 85 160" fill="none" stroke="#00E5FF" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 235 100 L 260 130 L 235 160" fill="none" stroke="#FF2D8D" stroke-width="3" stroke-linecap="round"/>`,
+    "Overnight Hackathons, Sprints, Demos & Hardware Builds"
+  ),
+
   "AI & ML": generateCategorySvg(
     "AI & Machine Learning",
     "#FF2D8D",
@@ -246,7 +258,8 @@ export interface ResolvedThumbnail {
  * Returns the authentic verified thumbnail or category fallback artwork.
  */
 export function getEventThumbnail(event: Partial<OrbitEvent>): ResolvedThumbnail {
-  const categoryKey = event.category || "Developer";
+  const isHack = isHackathonEvent(event);
+  const categoryKey = isHack ? "Hackathons" : (event.category || "Developer");
 
   // 1. If authentic verified external thumbnail exists, return it
   if (

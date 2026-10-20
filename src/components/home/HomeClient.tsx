@@ -2,13 +2,25 @@
 
 import React, { useState, useMemo } from "react";
 import { OrbitEvent, EventFilters as FilterStateType } from "@/types/event";
-import CinematicHero from "@/components/home/CinematicHero";
+import DistrictHero from "@/components/home/DistrictHero";
+import CategoryTileGrid from "@/components/home/CategoryTileGrid";
 import EventFiltersBar from "@/components/events/EventFilters";
 import EventCard from "@/components/events/EventCard";
 import VerificationEngineExplainer from "@/components/home/VerificationEngineExplainer";
 import BengaluruRadarMap from "@/components/home/BengaluruRadarMap";
 import { useSavedEvents } from "@/lib/useSavedEvents";
-import { Sparkles, ArrowRight, ShieldCheck, SearchX, Flame } from "lucide-react";
+import { isHackathonEvent } from "@/lib/hackathons";
+import {
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  SearchX,
+  Flame,
+  Zap,
+  Radio,
+  ChevronDown,
+  Layers,
+} from "lucide-react";
 import Link from "next/link";
 
 interface HomeClientProps {
@@ -17,6 +29,7 @@ interface HomeClientProps {
 
 export default function HomeClient({ initialEvents }: HomeClientProps) {
   const { isSaved, toggleSave } = useSavedEvents();
+  const [showRadarExploration, setShowRadarExploration] = useState(false);
 
   const [filters, setFilters] = useState<FilterStateType>({
     search: "",
@@ -29,23 +42,12 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
     sortBy: "date_asc",
   });
 
-  // Calculate live metrics for stats bar
-  const swagCount = useMemo(
-    () => initialEvents.filter((e) => e.goodies_status === "confirmed" || e.goodies_status === "limited").length,
-    [initialEvents]
-  );
-  const certCount = useMemo(
-    () => initialEvents.filter((e) => e.certificate_status === "confirmed" || e.certificate_status === "conditional").length,
-    [initialEvents]
-  );
-  const hubCount = useMemo(
-    () => new Set(initialEvents.map((e) => e.area)).size,
-    [initialEvents]
-  );
-
-  // Featured events (highest quality perks or featured flag)
+  // Featured events (highest quality perks, hackathons, or featured flag)
   const featuredEvents = useMemo(
-    () => initialEvents.filter((e) => e.featured || e.goodies_status === "confirmed").slice(0, 3),
+    () =>
+      initialEvents
+        .filter((e) => e.featured || isHackathonEvent(e) || e.goodies_status === "confirmed")
+        .slice(0, 3),
     [initialEvents]
   );
 
@@ -64,13 +66,18 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
           e.venue.toLowerCase().includes(q) ||
           e.area.toLowerCase().includes(q) ||
           e.category.toLowerCase().includes(q) ||
+          (q.includes("hack") && isHackathonEvent(e)) ||
           (e.topics_covered && e.topics_covered.some((t) => t.toLowerCase().includes(q)))
       );
     }
 
-    // Category
+    // Category with robust Hackathons detection
     if (filters.category && filters.category !== "all") {
-      result = result.filter((e) => e.category.toLowerCase() === filters.category!.toLowerCase());
+      if (filters.category === "Hackathons") {
+        result = result.filter((e) => isHackathonEvent(e));
+      } else {
+        result = result.filter((e) => e.category.toLowerCase() === filters.category!.toLowerCase());
+      }
     }
 
     // Bengaluru Area
@@ -106,7 +113,9 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
         );
       } else if (filters.benefits === "complimentary_food") {
         result = result.filter(
-          (e) => e.food_status === "complimentary_meals_confirmed" || e.food_status === "refreshments_confirmed"
+          (e) =>
+            e.food_status === "complimentary_meals_confirmed" ||
+            e.food_status === "refreshments_confirmed"
         );
       }
     }
@@ -136,7 +145,10 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
           return eventDate >= now && eventDate <= next7;
         }
         if (filters.dateFilter === "this_month") {
-          return eventDate.getMonth() === now.getMonth() && eventDate.getFullYear() === now.getFullYear();
+          return (
+            eventDate.getMonth() === now.getMonth() &&
+            eventDate.getFullYear() === now.getFullYear()
+          );
         }
         return true;
       });
@@ -182,71 +194,60 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
     }
   };
 
+  const handleSearchChange = (q: string) => {
+    setFilters((prev) => ({ ...prev, search: q }));
+  };
+
+  const handleAreaChange = (area: string) => {
+    setFilters((prev) => ({ ...prev, area }));
+  };
+
   return (
-    <div className="space-y-16">
-      {/* 1. Full-Width Cinematic Hero */}
-      <CinematicHero
-        onSelectCategory={handleSelectCategory}
-        totalEvents={initialEvents.length}
-        swagCount={swagCount}
-        certCount={certCount}
-        hubCount={hubCount}
-      />
+    <div className="space-y-12 pb-24 lg:pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        {/* 1. DISTRICT SPLIT HERO & SEARCH DOCK */}
+        <DistrictHero
+          events={initialEvents}
+          onSearchChange={handleSearchChange}
+          onAreaChange={handleAreaChange}
+          onCategorySelect={handleSelectCategory}
+        />
 
-      {/* Constrained Container for Directory & Features */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-        {/* 2. Spotlight: Featured Free Events */}
-        {featuredEvents.length > 0 && filters.category === "all" && !filters.search && (
-          <section className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-orbit-pink/20 border border-orbit-pink/40 flex items-center justify-center text-orbit-pink">
-                  <Flame className="w-4 h-4" />
-                </div>
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-display font-black text-orbit-text uppercase tracking-tight">
-                    Spotlight: High-Demand Free Sessions
-                  </h2>
-                  <p className="text-xs text-orbit-muted font-mono">
-                    Independently verified in-person tech access across Bengaluru
-                  </p>
-                </div>
-              </div>
-            </div>
+        {/* 2. CATEGORY TILES GRID */}
+        <CategoryTileGrid
+          selectedCategory={filters.category || "all"}
+          onSelectCategory={handleSelectCategory}
+        />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredEvents.map((evt, idx) => (
-                <EventCard
-                  key={evt.id}
-                  event={evt}
-                  priority={idx === 0}
-                  isSaved={isSaved(evt.id)}
-                  onToggleSave={toggleSave}
-                  variant="featured"
-                />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* 3. Main Event Discovery Section */}
-        <section id="events-directory" className="space-y-8 scroll-mt-24">
+        {/* 3. MAIN DIRECTORY: THE BENGALURU EDIT */}
+        <section id="events-directory" className="space-y-8 scroll-mt-24 pt-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-orbit-border/80 pb-6">
             <div>
               <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider mb-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-orbit-signal" />
-                <span>Verified Bengaluru Event Gallery</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <span>The Bengaluru Edit • Live Directory</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-display font-black text-orbit-text tracking-tight uppercase">
-                YOUR NEXT BIG OPPORTUNITY STARTS HERE.
+              <h2 className="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase">
+                DON&apos;T MISS WHAT&apos;S{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orbit-pink via-orbit-secondary to-orbit-signal">
+                  COMING UP.
+                </span>
               </h2>
-              <p className="text-xs sm:text-sm text-orbit-muted mt-1.5 max-w-2xl font-normal">
-                Bengaluru&apos;s verified directory for 100% free, in-person technology meetups, workshops, and networking events.
+              <p className="text-xs sm:text-sm text-orbit-muted mt-1.5 max-w-2xl font-normal font-sans">
+                Handpicked from verified organiser listings. 100% free entry across Bengaluru tech corridors.
               </p>
             </div>
+
+            <Link
+              href="/explore"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-orbit-signal hover:underline"
+            >
+              <span>Explore all events</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
 
-          {/* Filters Bar */}
+          {/* Filters Bar: Search, Category pills, Quick dates */}
           <EventFiltersBar
             filters={filters}
             onChange={setFilters}
@@ -256,12 +257,12 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
           {/* Results Grid */}
           <div className="pt-2">
             {filteredEvents.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {filteredEvents.map((event, idx) => (
                   <EventCard
                     key={event.id}
                     event={event}
-                    priority={idx < 3}
+                    priority={idx < 4}
                     isSaved={isSaved(event.id)}
                     onToggleSave={toggleSave}
                   />
@@ -275,8 +276,8 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
                 <h3 className="font-display font-bold text-xl text-orbit-text">
                   Strict Verification Active — Review Queue in Progress
                 </h3>
-                <p className="text-xs sm:text-sm text-orbit-muted mt-2 leading-relaxed">
-                  ORBIT BLR enforces a 100% zero-unverified event policy. All submitted and researched tech events are held in the verification queue until direct official organizer registration links and perk evidence are independently confirmed.
+                <p className="text-xs sm:text-sm text-orbit-muted mt-2 leading-relaxed font-sans">
+                  ORBIT BLR enforces a 100% zero-unverified event policy. All submitted events are held in the verification queue until direct official organizer registration links and perk evidence are independently confirmed.
                 </p>
                 <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
                   <Link
@@ -292,10 +293,10 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
                 <div className="w-12 h-12 rounded-full bg-orbit-surface flex items-center justify-center mx-auto mb-4 border border-orbit-border">
                   <SearchX className="w-6 h-6 text-orbit-muted" />
                 </div>
-                <h3 className="font-display font-bold text-lg text-orbit-text">
+                <h3 className="font-display font-bold text-lg text-white">
                   No events match your criteria
                 </h3>
-                <p className="text-xs text-orbit-muted mt-1.5 leading-relaxed">
+                <p className="text-xs text-orbit-muted mt-1.5 leading-relaxed font-sans">
                   Try widening your search terms, changing the date window, or resetting active perk filters.
                 </p>
                 <div className="mt-5 flex items-center justify-center gap-3">
@@ -319,7 +320,7 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
                   </button>
                   <Link
                     href="/suggest"
-                    className="px-4 py-2 rounded-xl text-xs font-mono font-medium text-orbit-text bg-orbit-surface border border-orbit-border hover:bg-orbit-surfaceHover"
+                    className="px-4 py-2 rounded-xl text-xs font-mono font-medium text-white bg-orbit-surface border border-orbit-border hover:bg-orbit-surfaceHover"
                   >
                     Suggest an Event
                   </Link>
@@ -329,13 +330,68 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
           </div>
         </section>
 
-        {/* 4. Bengaluru Tech Hubs & Interactive Radar */}
-        <BengaluruRadarMap />
+        {/* 4. BUILDER & HACKATHON PROMO BANNER */}
+        <section className="relative rounded-3xl p-8 sm:p-10 border border-orbit-border bg-gradient-to-r from-[#201644] via-[#160d36] to-[#09090b] shadow-card overflow-hidden">
+          <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-300 font-bold uppercase tracking-wider">
+                <Zap className="w-4 h-4 text-amber-400" />
+                <span>Built for Builders</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight uppercase">
+                HAVE A HACKATHON ON YOUR RADAR?
+              </h3>
+              <p className="text-xs sm:text-sm text-orbit-muted leading-relaxed font-sans">
+                Help the Bengaluru developer community discover more genuine, in-person, 100% free hackathons, sprints, and demo days across campus and corporate venues.
+              </p>
+            </div>
 
-        {/* 5. Trust & 7-Point Verification Protocol Explainer */}
-        <div id="verification">
-          <VerificationEngineExplainer />
-        </div>
+            <Link
+              href="/suggest"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-xs font-mono font-bold uppercase tracking-wider bg-white text-orbit-bg hover:bg-orbit-highlight transition-all shadow-md shrink-0 self-start md:self-auto"
+            >
+              <span>Suggest a Free Event</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </section>
+
+        {/* 5. PRESERVED TECH CORRIDORS RADAR & 7-POINT VERIFICATION PROTOCOL (Interactive Expandable) */}
+        <section className="border-t border-orbit-border/80 pt-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <span className="text-xs font-mono uppercase tracking-wider text-orbit-signal font-bold flex items-center gap-1.5">
+                <Radio className="w-3.5 h-3.5 text-orbit-signal" />
+                Bengaluru Ecosystem Infrastructure
+              </span>
+              <h3 className="text-xl sm:text-2xl font-display font-bold text-white tracking-tight">
+                Tech Radar & Verification Protocol
+              </h3>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowRadarExploration(!showRadarExploration)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono bg-orbit-surface border border-orbit-border text-orbit-muted hover:text-white transition-all self-start sm:self-auto"
+            >
+              <Layers className="w-3.5 h-3.5 text-orbit-signal" />
+              <span>{showRadarExploration ? "Hide Tech Radar Map" : "Open 3D Tech Radar Map"}</span>
+              <ChevronDown
+                className={`w-3.5 h-3.5 transition-transform ${showRadarExploration ? "rotate-180" : ""}`}
+              />
+            </button>
+          </div>
+
+          {showRadarExploration && (
+            <div className="space-y-8 pt-4">
+              <BengaluruRadarMap />
+            </div>
+          )}
+
+          <div id="verification">
+            <VerificationEngineExplainer />
+          </div>
+        </section>
       </div>
     </div>
   );
