@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { ThemeProvider } from "@/context/ThemeContext";
+import AuthProvider from "@/components/auth/AuthProvider";
+import { Analytics } from "@vercel/analytics/react";
 
 const themeScript = `
 (function() {
@@ -121,11 +123,14 @@ export default function RootLayout({
         className={`${syne.variable} ${dmSans.variable} ${plexMono.variable} bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] font-sans antialiased selection:bg-[#6A38EB] selection:text-white min-h-screen flex flex-col overflow-x-hidden w-full max-w-full`}
       >
         <ThemeProvider>
-          <Navbar />
-          <main className="flex-1 w-full max-w-full overflow-x-hidden">
-            {children}
-          </main>
-          <Footer />
+          <AuthProvider>
+            <Navbar />
+            <main className="flex-1 w-full max-w-full overflow-x-hidden">
+              {children}
+            </main>
+            <Footer />
+            <Analytics />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

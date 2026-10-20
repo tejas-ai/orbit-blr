@@ -17,6 +17,7 @@ import {
   Zap,
 } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import UserMenu from "@/components/auth/UserMenu";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -159,6 +160,11 @@ export default function Navbar() {
               <ThemeToggle size="md" />
             </div>
 
+            {/* Desktop User Account / Sign In */}
+            <div className="hidden sm:block">
+              <UserMenu />
+            </div>
+
             {/* Suggest Event CTA */}
             <Link
               href="/suggest"
@@ -168,8 +174,9 @@ export default function Navbar() {
               <span>+ Submit Meetup</span>
             </Link>
 
-            {/* Mobile Controls: Theme Toggle & Hamburger */}
+            {/* Mobile Controls: User Menu, Theme Toggle & Hamburger */}
             <div className="flex sm:hidden items-center gap-1.5">
+              <UserMenu />
               <ThemeToggle size="sm" />
               <button
                 type="button"
