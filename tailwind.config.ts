@@ -11,6 +11,18 @@ const config: Config = {
     extend: {
       colors: {
         orbit: {
+          // Midnight Violet & District Theme Tokens
+          darkBg: "#0E0E16",
+          darkSurface: "#151522",
+          darkCard: "#1D1B2C",
+          darkCardHover: "#26233A",
+          darkText: "#F7F5FF",
+          darkMuted: "#C4C0D6",
+          darkPurple: "#A78BFA",
+          darkAccent: "#8B5CF6",
+          darkBorder: "#302B43",
+          darkBorderHover: "#4A4366",
+
           // District-Inspired Royal Purple & Soft Lavender Palette
           bg: "#0B0813", // Deep Obsidian Indigo
           surface: "#140F24", // Refined Midnight Violet

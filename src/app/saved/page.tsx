@@ -5,6 +5,7 @@ import Link from "next/link";
 import { OrbitEvent } from "@/types/event";
 import { useSavedEvents } from "@/lib/useSavedEvents";
 import EventCard from "@/components/events/EventCard";
+import ScrollReveal from "@/components/ui/ScrollReveal";
 import { Bookmark, Calendar, ArrowRight, Download, Trash2, Compass } from "lucide-react";
 import { generateIcsContent } from "@/lib/utils";
 
@@ -73,18 +74,18 @@ export default function SavedEventsPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 pb-24 lg:pb-12 min-h-screen bg-white">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 pb-24 lg:pb-12 min-h-screen bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-6 pt-2">
+      <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 dark:border-[#302B43] pb-6 pt-2">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6A38EB] uppercase tracking-wider mb-1">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6A38EB] dark:text-[#A78BFA] uppercase tracking-wider mb-1">
             <Bookmark className="w-3.5 h-3.5" />
             <span>Personal Schedule</span>
           </div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-950 tracking-tight font-serif">
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-950 dark:text-[#F7F5FF] tracking-tight font-serif">
             My Saved Tech Events
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-[#CBD5E1] mt-1">
             Stored locally in your browser. Track upcoming dates, register directly, and sync to your calendar.
           </p>
         </div>
@@ -94,7 +95,7 @@ export default function SavedEventsPage() {
             <button
               type="button"
               onClick={handleExportAllIcs}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold bg-[#6A38EB] hover:bg-[#5826D4] text-white transition-all shadow-sm active:scale-95"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold bg-[#6A38EB] hover:bg-[#5826D4] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] text-white transition-all shadow-sm active:scale-95"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export All to .ICS</span>
@@ -103,7 +104,7 @@ export default function SavedEventsPage() {
             <button
               type="button"
               onClick={handleClearAll}
-              className="p-2 rounded-full text-slate-500 hover:text-rose-600 bg-slate-50 border border-slate-200 transition-colors"
+              className="p-2 rounded-full text-slate-500 dark:text-[#CBD5E1] hover:text-rose-600 bg-slate-50 dark:bg-[#151522] border border-slate-200 dark:border-[#302B43] transition-colors"
               title="Clear all saved events"
               aria-label="Clear all saved events"
             >
@@ -111,46 +112,47 @@ export default function SavedEventsPage() {
             </button>
           </div>
         )}
-      </div>
+      </ScrollReveal>
 
       {/* Content */}
       {loading || !isLoaded ? (
-        <div className="p-12 text-center text-slate-500 text-sm">
+        <div className="p-12 text-center text-slate-500 dark:text-[#CBD5E1] text-sm">
           Loading saved events...
         </div>
       ) : savedEventsList.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {savedEventsList.map((event) => (
-            <EventCard
-              key={event.id}
-              event={event}
-              isSaved={isSaved(event.id)}
-              onToggleSave={toggleSave}
-            />
+          {savedEventsList.map((event, index) => (
+            <ScrollReveal key={event.id} staggerIndex={index % 4}>
+              <EventCard
+                event={event}
+                isSaved={isSaved(event.id)}
+                onToggleSave={toggleSave}
+              />
+            </ScrollReveal>
           ))}
         </div>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-3xl p-10 sm:p-14 text-center max-w-lg mx-auto my-12 shadow-sm">
-          <div className="w-14 h-14 rounded-full bg-purple-50 flex items-center justify-center mx-auto mb-4 border border-purple-100">
-            <Bookmark className="w-6 h-6 text-[#6A38EB]" />
+        <ScrollReveal direction="down" className="bg-white dark:bg-[#1D1B2C] border border-slate-200 dark:border-[#302B43] rounded-3xl p-10 sm:p-14 text-center max-w-lg mx-auto my-12 shadow-sm">
+          <div className="w-14 h-14 rounded-full bg-purple-50 dark:bg-[#151522] flex items-center justify-center mx-auto mb-4 border border-purple-100 dark:border-[#302B43]">
+            <Bookmark className="w-6 h-6 text-[#6A38EB] dark:text-[#A78BFA]" />
           </div>
-          <h2 className="font-extrabold text-xl text-slate-950 font-serif">
+          <h2 className="font-extrabold text-xl text-slate-950 dark:text-[#F7F5FF] font-serif">
             No saved events yet
           </h2>
-          <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-[#CBD5E1] mt-2 leading-relaxed">
             Click the bookmark icon on any event card while exploring to keep track of upcoming meetups, workshops, and registrations.
           </p>
           <div className="mt-6">
             <Link
               href="/explore"
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold bg-[#6A38EB] text-white hover:bg-[#5826D4] transition-all shadow-sm active:scale-95"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold bg-[#6A38EB] text-white hover:bg-[#5826D4] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] transition-all shadow-sm active:scale-95"
             >
               <Compass className="w-4 h-4" />
               <span>Explore Free Events</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
-        </div>
+        </ScrollReveal>
       )}
     </div>
   );

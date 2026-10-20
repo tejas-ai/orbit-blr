@@ -106,15 +106,15 @@ export default function EventCard({
   return (
     <article
       data-testid="event-card"
-      className="group bg-white rounded-3xl border border-purple-100/80 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden"
+      className="group bg-white dark:bg-[#1D1B2C] rounded-3xl border border-purple-100/80 dark:border-[#302B43] shadow-sm hover:shadow-xl dark:hover:shadow-[0_12px_32px_-6px_rgba(139,92,246,0.22)] dark:hover:border-[#8B5CF6]/50 hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden focus-within:ring-2 focus-within:ring-[#8B5CF6]"
     >
       {/* 1. POSTER THUMBNAIL CONTAINER WITH DISTRICT DATE BADGE */}
-      <div className="relative aspect-[4/3] bg-purple-50 overflow-hidden">
+      <div className="relative aspect-[4/3] bg-purple-50 dark:bg-[#151522] overflow-hidden">
         <Link href={`/events/${event.slug}`} className="block w-full h-full">
           <DefensivePosterImage
             event={event}
             priority={priority}
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
           />
         </Link>
 
@@ -128,10 +128,10 @@ export default function EventCard({
               onToggleSave(event.id);
             }}
             aria-label={isSaved ? "Remove from saved events" : "Save this event"}
-            className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center shadow-md backdrop-blur transition-all ${
+            className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center shadow-md backdrop-blur transition-all active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#1D1B2C] ${
               isSaved
-                ? "bg-[#6A38EB] text-white"
-                : "bg-white/90 text-slate-700 hover:text-[#6A38EB]"
+                ? "bg-[#6A38EB] dark:bg-[#8B5CF6] text-white"
+                : "bg-white/90 dark:bg-[#151522]/90 text-slate-700 dark:text-[#F7F5FF] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] border border-transparent dark:border-[#302B43]"
             }`}
           >
             <Bookmark className={`w-4 h-4 ${isSaved ? "fill-white" : ""}`} />
@@ -143,12 +143,12 @@ export default function EventCard({
           <span
             className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur ${
               isClosed
-                ? "bg-slate-700 text-white"
+                ? "bg-slate-700 dark:bg-slate-800 text-white"
                 : event.registration_status === "open"
-                ? "bg-emerald-600 text-white"
+                ? "bg-emerald-600 dark:bg-emerald-600 text-white"
                 : event.registration_status === "approval_required"
-                ? "bg-amber-600 text-white"
-                : "bg-purple-900 text-white"
+                ? "bg-amber-600 dark:bg-amber-600 text-white"
+                : "bg-purple-900 dark:bg-purple-900 text-white"
             }`}
           >
             {isClosed
@@ -162,11 +162,11 @@ export default function EventCard({
         </div>
 
         {/* Signature District Date Badge (Bottom Right) */}
-        <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-md rounded-2xl px-3 py-1.5 text-center shadow-md border border-purple-100 min-w-[50px] pointer-events-none">
-          <div className="text-[10px] font-extrabold text-[#6A38EB] tracking-wider uppercase">
+        <div className="absolute bottom-3 right-3 bg-white/95 dark:bg-[#151522]/95 backdrop-blur-md rounded-2xl px-3 py-1.5 text-center shadow-md border border-purple-100 dark:border-[#302B43] min-w-[50px] pointer-events-none">
+          <div className="text-[10px] font-extrabold text-[#6A38EB] dark:text-[#A78BFA] tracking-wider uppercase">
             {dateInfo.month}
           </div>
-          <div className="text-lg font-black text-slate-900 leading-none">
+          <div className="text-lg font-black text-slate-900 dark:text-[#F7F5FF] leading-none">
             {dateInfo.day}
           </div>
         </div>
@@ -177,40 +177,42 @@ export default function EventCard({
         <div>
           {/* Category Tag + Hackathon Highlights */}
           <div className="flex items-center gap-1.5 mb-2 flex-wrap">
-            <span className="px-2 py-0.5 rounded-md bg-purple-50 text-[#6A38EB] text-[10px] font-bold uppercase tracking-wider">
+            <span className="px-2 py-0.5 rounded-md bg-purple-50 dark:bg-[#151522] text-[#6A38EB] dark:text-[#A78BFA] border border-transparent dark:border-[#302B43] text-[10px] font-bold uppercase tracking-wider">
               {isHack ? "Hackathon" : event.category}
             </span>
 
             {isHack && hackathon?.teamSize && (
-              <span className="px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 text-[10px] font-semibold flex items-center gap-1">
-                <Users className="w-3 h-3 text-amber-600" />
+              <span className="px-2 py-0.5 rounded-md bg-amber-50 dark:bg-[#2A1D0D] text-amber-800 dark:text-amber-300 border border-transparent dark:border-amber-900/60 text-[10px] font-semibold flex items-center gap-1">
+                <Users className="w-3 h-3 text-amber-600 dark:text-amber-400" />
                 <span>{hackathon.teamSize}</span>
               </span>
             )}
           </div>
 
           {/* Event Title */}
-          <h3 className="text-sm sm:text-base font-bold text-slate-950 leading-snug line-clamp-2 group-hover:text-[#6A38EB] transition-colors">
-            <Link href={`/events/${event.slug}`}>{event.name}</Link>
+          <h3 className="text-sm sm:text-base font-bold text-slate-950 dark:text-[#F7F5FF] leading-snug line-clamp-2 group-hover:text-[#6A38EB] dark:group-hover:text-[#A78BFA] transition-colors">
+            <Link href={`/events/${event.slug}`} className="focus-visible:outline-none focus-visible:underline rounded">
+              {event.name}
+            </Link>
           </h3>
 
           {/* Organizer */}
-          <p className="text-[11px] font-medium text-slate-500 mt-1 line-clamp-1 flex items-center gap-1">
-            <ShieldCheck className="w-3 h-3 text-[#6A38EB] shrink-0" />
+          <p className="text-[11px] font-medium text-slate-600 dark:text-[#CBD5E1] mt-1 line-clamp-1 flex items-center gap-1">
+            <ShieldCheck className="w-3 h-3 text-[#6A38EB] dark:text-[#A78BFA] shrink-0" />
             <span>{event.organizer}</span>
           </p>
 
           {/* Location & Time */}
-          <div className="mt-2.5 text-xs text-slate-600 space-y-1">
+          <div className="mt-2.5 text-xs text-slate-600 dark:text-[#C4C0D6] space-y-1">
             <div className="flex items-center gap-1.5 text-[11px]">
-              <MapPin className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+              <MapPin className="w-3.5 h-3.5 text-purple-400 dark:text-[#A78BFA] shrink-0" />
               <span className="line-clamp-1">
                 {event.area}, {event.venue}
               </span>
             </div>
             {dateInfo.time && (
-              <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
-                <Clock className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-[#C4C0D6]/90">
+                <Clock className="w-3.5 h-3.5 text-purple-400 dark:text-[#A78BFA] shrink-0" />
                 <span>{dateInfo.time}</span>
               </div>
             )}
@@ -220,19 +222,19 @@ export default function EventCard({
           <div className="mt-3 flex flex-wrap gap-1">
             {(event.food_status === "complimentary_meals_confirmed" ||
               event.food_status === "refreshments_confirmed") && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[10px] font-medium">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-transparent dark:border-emerald-800/40 text-[10px] font-medium">
                 <Coffee className="w-2.5 h-2.5" />
                 <span>Snacks</span>
               </span>
             )}
             {event.goodies_status === "confirmed" && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 text-[10px] font-medium">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-transparent dark:border-amber-800/40 text-[10px] font-medium">
                 <Gift className="w-2.5 h-2.5" />
                 <span>Swag</span>
               </span>
             )}
             {event.certificate_status === "confirmed" && (
-              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 text-[10px] font-medium">
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-transparent dark:border-blue-800/40 text-[10px] font-medium">
                 <Award className="w-2.5 h-2.5" />
                 <span>Certificate</span>
               </span>
@@ -241,15 +243,15 @@ export default function EventCard({
         </div>
 
         {/* 3. CARD FOOTER: PRICING & ACTION */}
-        <div className="mt-4 pt-3.5 border-t border-purple-100/70 flex items-center justify-between gap-2">
+        <div className="mt-4 pt-3.5 border-t border-purple-100/70 dark:border-[#302B43] flex items-center justify-between gap-2">
           <div>
-            <span className="text-xs font-black text-slate-900">₹0</span>
-            <span className="text-[10px] text-emerald-700 ml-1 font-bold">Free Entry</span>
+            <span className="text-xs font-black text-slate-900 dark:text-[#F7F5FF]">₹0</span>
+            <span className="text-[10px] text-emerald-700 dark:text-emerald-400 ml-1 font-bold">Free Entry</span>
           </div>
 
           <Link
             href={`/events/${event.slug}`}
-            className="px-4 py-1.5 rounded-full bg-[#6A38EB] hover:bg-[#5826D4] text-white text-xs font-bold transition-all shadow-sm shadow-purple-500/20 flex items-center gap-1 active:scale-95"
+            className="px-4 py-1.5 rounded-full bg-[#6A38EB] hover:bg-[#5826D4] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] text-white text-xs font-bold transition-all shadow-sm shadow-purple-500/20 flex items-center gap-1 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#1D1B2C]"
           >
             <span>Details</span>
             <ChevronRight className="w-3.5 h-3.5" />

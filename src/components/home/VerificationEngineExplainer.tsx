@@ -57,17 +57,17 @@ export default function VerificationEngineExplainer() {
   ];
 
   return (
-    <section id="verification" className="my-12 scroll-mt-24">
-      <div className="bg-gradient-to-b from-[#FAF9FF] to-white border border-purple-200/80 rounded-3xl p-6 sm:p-10 shadow-sm">
+    <section id="verification" className="my-12 scroll-mt-24 transition-colors">
+      <div className="bg-gradient-to-b from-[#FAF9FF] to-white dark:from-[#1D1B2C] dark:to-[#151522] border border-purple-200/80 dark:border-[#302B43] rounded-3xl p-6 sm:p-10 shadow-sm dark:shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
         <div className="max-w-3xl mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-purple-50 text-[#6A38EB] border border-purple-200 mb-3">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-purple-50 dark:bg-[#151522] text-[#6A38EB] dark:text-[#A78BFA] border border-purple-200 dark:border-[#302B43] mb-3">
+            <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>The ORBIT BLR Trust Standard</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-950 tracking-tight font-serif">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-950 dark:text-[#F7F5FF] tracking-tight font-serif">
             How We Distinguish Verified Facts From Assumptions.
           </h2>
-          <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+          <p className="text-sm text-slate-600 dark:text-[#CBD5E1] mt-2 leading-relaxed">
             Unlike aggregators that scrape and republish unvetted links, every single listing on ORBIT BLR passes through our 7-point verification protocol before publication.
           </p>
         </div>
@@ -77,20 +77,20 @@ export default function VerificationEngineExplainer() {
           {steps.map((s, idx) => (
             <div
               key={s.step}
-              className={`p-5 rounded-2xl bg-white border border-slate-200/80 hover:border-purple-300 transition-all shadow-sm ${
+              className={`p-5 rounded-2xl bg-white dark:bg-[#1D1B2C] border border-slate-200/80 dark:border-[#302B43] hover:border-purple-300 dark:hover:border-[#8B5CF6]/50 transition-all shadow-sm ${
                 idx === 6 ? "md:col-span-2 lg:col-span-1" : ""
               }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-bold text-[#6A38EB] bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">
+                <span className="text-xs font-bold text-[#6A38EB] dark:text-[#A78BFA] bg-purple-50 dark:bg-[#151522] px-2 py-0.5 rounded-full border border-purple-100 dark:border-[#302B43]">
                   Step {s.step}
                 </span>
-                <s.icon className="w-4 h-4 text-[#6A38EB]" />
+                <s.icon className="w-4 h-4 text-[#6A38EB] dark:text-[#A78BFA]" />
               </div>
-              <h3 className="font-bold text-base text-slate-950 tracking-tight mb-1 font-serif">
+              <h3 className="font-bold text-base text-slate-950 dark:text-[#F7F5FF] tracking-tight mb-1 font-serif">
                 {s.title}
               </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
                 {s.desc}
               </p>
             </div>

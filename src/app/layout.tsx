@@ -3,6 +3,21 @@ import { Syne, DM_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { ThemeProvider } from "@/context/ThemeContext";
+
+const themeScript = `
+(function() {
+  try {
+    var stored = localStorage.getItem('orbit_theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (stored === 'dark' || (!stored && prefersDark)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  } catch (e) {}
+})();
+`;
 
 const syne = Syne({
   subsets: ["latin"],
@@ -33,8 +48,11 @@ import {
 } from "@/lib/site";
 
 export const viewport: Viewport = {
-  themeColor: "#FFFFFF",
-  colorScheme: "light",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FFFFFF" },
+    { media: "(prefers-color-scheme: dark)", color: "#0E0E16" },
+  ],
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -95,15 +113,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth overflow-x-hidden">
+    <html lang="en" suppressHydrationWarning className="scroll-smooth overflow-x-hidden">
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body
-        className={`${syne.variable} ${dmSans.variable} ${plexMono.variable} bg-white text-slate-900 font-sans antialiased selection:bg-[#6A38EB] selection:text-white min-h-screen flex flex-col overflow-x-hidden w-full max-w-full`}
+        className={`${syne.variable} ${dmSans.variable} ${plexMono.variable} bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] font-sans antialiased selection:bg-[#6A38EB] selection:text-white min-h-screen flex flex-col overflow-x-hidden w-full max-w-full`}
       >
-        <Navbar />
-        <main className="flex-1 w-full max-w-full overflow-x-hidden">
-          {children}
-        </main>
-        <Footer />
+        <ThemeProvider>
+          <Navbar />
+          <main className="flex-1 w-full max-w-full overflow-x-hidden">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

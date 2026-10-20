@@ -8,14 +8,41 @@
   --font-mono: 'IBM Plex Mono', monospace;
   --orbit-purple: #6A38EB;
   --orbit-purple-hover: #5826D4;
+
+  /* Semantic Theme Tokens - Light Mode */
+  --bg-page: #FFFFFF;
+  --bg-surface: #FAF9FF;
+  --bg-card: #FFFFFF;
+  --text-primary: #101223;
+  --text-secondary: #64748B;
+  --border-subtle: #E9E5F2;
+  --accent-primary: #6A38EB;
+}
+
+html.dark {
+  /* Semantic Theme Tokens - Midnight Violet */
+  --bg-page: #0E0E16;
+  --bg-surface: #151522;
+  --bg-card: #1D1B2C;
+  --text-primary: #F7F5FF;
+  --text-secondary: #A9A5BC;
+  --border-subtle: #302B43;
+  --accent-primary: #8B5CF6;
+  color-scheme: dark;
 }
 
 body {
-  background-color: #FFFFFF;
-  color: #0F172A;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
   overflow-x: hidden;
   position: relative;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  transition: background-color 250ms cubic-bezier(0.16, 1, 0.3, 1), color 250ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html.dark body {
+  background-color: #0E0E16;
+  color: #F7F5FF;
 }
 
 /* Subtle clean ambient lighting on header/top */
@@ -29,6 +56,11 @@ body::before {
   background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(106, 56, 235, 0.04), transparent 70%);
   pointer-events: none;
   z-index: 0;
+  transition: background 300ms ease;
+}
+
+html.dark body::before {
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(139, 92, 246, 0.09), transparent 70%);
 }
 
 /* Custom Scrollbar - Clean & Minimal */
@@ -41,13 +73,25 @@ body::before {
   background: #F8FAFC;
 }
 
+html.dark ::-webkit-scrollbar-track {
+  background: #151522;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #CBD5E1;
   border-radius: 9999px;
 }
 
+html.dark ::-webkit-scrollbar-thumb {
+  background: #302B43;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #4A4366;
 }
 
 /* Utility to hide scrollbars while maintaining scrollability */
@@ -66,11 +110,70 @@ body::before {
   -webkit-text-fill-color: transparent;
 }
 
+html.dark .text-gradient-purple {
+  background: linear-gradient(135deg, #A78BFA 0%, #C084FC 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 /* District Card subtle elevation */
 .district-card-shadow {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
 }
 
+html.dark .district-card-shadow {
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.35);
+}
+
 .district-card-hover {
   box-shadow: 0 12px 24px -4px rgba(106, 56, 235, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+}
+
+html.dark .district-card-hover {
+  box-shadow: 0 14px 28px -4px rgba(139, 92, 246, 0.16), 0 6px 12px -2px rgba(0, 0, 0, 0.4);
+}
+
+/* ======================================================== */
+/* BIDIRECTIONAL SCROLL ANIMATION ENGINE                    */
+/* ======================================================== */
+.scroll-reveal {
+  opacity: 0;
+  will-change: opacity, transform;
+  transition: opacity 450ms cubic-bezier(0.16, 1, 0.3, 1), transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Downward scroll: element rises from below */
+.scroll-reveal.scroll-down {
+  transform: translateY(22px);
+}
+
+/* Upward scroll: element enters from above */
+.scroll-reveal.scroll-up {
+  transform: translateY(-16px);
+}
+
+/* When element is in active viewport */
+.scroll-reveal.in-view {
+  opacity: 1;
+  transform: translateY(0) !important;
+}
+
+/* Stagger delays */
+.stagger-1 { transition-delay: 50ms; }
+.stagger-2 { transition-delay: 100ms; }
+.stagger-3 { transition-delay: 150ms; }
+.stagger-4 { transition-delay: 200ms; }
+.stagger-5 { transition-delay: 250ms; }
+.stagger-6 { transition-delay: 300ms; }
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  body {
+    transition: none !important;
+  }
 }
