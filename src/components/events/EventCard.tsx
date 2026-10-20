@@ -44,11 +44,13 @@ export default function EventCard({
   priority = false,
   variant = "standard",
 }: EventCardProps) {
-  const isClosed = event.registration_status === "closed" || event.registration_status === "full";
-  const isWaitlist = event.registration_status === "waitlist";
-  const isApprovalRequired = event.registration_status === "approval_required";
-
   const hackathon = extractHackathonDetails(event);
+  const isClosed =
+    event.registration_status === "closed" ||
+    event.registration_status === "full" ||
+    Boolean(hackathon.isDeadlinePassed);
+  const isWaitlist = event.registration_status === "waitlist" && !isClosed;
+  const isApprovalRequired = event.registration_status === "approval_required" && !isClosed;
 
   const getRegisterLabel = () => {
     if (isClosed) return "Closed";
@@ -153,9 +155,9 @@ export default function EventCard({
                   </span>
                 )}
                 {hackathon.registrationDeadline && (
-                  <span className="flex items-center gap-1">
-                    <Timer className="w-3 h-3 text-amber-400" />
-                    <span>Deadline: {hackathon.registrationDeadline}</span>
+                  <span className={`flex items-center gap-1 ${hackathon.isDeadlinePassed ? "text-red-300 line-through" : ""}`}>
+                    <Timer className={`w-3 h-3 ${hackathon.isDeadlinePassed ? "text-red-400" : "text-amber-400"}`} />
+                    <span>{hackathon.isDeadlinePassed ? "Closed: " : "Deadline: "}{hackathon.registrationDeadline}</span>
                   </span>
                 )}
                 {hackathon.eligibility && (

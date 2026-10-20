@@ -203,7 +203,11 @@ export default function DistrictHero({
           <input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setSearchQuery(val);
+              if (onSearchChange) onSearchChange(val);
+            }}
             placeholder="Search hackathons, AI, Kotlin, cybersecurity, or places..."
             className="w-full pl-3 pr-4 py-3 bg-transparent text-sm text-orbit-text placeholder-orbit-subtle focus:outline-none font-sans"
           />
@@ -217,7 +221,11 @@ export default function DistrictHero({
           <MapPin className="w-4 h-4 text-orbit-sunset mr-2 shrink-0" />
           <select
             value={selectedArea}
-            onChange={(e) => setSelectedArea(e.target.value)}
+            onChange={(e) => {
+              const val = e.target.value;
+              setSelectedArea(val);
+              if (onAreaChange) onAreaChange(val);
+            }}
             className="bg-transparent text-xs font-mono text-orbit-text focus:outline-none cursor-pointer pr-2 max-w-[160px]"
             aria-label="Filter by Bengaluru area"
           >

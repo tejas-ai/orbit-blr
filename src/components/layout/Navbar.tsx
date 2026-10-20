@@ -167,7 +167,10 @@ export default function Navbar() {
               <Bookmark className="w-4 h-4 text-orbit-signal" />
               <span className="hidden sm:inline font-mono">My Events</span>
               {savedCount > 0 && (
-                <span className="w-4 h-4 rounded-full bg-orbit-signal text-orbit-bg font-extrabold text-[10px] flex items-center justify-center shadow-glow">
+                <span
+                  data-testid="saved-count-badge"
+                  className="w-4 h-4 rounded-full bg-orbit-signal text-orbit-bg font-extrabold text-[10px] flex items-center justify-center shadow-glow"
+                >
                   {savedCount}
                 </span>
               )}

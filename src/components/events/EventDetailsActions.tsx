@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { OrbitEvent } from "@/types/event";
 import { useSavedEvents } from "@/lib/useSavedEvents";
 import { getGoogleCalendarUrl, generateIcsContent, formatEventDate, formatEventTime } from "@/lib/utils";
+import { extractHackathonDetails } from "@/lib/hackathons";
 import {
   ExternalLink,
   Calendar,
@@ -29,9 +30,13 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
   const [copied, setCopied] = useState(false);
 
   const saved = isSaved(event.id);
-  const isClosed = event.registration_status === "closed" || event.registration_status === "full";
-  const isWaitlist = event.registration_status === "waitlist";
-  const isApprovalRequired = event.registration_status === "approval_required";
+  const hackathon = extractHackathonDetails(event);
+  const isClosed =
+    event.registration_status === "closed" ||
+    event.registration_status === "full" ||
+    Boolean(hackathon.isDeadlinePassed);
+  const isWaitlist = event.registration_status === "waitlist" && !isClosed;
+  const isApprovalRequired = event.registration_status === "approval_required" && !isClosed;
 
   const getRegisterCtaText = () => {
     if (isClosed) return "REGISTRATION CLOSED";
@@ -148,6 +153,7 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
             <button
               type="button"
               disabled
+              data-testid="sticky-register-cta"
               className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl text-sm font-mono font-extrabold uppercase tracking-wider bg-orbit-surface/80 text-orbit-subtle border border-orbit-border cursor-not-allowed"
             >
               <span>{getRegisterCtaText()}</span>
@@ -157,6 +163,7 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
               href={event.registration_url}
               target="_blank"
               rel="noopener noreferrer"
+              data-testid="sticky-register-cta"
               className="group relative w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl text-sm sm:text-base font-mono font-extrabold uppercase tracking-wider transition-all bg-gradient-to-r from-orbit-signal via-orbit-signalHover to-orbit-signal text-orbit-bg shadow-[0_0_25px_rgba(0,229,255,0.4)] hover:shadow-[0_0_35px_rgba(0,229,255,0.6)] transform active:scale-95"
             >
               <span>{getRegisterCtaText()}</span>
@@ -168,6 +175,19 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
             Direct RSVP on official organiser platform ({event.organizer})
           </p>
         </div>
+
+        {/* Registration Deadline Passed Notice */}
+        {hackathon.isDeadlinePassed && hackathon.registrationDeadline && (
+          <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">
+            <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
+            <div className="space-y-0.5 leading-relaxed">
+              <strong className="block text-red-300">Registration Deadline Passed:</strong>
+              <span>
+                Official applications closed on {hackathon.registrationDeadline}. RSVPs are no longer being accepted by the organiser.
+              </span>
+            </div>
+          </div>
+        )}
 
         {/* Physical Campus Security / Pre-approval Notice */}
         {isApprovalRequired && (
