@@ -5,7 +5,7 @@ import { upsertOAuthUser } from "@/lib/auth-db";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || "orbit-blr-secret-development-key-3.2",
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || (process.env.NODE_ENV === "production" ? undefined : "orbit-blr-secret-development-key-3.2"),
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID || "",
@@ -21,7 +21,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn({ user, account }) {
       if (account && user) {
         try {
-          await upsertOAuthUser({
+          const profile = await upsertOAuthUser({
             id: user.id || `usr-${Date.now()}`,
             name: user.name,
             email: user.email,
@@ -29,6 +29,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             provider: account.provider,
             providerAccountId: account.providerAccountId,
           });
+          if (profile?.id) {
+            user.id = profile.id;
+          }
         } catch (err) {
           console.error("Error upserting OAuth user to database:", err);
           // Allow login even if DB write temporarily fails
