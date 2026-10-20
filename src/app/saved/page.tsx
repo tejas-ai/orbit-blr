@@ -73,18 +73,18 @@ export default function SavedEventsPage() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 pb-24 lg:pb-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 pb-24 lg:pb-12 min-h-screen bg-white">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-500/20 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-6 pt-2">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-mono text-purple-400 uppercase tracking-wider mb-1">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6A38EB] uppercase tracking-wider mb-1">
             <Bookmark className="w-3.5 h-3.5" />
-            <span>Personal Dashboard</span>
+            <span>Personal Schedule</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-950 tracking-tight font-serif">
             My Saved Tech Events
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 mt-1">
             Stored locally in your browser. Track upcoming dates, register directly, and sync to your calendar.
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function SavedEventsPage() {
             <button
               type="button"
               onClick={handleExportAllIcs}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-sm"
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold bg-[#6A38EB] hover:bg-[#5826D4] text-white transition-all shadow-sm active:scale-95"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export All to .ICS</span>
@@ -103,8 +103,9 @@ export default function SavedEventsPage() {
             <button
               type="button"
               onClick={handleClearAll}
-              className="p-2 rounded-xl text-slate-400 hover:text-rose-400 bg-white/[0.04] border border-purple-500/20 transition-colors"
+              className="p-2 rounded-full text-slate-500 hover:text-rose-600 bg-slate-50 border border-slate-200 transition-colors"
               title="Clear all saved events"
+              aria-label="Clear all saved events"
             >
               <Trash2 className="w-4 h-4" />
             </button>
@@ -114,11 +115,11 @@ export default function SavedEventsPage() {
 
       {/* Content */}
       {loading || !isLoaded ? (
-        <div className="p-12 text-center text-slate-400 font-mono text-sm">
+        <div className="p-12 text-center text-slate-500 text-sm">
           Loading saved events...
         </div>
       ) : savedEventsList.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {savedEventsList.map((event) => (
             <EventCard
               key={event.id}
@@ -129,20 +130,20 @@ export default function SavedEventsPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-[#120D24] border border-purple-500/20 rounded-3xl p-12 text-center max-w-lg mx-auto my-12 shadow-card">
-          <div className="w-14 h-14 rounded-2xl bg-white/[0.04] flex items-center justify-center mx-auto mb-4 border border-purple-500/20">
-            <Bookmark className="w-6 h-6 text-purple-400" />
+        <div className="bg-white border border-slate-200 rounded-3xl p-10 sm:p-14 text-center max-w-lg mx-auto my-12 shadow-sm">
+          <div className="w-14 h-14 rounded-full bg-purple-50 flex items-center justify-center mx-auto mb-4 border border-purple-100">
+            <Bookmark className="w-6 h-6 text-[#6A38EB]" />
           </div>
-          <h2 className="font-display font-bold text-xl text-white">
+          <h2 className="font-extrabold text-xl text-slate-950 font-serif">
             No saved events yet
           </h2>
-          <p className="text-xs text-slate-400 mt-2 leading-relaxed">
+          <p className="text-xs text-slate-600 mt-2 leading-relaxed">
             Click the bookmark icon on any event card while exploring to keep track of upcoming meetups, workshops, and registrations.
           </p>
           <div className="mt-6">
             <Link
               href="/explore"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-purple-600 text-white hover:bg-purple-500 transition-all shadow-sm"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold bg-[#6A38EB] text-white hover:bg-[#5826D4] transition-all shadow-sm active:scale-95"
             >
               <Compass className="w-4 h-4" />
               <span>Explore Free Events</span>

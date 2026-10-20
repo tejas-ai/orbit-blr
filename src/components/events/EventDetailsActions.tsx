@@ -17,8 +17,6 @@ import {
   MapPin,
   Clock,
   Sparkles,
-  Lock,
-  Zap,
 } from "lucide-react";
 
 interface EventDetailsActionsProps {
@@ -76,7 +74,7 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
         });
         return;
       } catch {
-        // user cancelled or fallback
+        // user cancelled
       }
     }
 
@@ -94,20 +92,20 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
       {/* ============================================================== */}
       {/* 1. DISTRICT DESKTOP STICKY BOOKING CARD                        */}
       {/* ============================================================== */}
-      <div className="bg-[#130D26] border border-purple-500/20 rounded-3xl p-6 shadow-card space-y-6">
+      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 shadow-sm space-y-5">
         {/* District-Style Price Display */}
-        <div className="flex items-start justify-between pb-4 border-b border-purple-500/15">
+        <div className="flex items-start justify-between pb-4 border-b border-slate-100">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
+              <span className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight font-serif">
                 ₹0
               </span>
-              <span className="px-2.5 py-1 rounded-full text-xs font-mono font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm">
+              <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800">
                 FREE ADMISSION
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-1 font-sans">
-              100% Free Entry • Verified Tech Community
+            <p className="text-xs text-slate-500 mt-1">
+              100% Free Entry • Verified Tech Gathering
             </p>
           </div>
 
@@ -116,45 +114,45 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
             onClick={() => toggleSave(event.id)}
             className={`p-2.5 rounded-2xl border transition-all ${
               saved
-                ? "bg-purple-600/40 text-purple-200 border-purple-400/60 shadow-glow"
-                : "bg-white/[0.04] text-slate-400 hover:text-white border-purple-500/20 hover:border-purple-400/40"
+                ? "bg-purple-50 text-[#6A38EB] border-purple-200 shadow-sm"
+                : "bg-slate-50 text-slate-500 hover:text-slate-900 border-slate-200"
             }`}
             title={saved ? "Saved in My Events" : "Save Event"}
             aria-label={saved ? "Saved in My Events" : "Save Event"}
           >
-            <Bookmark className={`w-5 h-5 ${saved ? "fill-purple-300 text-purple-300" : ""}`} />
+            <Bookmark className={`w-5 h-5 ${saved ? "fill-[#6A38EB]" : ""}`} />
           </button>
         </div>
 
         {/* Quick Date, Time & Venue Block */}
-        <div className="space-y-2.5 p-4 rounded-2xl bg-white/[0.03] border border-purple-500/15">
-          <div className="flex items-start gap-2.5 text-xs text-white font-mono">
-            <Calendar className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+        <div className="space-y-2.5 p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+          <div className="flex items-start gap-2.5 text-xs text-slate-900">
+            <Calendar className="w-4 h-4 text-[#6A38EB] shrink-0 mt-0.5" />
             <div>
               <span className="font-bold block">{formatEventDate(event.start_at)}</span>
-              <span className="text-purple-300 text-[11px]">
+              <span className="text-slate-600 text-[11px]">
                 {formatEventTime(event.start_at, event.end_at)}
               </span>
             </div>
           </div>
 
-          <div className="flex items-start gap-2.5 text-xs text-slate-300 pt-2 border-t border-purple-500/10">
-            <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+          <div className="flex items-start gap-2.5 text-xs text-slate-700 pt-2 border-t border-slate-200/50">
+            <MapPin className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
             <div className="leading-snug truncate">
-              <span className="font-semibold text-white block truncate">{event.venue}</span>
-              <span className="text-[11px] text-slate-400">Hub: {event.area}, Bengaluru</span>
+              <span className="font-semibold text-slate-900 block truncate">{event.venue}</span>
+              <span className="text-[11px] text-slate-500">Hub: {event.area}, Bengaluru</span>
             </div>
           </div>
         </div>
 
-        {/* Primary District Register Button */}
+        {/* Primary Register Button */}
         <div className="space-y-2">
           {isClosed ? (
             <button
               type="button"
               disabled
               data-testid="sticky-register-cta"
-              className="w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl text-sm font-mono font-extrabold uppercase tracking-wider bg-white/[0.03] text-slate-500 border border-white/5 cursor-not-allowed"
+              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-xs font-bold uppercase tracking-wider bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed"
             >
               <span>{getRegisterCtaText()}</span>
             </button>
@@ -164,26 +162,26 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
               target="_blank"
               rel="noopener noreferrer"
               data-testid="sticky-register-cta"
-              className="group relative w-full inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl text-sm sm:text-base font-mono font-extrabold uppercase tracking-wider transition-all bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-lg shadow-purple-950/40 transform active:scale-95"
+              className="group relative w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl text-xs sm:text-sm font-bold uppercase tracking-wider transition-all bg-[#6A38EB] hover:bg-[#5826D4] text-white shadow-md shadow-purple-500/25 active:scale-95"
             >
               <span>{getRegisterCtaText()}</span>
-              <ExternalLink className="w-5 h-5 ml-0.5 group-hover:translate-x-0.5 transition-transform" />
+              <ExternalLink className="w-4 h-4 ml-0.5 group-hover:translate-x-0.5 transition-transform" />
             </a>
           )}
 
-          <p className="text-[11px] font-mono text-center text-slate-400">
-            Direct RSVP on official organiser platform ({event.organizer})
+          <p className="text-[11px] text-center text-slate-500">
+            Direct RSVP on official organiser site ({event.organizer})
           </p>
         </div>
 
         {/* Registration Deadline Passed Notice */}
         {hackathon.isDeadlinePassed && hackathon.registrationDeadline && (
-          <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs text-red-200">
-            <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5 text-red-400" />
+          <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-800">
+            <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5 text-rose-600" />
             <div className="space-y-0.5 leading-relaxed">
-              <strong className="block text-red-300">Registration Deadline Passed:</strong>
+              <strong className="block text-rose-900">Application Deadline Passed:</strong>
               <span>
-                Official applications closed on {hackathon.registrationDeadline}. RSVPs are no longer being accepted by the organiser.
+                Official applications closed on {hackathon.registrationDeadline}.
               </span>
             </div>
           </div>
@@ -191,115 +189,115 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
 
         {/* Physical Campus Security / Pre-approval Notice */}
         {isApprovalRequired && (
-          <div className="flex items-start gap-2.5 p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200">
-            <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5 text-amber-400" />
+          <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-800">
+            <ShieldAlert className="w-4 h-4 shrink-0 mt-0.5 text-amber-600" />
             <div className="space-y-0.5 leading-relaxed">
-              <strong className="block text-amber-300">Host Pre-Clearance & Selection:</strong>
+              <strong className="block text-amber-900">Host Pre-Clearance Required:</strong>
               <span>
-                Host reviews RSVPs. An application or RSVP does not guarantee entry unless the organiser confirms your acceptance via email.
+                Host reviews RSVPs. An application does not guarantee physical entry until confirmed by the host.
               </span>
             </div>
           </div>
         )}
 
         {/* Calendar Sync Shortcuts */}
-        <div className="space-y-2 pt-2 border-t border-orbit-border/80">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-orbit-subtle block">
-            Add to your calendar
+        <div className="space-y-2 pt-2 border-t border-slate-100">
+          <span className="text-[10px] uppercase tracking-wider text-slate-500 font-bold block">
+            Add to calendar
           </span>
           <div className="grid grid-cols-2 gap-2">
             <a
               href={getGoogleCalendarUrl(event)}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-mono font-medium bg-orbit-surface hover:bg-orbit-surfaceHover text-orbit-text border border-orbit-border hover:border-orbit-borderLight transition-all"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all"
             >
-              <Calendar className="w-3.5 h-3.5 text-orbit-pink" />
+              <Calendar className="w-3.5 h-3.5 text-[#6A38EB]" />
               <span>Google Cal</span>
             </a>
 
             <button
               type="button"
               onClick={handleDownloadIcs}
-              className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-mono font-medium bg-orbit-surface hover:bg-orbit-surfaceHover text-orbit-text border border-orbit-border hover:border-orbit-borderLight transition-all"
+              className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all"
             >
-              <Download className="w-3.5 h-3.5 text-orbit-signal" />
+              <Download className="w-3.5 h-3.5 text-[#6A38EB]" />
               <span>Apple / .ICS</span>
             </button>
           </div>
         </div>
 
         {/* Share and Save Bar */}
-        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-orbit-border/80">
+        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
           <button
             type="button"
             onClick={() => toggleSave(event.id)}
-            className={`inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-mono font-medium transition-all border ${
+            className={`inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all border ${
               saved
-                ? "bg-orbit-signal/20 text-orbit-signal border-orbit-signal/50 shadow-glow"
-                : "bg-orbit-surface hover:bg-orbit-surfaceHover text-orbit-muted hover:text-orbit-text border-orbit-border"
+                ? "bg-purple-50 text-[#6A38EB] border-purple-200"
+                : "bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200"
             }`}
           >
-            <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-orbit-signal" : ""}`} />
-            <span>{saved ? "Saved" : "Save Event"}</span>
+            <Bookmark className={`w-3.5 h-3.5 ${saved ? "fill-[#6A38EB]" : ""}`} />
+            <span>{saved ? "Saved" : "Save"}</span>
           </button>
 
           <button
             type="button"
             onClick={handleShare}
-            className="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-mono font-medium bg-orbit-surface hover:bg-orbit-surfaceHover text-orbit-muted hover:text-orbit-text border border-orbit-border transition-all"
+            className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 transition-all"
           >
             {copied ? (
               <>
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
-                <span className="text-emerald-400 font-semibold">Link Copied!</span>
+                <Check className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="text-emerald-700 font-bold">Copied!</span>
               </>
             ) : (
               <>
-                <Share2 className="w-3.5 h-3.5 text-orbit-sunset" />
-                <span>Share Event</span>
+                <Share2 className="w-3.5 h-3.5 text-[#6A38EB]" />
+                <span>Share</span>
               </>
             )}
           </button>
         </div>
 
-        {/* District-Style Trust & Verification Guarantee */}
-        <div className="pt-4 border-t border-orbit-border/80 space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
+        {/* Verification Guarantee */}
+        <div className="pt-3 border-t border-slate-100 space-y-1.5">
+          <div className="flex items-center gap-2 text-xs font-bold text-emerald-700">
             <ShieldCheck className="w-4 h-4 shrink-0" />
-            <span className="font-semibold">Orbit BLR Verification Guarantee</span>
+            <span>ORBIT BLR Verified Guarantee</span>
           </div>
-          <ul className="text-[11px] text-orbit-muted space-y-1 font-sans">
+          <ul className="text-[11px] text-slate-600 space-y-1">
             <li className="flex items-center gap-1.5">
-              <span className="w-1 h-1 rounded-full bg-emerald-400" />
-              <span>100% Free Entry Guaranteed — No hidden paid tiers</span>
+              <span className="w-1 h-1 rounded-full bg-emerald-500" />
+              <span>100% Free Entry Guaranteed</span>
             </li>
             <li className="flex items-center gap-1.5">
-              <span className="w-1 h-1 rounded-full bg-emerald-400" />
-              <span>Direct official registration link (No phishing or spam)</span>
+              <span className="w-1 h-1 rounded-full bg-emerald-500" />
+              <span>Direct official registration link</span>
             </li>
             <li className="flex items-center gap-1.5">
-              <span className="w-1 h-1 rounded-full bg-emerald-400" />
-              <span>Zero commercial bias or paid promotion</span>
+              <span className="w-1 h-1 rounded-full bg-emerald-500" />
+              <span>No commercial bias or paywalls</span>
             </li>
           </ul>
         </div>
       </div>
 
       {/* ============================================================== */}
-      {/* 2. DISTRICT MOBILE STICKY BOTTOM BOOKING BAR                   */}
+      {/* 2. DISTRICT MOBILE STICKY BOTTOM REGISTRATION BAR              */}
       {/* ============================================================== */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#120D24]/95 backdrop-blur-xl border-t border-purple-500/20 px-4 py-3 shadow-[0_-10px_25px_rgba(0,0,0,0.5)]">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl border-t border-slate-200 px-4 py-2.5 shadow-[0_-4px_12px_rgba(0,0,0,0.08)]">
         <div className="max-w-md mx-auto flex items-center justify-between gap-3">
           {/* Price & Date Info */}
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
-              <span className="text-lg font-display font-extrabold text-white">₹0</span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+              <span className="text-base font-extrabold text-slate-950 font-serif">₹0</span>
+              <span className="px-1.5 py-0.2 rounded text-[10px] font-bold uppercase bg-emerald-100 text-emerald-800">
                 FREE
               </span>
             </div>
-            <p className="text-[11px] font-mono text-slate-400 truncate">
+            <p className="text-[11px] text-slate-500 truncate">
               {formatEventDate(event.start_at)} • {event.area}
             </p>
           </div>
@@ -309,22 +307,22 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
             <button
               type="button"
               onClick={() => toggleSave(event.id)}
-              className={`p-2.5 rounded-xl border transition-all ${
+              className={`p-2 rounded-xl border transition-all ${
                 saved
-                  ? "bg-purple-600/40 text-purple-200 border-purple-400/60"
-                  : "bg-white/[0.04] text-slate-400 border-purple-500/20"
+                  ? "bg-purple-50 text-[#6A38EB] border-purple-200"
+                  : "bg-slate-50 text-slate-600 border-slate-200"
               }`}
               title={saved ? "Saved" : "Save"}
               aria-label={saved ? "Saved" : "Save"}
             >
-              <Bookmark className={`w-4 h-4 ${saved ? "fill-purple-300 text-purple-300" : ""}`} />
+              <Bookmark className={`w-4 h-4 ${saved ? "fill-[#6A38EB]" : ""}`} />
             </button>
 
             {isClosed ? (
               <button
                 type="button"
                 disabled
-                className="px-4 py-2.5 rounded-xl text-xs font-mono font-bold bg-white/[0.03] text-slate-500 border border-white/5 cursor-not-allowed"
+                className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed"
               >
                 Closed
               </button>
@@ -333,7 +331,7 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
                 href={event.registration_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-md active:scale-95 transition-all"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#6A38EB] hover:bg-[#5826D4] text-white shadow-sm active:scale-95 transition-all"
               >
                 <span>{getMobileCtaText()}</span>
                 <ExternalLink className="w-3.5 h-3.5" />

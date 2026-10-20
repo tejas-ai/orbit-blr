@@ -3,12 +3,17 @@
 import React, { useState } from "react";
 import { OrbitEvent } from "@/types/event";
 import { getCategoryFallback } from "@/lib/thumbnails";
-import { formatEventDate, formatEventTime, formatRelativeTime } from "@/lib/utils";
+import { formatEventDate, formatEventTime } from "@/lib/utils";
 import {
-  RegistrationBadge,
-  FreeEntryPill,
-} from "@/components/events/VerificationBadges";
-import { Building2, Calendar, Clock, ShieldCheck, Zap } from "lucide-react";
+  Building2,
+  Calendar,
+  Clock,
+  MapPin,
+  ShieldCheck,
+  Zap,
+  CheckCircle2,
+  Train,
+} from "lucide-react";
 
 interface EventHeroBannerProps {
   event: OrbitEvent;
@@ -25,19 +30,21 @@ export default function EventHeroBanner({
   displayCategory,
   isHack,
 }: EventHeroBannerProps) {
+  const fallback = getCategoryFallback(event);
   const [imgSrc, setImgSrc] = useState(initialSrc);
   const [isError, setIsError] = useState(false);
 
   const handleError = () => {
-    if (!isError) {
+    if (!isError && imgSrc !== fallback) {
       setIsError(true);
-      setImgSrc(getCategoryFallback(event));
+      setImgSrc(fallback);
     }
   };
 
   return (
-    <div className="relative rounded-3xl overflow-hidden border border-purple-500/20 bg-[#120D24] shadow-card">
-      <div className="relative w-full aspect-[21/9] min-h-[300px] sm:min-h-[400px] max-h-[520px] overflow-hidden bg-[#0F0A1C]">
+    <div className="space-y-4 sm:space-y-6">
+      {/* 1. CLEAN VISUAL MEDIA FRAME — NEVER OVERLAY TITLE OR METADATA ON ARTWORK */}
+      <div className="relative w-full aspect-[21/9] min-h-[220px] sm:min-h-[340px] max-h-[460px] rounded-3xl overflow-hidden bg-slate-900 border border-slate-200/90 shadow-sm flex items-center justify-center">
         {/* Banner Media with Guaranteed Fallback */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -47,62 +54,94 @@ export default function EventHeroBanner({
           className="w-full h-full object-cover object-center"
         />
 
-        {/* Ambient Overlay Vignette for Readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0B0813] via-[#0B0813]/65 to-black/30 pointer-events-none" />
+        {/* Minimal Floating Category Pill at Top Left (does not obscure artwork) */}
+        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-2">
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-sm flex items-center gap-1.5 ${
+              isHack
+                ? "bg-amber-500/90 text-white"
+                : "bg-white/95 text-[#6A38EB]"
+            }`}
+          >
+            {isHack ? (
+              <Zap className="w-3.5 h-3.5 text-white" />
+            ) : (
+              <span className="w-2 h-2 rounded-full bg-[#6A38EB]" />
+            )}
+            <span>{displayCategory}</span>
+          </span>
 
-        {/* Top Overlay Badges */}
-        <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-          <div className="flex flex-wrap items-center gap-2 pointer-events-auto">
-            <span
-              className={`px-3 py-1.5 rounded-xl text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase backdrop-blur-md shadow-sm flex items-center gap-1.5 ${
-                isHack
-                  ? "bg-amber-950/90 text-amber-300 border border-amber-500/40"
-                  : "bg-purple-950/90 text-purple-200 border border-purple-500/30"
-              }`}
-            >
-              {isHack ? (
-                <Zap className="w-3.5 h-3.5 text-amber-400" />
-              ) : (
-                <span className="w-2 h-2 rounded-full bg-purple-400" />
-              )}
-              <span>{displayCategory}</span>
-            </span>
-            <FreeEntryPill />
-          </div>
-          <div className="pointer-events-auto">
-            <RegistrationBadge status={event.registration_status} />
-          </div>
+          <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-600/95 text-white shadow-sm backdrop-blur-md">
+            ₹0 Free Entry
+          </span>
         </div>
 
-        {/* Bottom Overlay Info Banner */}
-        <div className="absolute bottom-4 left-4 right-4 sm:bottom-8 sm:left-8 sm:right-8 space-y-3 pointer-events-none">
-          <h1 className="text-xl sm:text-3xl lg:text-4xl font-display font-extrabold text-white tracking-tight leading-tight max-w-4xl drop-shadow-md break-words">
-            {event.name}
-          </h1>
+        {/* Floating Registration Status Pill at Top Right */}
+        <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+          <span
+            className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm backdrop-blur-md ${
+              event.registration_status === "open"
+                ? "bg-emerald-600/95 text-white"
+                : event.registration_status === "approval_required"
+                ? "bg-amber-600/95 text-white"
+                : "bg-slate-900/90 text-white"
+            }`}
+          >
+            {event.registration_status === "open"
+              ? "RSVP Open"
+              : event.registration_status === "approval_required"
+              ? "Approval Required"
+              : "Waitlist"}
+          </span>
+        </div>
+      </div>
 
-          <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs sm:text-sm text-slate-300 pointer-events-auto">
-            <div className="flex items-center gap-1.5 font-medium text-white">
-              <Building2 className="w-4 h-4 text-purple-400" />
-              <span>
-                Organised by <strong className="text-purple-300">{event.organizer}</strong>
-              </span>
-            </div>
-            <span className="text-slate-500 hidden sm:inline">•</span>
-            <div className="flex items-center gap-1.5 font-mono text-white">
-              <Calendar className="w-4 h-4 text-purple-400" />
-              <span>{formatEventDate(event.start_at)}</span>
-            </div>
-            <span className="text-slate-500 hidden sm:inline">•</span>
-            <div className="flex items-center gap-1.5 font-mono text-purple-200">
-              <Clock className="w-4 h-4 text-purple-400" />
-              <span>{formatEventTime(event.start_at, event.end_at)}</span>
-            </div>
-            <span className="text-slate-500 hidden sm:inline">•</span>
-            <div className="flex items-center gap-1.5 font-mono text-emerald-400">
-              <ShieldCheck className="w-4 h-4" />
-              <span>Verified: {formatRelativeTime(event.last_verified_at)}</span>
-            </div>
+      {/* 2. DEDICATED EVENT METADATA HEADER — DISPLAYED CLEANLY BELOW THE VISUAL */}
+      <div className="bg-white border border-slate-200/90 rounded-3xl p-5 sm:p-7 shadow-sm space-y-4">
+        {/* Title */}
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-950 tracking-tight font-serif leading-tight">
+          {event.name}
+        </h1>
+
+        {/* Key Event Facts Row */}
+        <div className="flex flex-wrap items-center gap-y-2.5 gap-x-4 text-xs sm:text-sm text-slate-600 font-medium pt-1 border-t border-slate-100">
+          <div className="flex items-center gap-1.5 font-semibold text-slate-900">
+            <Building2 className="w-4 h-4 text-[#6A38EB]" />
+            <span>
+              Organised by <strong className="text-slate-950 font-bold">{event.organizer}</strong>
+            </span>
           </div>
+
+          <span className="text-slate-300 hidden sm:inline">•</span>
+
+          <div className="flex items-center gap-1.5 text-slate-800 font-semibold">
+            <Calendar className="w-4 h-4 text-[#6A38EB]" />
+            <span>{formatEventDate(event.start_at)}</span>
+          </div>
+
+          <span className="text-slate-300 hidden sm:inline">•</span>
+
+          <div className="flex items-center gap-1.5 text-slate-700">
+            <Clock className="w-4 h-4 text-[#6A38EB]" />
+            <span>{formatEventTime(event.start_at, event.end_at)}</span>
+          </div>
+
+          <span className="text-slate-300 hidden sm:inline">•</span>
+
+          <div className="flex items-center gap-1.5 text-slate-700">
+            <MapPin className="w-4 h-4 text-[#6A38EB]" />
+            <span>{event.area}, Bengaluru</span>
+          </div>
+
+          {event.metro_station && (
+            <>
+              <span className="text-slate-300 hidden md:inline">•</span>
+              <div className="flex items-center gap-1 text-slate-600">
+                <Train className="w-3.5 h-3.5 text-emerald-600" />
+                <span className="text-xs">Near {event.metro_station} Metro</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

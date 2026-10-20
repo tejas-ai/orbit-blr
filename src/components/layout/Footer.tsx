@@ -1,64 +1,68 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { ShieldCheck, MapPin } from "lucide-react";
+import { ShieldCheck, MapPin, Sparkles, CheckCircle2 } from "lucide-react";
 import { BENGALURU_AREAS } from "@/types/event";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-purple-500/20 bg-[#0B0813] mt-20 text-xs text-slate-400 backdrop-blur-xl">
+    <footer className="border-t border-slate-200 bg-white mt-16 text-xs text-slate-500 pb-16 md:pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
           {/* Col 1: Brand & Mission */}
           <div className="space-y-3.5 md:col-span-5">
             <div className="flex items-center gap-2">
-              <span className="font-display font-black text-xl tracking-wider text-white">
-                ORBIT <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">BLR</span>
+              <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-[#6A38EB] to-[#9333EA] flex items-center justify-center text-white font-bold text-xs">
+                O
+              </div>
+              <span className="font-extrabold text-lg tracking-tight text-slate-950 font-serif">
+                ORBIT <span className="text-[#6A38EB]">BLR</span>
               </span>
             </div>
-            <p className="text-slate-400 leading-relaxed text-xs max-w-sm">
-              Bengaluru&apos;s verified directory for 100% free, in-person technology meetups, workshops, and networking events.
+            <p className="text-slate-600 leading-relaxed text-xs max-w-sm">
+              Bengaluru&apos;s verified public registry for 100% free, in-person developer meetups, workshops, and hackathons. Always ₹0 admission, direct organiser registration links, and zero commercial paywalls.
             </p>
-            <div className="pt-2 text-[11px] font-mono text-slate-500 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="pt-1 text-[11px] font-medium text-emerald-700 flex items-center gap-2">
+              <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Bengaluru Tech Nodes Synchronized</span>
             </div>
           </div>
 
           {/* Col 2: Navigation */}
           <div className="md:col-span-3">
-            <h4 className="font-mono text-xs uppercase tracking-wider text-white font-bold mb-3.5 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-              <span>Platform</span>
+            <h4 className="text-xs uppercase tracking-wider text-slate-900 font-bold mb-3.5">
+              Platform Directory
             </h4>
-            <ul className="space-y-2 font-mono text-xs">
+            <ul className="space-y-2 text-xs">
               <li>
-                <Link href="/explore" className="hover:text-purple-300 transition-colors">
-                  Explore Free Events
+                <Link href="/explore" className="text-slate-600 hover:text-[#6A38EB] transition-colors">
+                  Explore Verified Events
                 </Link>
               </li>
               <li>
-                <Link href="/explore?category=Hackathons" className="hover:text-purple-300 transition-colors">
-                  Hackathons
+                <Link href="/explore?category=Hackathons" className="text-slate-600 hover:text-[#6A38EB] transition-colors">
+                  Free Offline Hackathons
                 </Link>
               </li>
               <li>
-                <Link href="/saved" className="hover:text-purple-300 transition-colors">
+                <Link href="/saved" className="text-slate-600 hover:text-[#6A38EB] transition-colors">
                   My Saved Events
                 </Link>
               </li>
               <li>
-                <Link href="/suggest" className="hover:text-purple-300 transition-colors">
-                  Suggest an Event
+                <Link href="/suggest" className="text-slate-600 hover:text-[#6A38EB] transition-colors">
+                  Submit a Tech Event
                 </Link>
               </li>
               <li>
-                <Link href="/about#verification" className="hover:text-purple-300 transition-colors">
-                  7-Step Verification Engine
+                <Link href="/about#verification" className="text-slate-600 hover:text-[#6A38EB] transition-colors">
+                  Verification Standard
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-purple-300 transition-colors">
-                  About Orbit BLR
+                <Link href="/about" className="text-slate-600 hover:text-[#6A38EB] transition-colors">
+                  About ORBIT BLR
                 </Link>
               </li>
             </ul>
@@ -66,16 +70,16 @@ export default function Footer() {
 
           {/* Col 3: Bengaluru Tech Hubs */}
           <div className="md:col-span-4">
-            <h4 className="font-mono text-xs uppercase tracking-wider text-white font-bold mb-3.5 flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-purple-400" />
+            <h4 className="text-xs uppercase tracking-wider text-slate-900 font-bold mb-3.5 flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-[#6A38EB]" />
               <span>Bengaluru Tech Hubs</span>
             </h4>
-            <div className="flex flex-wrap gap-1.5 font-mono text-[11px]">
+            <div className="flex flex-wrap gap-1.5 text-[11px]">
               {BENGALURU_AREAS.slice(0, 10).map((area) => (
                 <Link
                   key={area}
                   href={`/explore?area=${encodeURIComponent(area)}`}
-                  className="px-2.5 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-purple-500/20 hover:border-purple-500/40 transition-colors"
+                  className="px-2.5 py-1 rounded-full bg-slate-50 hover:bg-purple-50 text-slate-700 hover:text-[#6A38EB] border border-slate-200/80 transition-colors"
                 >
                   {area}
                 </Link>
@@ -84,16 +88,17 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Disclaimer Banner */}
-        <div className="border-t border-purple-500/20 pt-6 mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[11px] text-slate-500">
+        {/* Verification Guarantee & Disclaimer Banner */}
+        <div className="border-t border-slate-200/80 pt-6 mt-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[11px] text-slate-500">
           <div className="flex items-start gap-2 max-w-3xl">
-            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+            <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
-              <strong className="text-slate-300 font-medium">Independent Directory Notice:</strong> ORBIT BLR is an independent public event discovery directory. We are not officially affiliated with Google, Amazon, Microsoft, Cisco, or any listed event organizers. All trademarks, company names, and logos belong to their respective owners. Every event is vetted for genuinely free admission prior to publishing.
+              <strong>Verification Standard:</strong> Every event on ORBIT BLR is checked for authentic zero-cost entry, organizer reputation, and physical Bengaluru venue details. Perks (refreshments, swags, certificates) are listed strictly where explicitly confirmed by organizers.
             </p>
           </div>
-          <div className="font-mono shrink-0">
-            Built for the <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-300 font-bold">Bengaluru Developer Ecosystem</span>.
+
+          <div className="shrink-0 text-slate-500">
+            © 2026 ORBIT BLR • Bengaluru, Karnataka
           </div>
         </div>
       </div>

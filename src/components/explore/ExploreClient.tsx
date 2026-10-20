@@ -169,34 +169,34 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
   const isHackathonMode = filters.category === "Hackathons";
 
   return (
-    <div className="space-y-8 py-4 pb-24 lg:pb-12">
+    <div className="space-y-6 sm:space-y-8 py-2 pb-20 lg:pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orbit-border/80 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-6 pt-4">
         <div>
           {isHackathonMode ? (
             <>
-              <div className="inline-flex items-center gap-1.5 text-xs font-mono text-amber-300 uppercase tracking-wider mb-1">
-                <Zap className="w-3.5 h-3.5 text-amber-400" />
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-700 uppercase tracking-wider mb-1">
+                <Zap className="w-3.5 h-3.5 text-amber-600" />
                 <span>Bengaluru Hackathons & Build Sprints</span>
               </div>
-              <h1 className="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase">
-                HACKATHONS IN BENGALURU.
+              <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-950 tracking-tight font-serif">
+                Free Offline Hackathons in Bengaluru
               </h1>
-              <p className="text-xs sm:text-sm text-orbit-muted mt-1.5 font-normal max-w-2xl font-sans">
-                Build cool things, meet creators, and compete — only genuinely free in-person student & developer hackathons in Bengaluru.
+              <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl font-normal">
+                Build prototypes, meet co-founders, and compete — 100% free offline student & developer hackathons with verified deadlines and eligibility.
               </p>
             </>
           ) : (
             <>
-              <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider mb-1">
-                <Compass className="w-3.5 h-3.5 text-orbit-signal" />
-                <span>Bengaluru Verified Gallery</span>
+              <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6A38EB] uppercase tracking-wider mb-1">
+                <Compass className="w-3.5 h-3.5 text-[#6A38EB]" />
+                <span>Verified Gathering Directory</span>
               </div>
-              <h1 className="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase">
-                EXPLORE FREE TECH EVENTS.
+              <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-950 tracking-tight font-serif">
+                Explore Free Tech Events in Bengaluru
               </h1>
-              <p className="text-xs sm:text-sm text-orbit-muted mt-1.5 font-normal max-w-2xl font-sans">
-                Filter through verified developer meetups, AI workshops, and founder mixers with authentic event posters and 100% free admission.
+              <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl font-normal">
+                Filter through verified developer meetups, AI workshops, and hackathons with authentic event posters and ₹0 admission.
               </p>
             </>
           )}
@@ -204,28 +204,30 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
 
         {/* View Switcher */}
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <div className="flex items-center bg-orbit-card border border-orbit-border p-1 rounded-xl">
+          <div className="flex items-center bg-slate-100 border border-slate-200 p-1 rounded-xl">
             <button
               type="button"
               onClick={() => setViewMode("grid")}
-              className={`p-2 rounded-lg text-xs font-mono transition-colors ${
+              className={`p-2 rounded-lg text-xs transition-colors ${
                 viewMode === "grid"
-                  ? "bg-orbit-surface text-orbit-signal border border-orbit-border"
-                  : "text-orbit-muted hover:text-orbit-text"
+                  ? "bg-white text-[#6A38EB] shadow-sm font-bold"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
               title="Grid View"
+              aria-label="Grid View"
             >
               <LayoutGrid className="w-4 h-4" />
             </button>
             <button
               type="button"
               onClick={() => setViewMode("list")}
-              className={`p-2 rounded-lg text-xs font-mono transition-colors ${
+              className={`p-2 rounded-lg text-xs transition-colors ${
                 viewMode === "list"
-                  ? "bg-orbit-surface text-orbit-signal border border-orbit-border"
-                  : "text-orbit-muted hover:text-orbit-text"
+                  ? "bg-white text-[#6A38EB] shadow-sm font-bold"
+                  : "text-slate-600 hover:text-slate-900"
               }`}
               title="List View"
+              aria-label="List View"
             >
               <List className="w-4 h-4" />
             </button>
@@ -244,7 +246,7 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
       {filteredEvents.length > 0 ? (
         filters.category === "Hackathons" && viewMode === "grid" ? (
           <div className="space-y-8">
-            {/* Dedicated 2-Column Balanced Hackathon Grid */}
+            {/* Dedicated Balanced Hackathon Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
               {filteredEvents.map((event) => (
                 <EventCard
@@ -257,19 +259,19 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
             </div>
 
             {/* Hackathon Community Callout Card */}
-            <div className="max-w-5xl mx-auto rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-transparent border border-amber-500/25 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="max-w-5xl mx-auto rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-amber-50 via-purple-50/50 to-white border border-amber-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
               <div className="space-y-1">
-                <span className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <Zap className="w-3.5 h-3.5 text-amber-400" />
+                <span className="text-xs font-bold text-amber-900 uppercase tracking-wider flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 text-amber-600" />
                   Organizing an in-person Hackathon in Bengaluru?
                 </span>
-                <p className="text-xs sm:text-sm text-slate-300">
-                  Get your hackathon independently verified and listed for thousands of student &amp; professional builders across Bengaluru.
+                <p className="text-xs sm:text-sm text-slate-600">
+                  Get your offline hackathon independently verified and listed for thousands of student &amp; developer builders across Bengaluru.
                 </p>
               </div>
               <Link
                 href="/suggest"
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 transition-all shrink-0"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-xs font-bold bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all shrink-0 active:scale-95"
               >
                 <span>Submit Hackathon</span>
               </Link>
@@ -279,7 +281,7 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
           <div
             className={
               viewMode === "grid"
-                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
                 : "space-y-4"
             }
           >
@@ -294,35 +296,35 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
           </div>
         )
       ) : initialEvents.length === 0 ? (
-        <div className="bg-orbit-card/60 border border-orbit-signal/30 rounded-2xl p-8 sm:p-12 text-center max-w-xl mx-auto my-8 shadow-glow">
-          <div className="w-12 h-12 rounded-full bg-orbit-surface flex items-center justify-center mx-auto mb-4 border border-orbit-signal/40">
-            <ShieldCheck className="w-6 h-6 text-orbit-signal" />
+        <div className="bg-white border border-purple-100 rounded-3xl p-8 sm:p-12 text-center max-w-xl mx-auto my-8 shadow-sm">
+          <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center mx-auto mb-4 border border-purple-200">
+            <ShieldCheck className="w-6 h-6 text-[#6A38EB]" />
           </div>
-          <h3 className="font-display font-bold text-xl text-orbit-text">
+          <h3 className="font-extrabold text-xl text-slate-950 font-serif">
             Strict Verification Active — Review Queue in Progress
           </h3>
-          <p className="text-xs sm:text-sm text-orbit-muted mt-2 leading-relaxed font-sans">
+          <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
             All submitted community events are currently in the review queue awaiting direct organizer verification. We do not publish events with unconfirmed perks or unverified links.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/suggest"
-              className="px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-orbit-signal text-orbit-bg shadow-glow hover:bg-orbit-signalHover transition-all"
+              className="px-5 py-2.5 rounded-full text-xs font-bold bg-[#6A38EB] text-white shadow-sm hover:bg-[#5826D4] transition-all"
             >
               Submit an Event with Evidence
             </Link>
           </div>
         </div>
       ) : (
-        <div className="bg-orbit-card/60 border border-orbit-border rounded-2xl p-12 text-center max-w-lg mx-auto my-8">
-          <div className="w-12 h-12 rounded-full bg-orbit-surface flex items-center justify-center mx-auto mb-4 border border-orbit-border">
-            <SearchX className="w-6 h-6 text-orbit-muted" />
+        <div className="bg-white border border-slate-200 rounded-3xl p-12 text-center max-w-lg mx-auto my-8 shadow-sm">
+          <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-4 border border-slate-200">
+            <SearchX className="w-6 h-6 text-slate-400" />
           </div>
-          <h3 className="font-display font-bold text-lg text-white">
+          <h3 className="font-bold text-lg text-slate-950 font-serif">
             No events match your criteria
           </h3>
-          <p className="text-xs text-orbit-muted mt-1.5 leading-relaxed font-sans">
-            Try resetting your filters or exploring another category or area.
+          <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
+            Try resetting your filters or exploring another neighborhood or category.
           </p>
           <div className="mt-5 flex items-center justify-center gap-3">
             <button
@@ -339,13 +341,13 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
                   sortBy: "date_asc",
                 })
               }
-              className="px-4 py-2 rounded-xl text-xs font-mono font-bold bg-orbit-signal text-orbit-bg shadow-sm"
+              className="px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 text-white shadow-sm hover:bg-slate-800"
             >
               Reset All Filters
             </button>
             <Link
               href="/suggest"
-              className="px-4 py-2 rounded-xl text-xs font-mono font-medium text-white bg-orbit-surface border border-orbit-border hover:bg-orbit-surfaceHover"
+              className="px-4 py-2 rounded-xl text-xs font-medium text-slate-700 bg-slate-50 border border-slate-200 hover:bg-slate-100"
             >
               Suggest an Event
             </Link>

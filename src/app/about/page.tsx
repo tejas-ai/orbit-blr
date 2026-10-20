@@ -22,11 +22,11 @@ export default function AboutPage() {
   const faqs = [
     {
       q: "Are all events listed on ORBIT BLR really 100% free?",
-      a: "Yes. Absolutely. We have a strict zero-admission policy. If an event charges for tickets, hides workshops behind paid entry passes, or requires paid subscriptions, it is permanently barred from our directory.",
+      a: "Yes. Absolutely. We enforce a strict zero-admission policy. If an event charges for tickets, hides workshops behind paid entry passes, or requires paid subscriptions, it is permanently barred from our directory.",
     },
     {
       q: "How does ORBIT BLR verify attendee goodies and swag?",
-      a: "We only mark goodies as 'Confirmed' when the official organiser explicitly states what swag will be provided (e.g. t-shirts, stickers, cloud vouchers) or when community evidence from preceding editions validates it. If it is raffle-based, we label it 'Limited / Raffle'. If unknown, it is marked 'Unverified'.",
+      a: "We only mark goodies as 'Confirmed' when the official organiser explicitly states what swag will be provided (e.g. t-shirts, stickers, cloud vouchers) or when organizer evidence validates it. If it is raffle-based, we label it 'Limited / Raffle'. If unknown, it is marked 'Unverified'.",
     },
     {
       q: "What does 'Approval Required' mean?",
@@ -43,39 +43,39 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="space-y-12 py-6 max-w-4xl mx-auto px-4 sm:px-6">
+    <div className="space-y-10 py-6 max-w-4xl mx-auto px-4 sm:px-6 min-h-screen bg-white">
       {/* Hero Header */}
-      <div className="border-b border-orbit-border/80 pb-8 space-y-4">
-        <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider">
+      <div className="border-b border-slate-200/80 pb-8 space-y-3 pt-2">
+        <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6A38EB] uppercase tracking-wider">
           <Building2 className="w-4 h-4" />
           <span>About the Platform</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-display font-black text-orbit-text tracking-tight">
-          Built for Bengaluru&apos;s Builders, Hackers & Dreamers.
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-950 tracking-tight font-serif">
+          Built for Bengaluru&apos;s Builders, Hackers &amp; Dreamers.
         </h1>
-        <p className="text-base sm:text-lg text-orbit-muted leading-relaxed">
-          Discover. Connect. Build. We believe that your next life-changing career opportunity, co-founder, or mentor in Bengaluru shouldn&apos;t be hidden behind fragmented event portals and paid paywalls.
+        <p className="text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+          Discover. Connect. Build. We believe that your next career opportunity, co-founder, or mentor in Bengaluru shouldn&apos;t be hidden behind fragmented event portals and paid paywalls.
         </p>
       </div>
 
       {/* Core Mission Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-6 rounded-2xl bg-orbit-card border border-orbit-border space-y-3">
-          <div className="w-10 h-10 rounded-xl bg-orbit-surface flex items-center justify-center text-orbit-signal border border-orbit-border">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div className="p-6 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-3">
+          <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-[#6A38EB] border border-purple-100">
             <Compass className="w-5 h-5" />
           </div>
-          <h2 className="font-display font-bold text-lg text-orbit-text">The Problem We Solve</h2>
-          <p className="text-xs text-orbit-muted leading-relaxed">
+          <h2 className="font-bold text-lg text-slate-950 font-serif">The Problem We Solve</h2>
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
             Finding genuine free in-person tech events in Bengaluru requires searching through Meetup, Luma, Bevy, Discord servers, and LinkedIn posts. Many events claim to be free but sneak in paid fees later, or provide zero clarity on whether lunch or certificates are actually provided.
           </p>
         </div>
 
-        <div className="p-6 rounded-2xl bg-orbit-card border border-orbit-border space-y-3">
-          <div className="w-10 h-10 rounded-xl bg-orbit-surface flex items-center justify-center text-orbit-highlight border border-orbit-border">
+        <div className="p-6 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-3">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center text-emerald-600 border border-emerald-100">
             <ShieldCheck className="w-5 h-5" />
           </div>
-          <h2 className="font-display font-bold text-lg text-orbit-text">Our Verification Promise</h2>
-          <p className="text-xs text-orbit-muted leading-relaxed">
+          <h2 className="font-bold text-lg text-slate-950 font-serif">Our Verification Promise</h2>
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
             Every listing on ORBIT BLR is independently vetted. We record the exact last verification timestamp, verify physical venues across Bengaluru tech corridors, and separate verified facts from optimistic assumptions.
           </p>
         </div>
@@ -85,24 +85,24 @@ export default function AboutPage() {
       <VerificationEngineExplainer />
 
       {/* FAQ Section */}
-      <section className="space-y-6 pt-6">
+      <section className="space-y-6 pt-4">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-secondary uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6A38EB] uppercase tracking-wider">
             <HelpCircle className="w-4 h-4" />
             <span>Got Questions?</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-display font-black text-orbit-text tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-950 tracking-tight font-serif">
             Frequently Asked Questions
           </h2>
         </div>
 
-        <div className="divide-y divide-orbit-border/80 border-y border-orbit-border/80">
+        <div className="divide-y divide-slate-200 border-y border-slate-200">
           {faqs.map((faq, index) => (
-            <div key={index} className="py-5 space-y-2">
-              <h3 className="font-display font-bold text-base text-orbit-text">
+            <div key={index} className="py-4 space-y-2">
+              <h3 className="font-bold text-base text-slate-950 font-serif">
                 {faq.q}
               </h3>
-              <p className="text-xs text-orbit-muted leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
                 {faq.a}
               </p>
             </div>
@@ -110,28 +110,23 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Community Suggest Event CTA */}
-      <div className="p-8 rounded-3xl bg-gradient-to-r from-orbit-surface via-orbit-card to-orbit-surface border border-orbit-border flex flex-col sm:flex-row sm:items-center justify-between gap-6 shadow-card">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs font-mono text-orbit-signal">
-            <Users className="w-4 h-4" />
-            <span>Community Contributions</span>
-          </div>
-          <h3 className="font-display font-bold text-xl text-orbit-text">
-            Know an authentic free tech event in Bengaluru?
-          </h3>
-          <p className="text-xs text-orbit-muted max-w-lg leading-relaxed">
-            Help the ecosystem discover worthwhile meetups, open-source workshops, and hackathons. All submissions undergo our strict 7-point verification audit before publishing.
-          </p>
+      {/* Suggest CTA */}
+      <div className="p-8 rounded-3xl bg-gradient-to-r from-purple-50 via-white to-indigo-50/50 border border-purple-200 text-center space-y-3 shadow-sm">
+        <h3 className="text-xl font-extrabold text-slate-950 font-serif">
+          Know an upcoming free tech event in Bengaluru?
+        </h3>
+        <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
+          Help the community by submitting the official event link for independent verification.
+        </p>
+        <div className="pt-2">
+          <Link
+            href="/suggest"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full text-xs font-bold bg-[#6A38EB] text-white hover:bg-[#5826D4] transition-all shadow-sm"
+          >
+            <span>Submit a Meetup</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
-
-        <Link
-          href="/suggest"
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-xs font-mono font-bold bg-orbit-signal text-orbit-bg hover:bg-orbit-signalHover transition-all shrink-0"
-        >
-          <span>Suggest an Event</span>
-          <ArrowRight className="w-3.5 h-3.5" />
-        </Link>
       </div>
     </div>
   );

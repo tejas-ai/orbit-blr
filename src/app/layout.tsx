@@ -26,8 +26,8 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#070A12",
-  colorScheme: "dark",
+  themeColor: "#FFFFFF",
+  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
 };
@@ -77,9 +77,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth overflow-x-hidden">
+    <html lang="en" className="scroll-smooth overflow-x-hidden">
       <body
-        className={`${syne.variable} ${dmSans.variable} ${plexMono.variable} bg-orbit-bg text-orbit-text font-body antialiased selection:bg-purple-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden w-full max-w-full`}
+        className={`${syne.variable} ${dmSans.variable} ${plexMono.variable} bg-white text-slate-900 font-sans antialiased selection:bg-[#6A38EB] selection:text-white min-h-screen flex flex-col overflow-x-hidden w-full max-w-full`}
       >
         <Navbar />
         <main className="flex-1 w-full max-w-full overflow-x-hidden">
