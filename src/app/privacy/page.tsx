@@ -48,7 +48,7 @@ export default function PrivacyPage() {
               </h2>
             </div>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
-              Browsing, searching, and registering for events on ORBIT BLR requires <strong>no account</strong>. If you voluntarily choose to sign in with Google or GitHub, we request only the bare minimum profile information:
+              Browsing, searching, and registering for events on ORBIT BLR requires <strong>no account</strong>. If you voluntarily choose to sign in with GitHub, we request only the bare minimum profile information:
             </p>
             <ul className="list-disc list-inside text-xs sm:text-sm text-slate-600 dark:text-[#CBD5E1] space-y-1.5 pl-2">
               <li><strong>Display Name</strong> (to personalise your header greeting)</li>
@@ -56,7 +56,7 @@ export default function PrivacyPage() {
               <li><strong>Profile Picture URL</strong> (to display your avatar in the navbar)</li>
             </ul>
             <p className="text-xs text-slate-500 dark:text-[#94A3B8] italic pt-1">
-              We never access your passwords, private repositories, Google Drive files, contacts, or background data.
+              We never access your passwords, private repositories, contacts, or background data.
             </p>
           </div>
 
