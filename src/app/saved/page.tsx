@@ -75,16 +75,16 @@ export default function SavedEventsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 pb-24 lg:pb-12">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-orbit-border/80 pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-purple-500/20 pb-6">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider mb-1">
+          <div className="inline-flex items-center gap-1.5 text-xs font-mono text-purple-400 uppercase tracking-wider mb-1">
             <Bookmark className="w-3.5 h-3.5" />
             <span>Personal Dashboard</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-display font-black text-orbit-text tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-display font-black text-white tracking-tight">
             My Saved Tech Events
           </h1>
-          <p className="text-xs sm:text-sm text-orbit-muted mt-1">
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
             Stored locally in your browser. Track upcoming dates, register directly, and sync to your calendar.
           </p>
         </div>
@@ -94,7 +94,7 @@ export default function SavedEventsPage() {
             <button
               type="button"
               onClick={handleExportAllIcs}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-orbit-signal hover:bg-orbit-signalHover text-orbit-bg transition-all"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-mono font-bold bg-purple-600 hover:bg-purple-500 text-white transition-all shadow-sm"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export All to .ICS</span>
@@ -103,7 +103,7 @@ export default function SavedEventsPage() {
             <button
               type="button"
               onClick={handleClearAll}
-              className="p-2 rounded-xl text-orbit-subtle hover:text-rose-400 bg-orbit-surface border border-orbit-border transition-colors"
+              className="p-2 rounded-xl text-slate-400 hover:text-rose-400 bg-white/[0.04] border border-purple-500/20 transition-colors"
               title="Clear all saved events"
             >
               <Trash2 className="w-4 h-4" />
@@ -114,7 +114,7 @@ export default function SavedEventsPage() {
 
       {/* Content */}
       {loading || !isLoaded ? (
-        <div className="p-12 text-center text-orbit-muted font-mono text-sm">
+        <div className="p-12 text-center text-slate-400 font-mono text-sm">
           Loading saved events...
         </div>
       ) : savedEventsList.length > 0 ? (
@@ -129,20 +129,20 @@ export default function SavedEventsPage() {
           ))}
         </div>
       ) : (
-        <div className="bg-orbit-card/60 border border-orbit-border rounded-3xl p-12 text-center max-w-lg mx-auto my-12 shadow-card">
-          <div className="w-14 h-14 rounded-2xl bg-orbit-surface flex items-center justify-center mx-auto mb-4 border border-orbit-border">
-            <Bookmark className="w-6 h-6 text-orbit-signal" />
+        <div className="bg-[#120D24] border border-purple-500/20 rounded-3xl p-12 text-center max-w-lg mx-auto my-12 shadow-card">
+          <div className="w-14 h-14 rounded-2xl bg-white/[0.04] flex items-center justify-center mx-auto mb-4 border border-purple-500/20">
+            <Bookmark className="w-6 h-6 text-purple-400" />
           </div>
-          <h2 className="font-display font-bold text-xl text-orbit-text">
+          <h2 className="font-display font-bold text-xl text-white">
             No saved events yet
           </h2>
-          <p className="text-xs text-orbit-muted mt-2 leading-relaxed">
+          <p className="text-xs text-slate-400 mt-2 leading-relaxed">
             Click the bookmark icon on any event card while exploring to keep track of upcoming meetups, workshops, and registrations.
           </p>
           <div className="mt-6">
             <Link
               href="/explore"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-orbit-signal text-orbit-bg hover:bg-orbit-signalHover transition-all shadow-glow"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-purple-600 text-white hover:bg-purple-500 transition-all shadow-sm"
             >
               <Compass className="w-4 h-4" />
               <span>Explore Free Events</span>

@@ -242,22 +242,57 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
 
       {/* Events Listing */}
       {filteredEvents.length > 0 ? (
-        <div
-          className={
-            viewMode === "grid"
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
-              : "space-y-4"
-          }
-        >
-          {filteredEvents.map((event) => (
-            <EventCard
-              key={event.id}
-              event={event}
-              isSaved={isSaved(event.id)}
-              onToggleSave={toggleSave}
-            />
-          ))}
-        </div>
+        filters.category === "Hackathons" && viewMode === "grid" ? (
+          <div className="space-y-8">
+            {/* Dedicated 2-Column Balanced Hackathon Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+              {filteredEvents.map((event) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                  isSaved={isSaved(event.id)}
+                  onToggleSave={toggleSave}
+                />
+              ))}
+            </div>
+
+            {/* Hackathon Community Callout Card */}
+            <div className="max-w-5xl mx-auto rounded-3xl p-6 sm:p-8 bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-transparent border border-amber-500/25 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <span className="text-xs font-mono font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                  <Zap className="w-3.5 h-3.5 text-amber-400" />
+                  Organizing an in-person Hackathon in Bengaluru?
+                </span>
+                <p className="text-xs sm:text-sm text-slate-300">
+                  Get your hackathon independently verified and listed for thousands of student &amp; professional builders across Bengaluru.
+                </p>
+              </div>
+              <Link
+                href="/suggest"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs font-mono font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 transition-all shrink-0"
+              >
+                <span>Submit Hackathon</span>
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div
+            className={
+              viewMode === "grid"
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5"
+                : "space-y-4"
+            }
+          >
+            {filteredEvents.map((event) => (
+              <EventCard
+                key={event.id}
+                event={event}
+                isSaved={isSaved(event.id)}
+                onToggleSave={toggleSave}
+              />
+            ))}
+          </div>
+        )
       ) : initialEvents.length === 0 ? (
         <div className="bg-orbit-card/60 border border-orbit-signal/30 rounded-2xl p-8 sm:p-12 text-center max-w-xl mx-auto my-8 shadow-glow">
           <div className="w-12 h-12 rounded-full bg-orbit-surface flex items-center justify-center mx-auto mb-4 border border-orbit-signal/40">

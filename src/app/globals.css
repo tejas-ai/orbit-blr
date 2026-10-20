@@ -9,13 +9,13 @@
 }
 
 body {
-  background-color: #09090B;
-  color: #F8F7FC;
+  background-color: #0B0813;
+  color: #FFFFFF;
   overflow-x: hidden;
   position: relative;
 }
 
-/* Atmospheric Vice City sunset gradient background wash */
+/* Subtle, refined ambient glow wash (District-inspired) */
 body::before {
   content: "";
   position: fixed;
@@ -24,9 +24,9 @@ body::before {
   right: 0;
   height: 100vh;
   background: 
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 45, 141, 0.15), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(214, 28, 140, 0.1), transparent 60%),
-    radial-gradient(ellipse 70% 50% at 10% 30%, rgba(0, 229, 255, 0.08), transparent 70%);
+    radial-gradient(ellipse 70% 35% at 50% -5%, rgba(139, 92, 246, 0.12), transparent 70%),
+    radial-gradient(ellipse 50% 30% at 85% 15%, rgba(124, 58, 237, 0.06), transparent 60%),
+    radial-gradient(ellipse 50% 30% at 15% 25%, rgba(99, 102, 241, 0.05), transparent 60%);
   pointer-events: none;
   z-index: 0;
 }
@@ -38,61 +38,47 @@ body::before {
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090B;
+  background: #0B0813;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2E1052;
+  background: #2D1F4E;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4A1A82;
+  background: #432E73;
 }
 
 /* Glassmorphism helpers */
 .glass-panel {
-  background: rgba(18, 5, 36, 0.7);
+  background: rgba(20, 15, 36, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(74, 26, 130, 0.5);
+  border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
-.glass-panel-cyan {
-  background: rgba(9, 9, 11, 0.75);
+.glass-panel-purple {
+  background: rgba(19, 13, 38, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 229, 255, 0.3);
+  border: 1px solid rgba(139, 92, 246, 0.25);
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #00E5FF 0%, #FF2D8D 60%, #FF6A3D 100%);
+  background: linear-gradient(135deg, #FFFFFF 0%, #E2E8F0 50%, #C4B5FD 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.text-gradient-vice {
-  background: linear-gradient(135deg, #FF2D8D 0%, #D61C8C 40%, #FF6A3D 100%);
+.text-gradient-purple {
+  background: linear-gradient(135deg, #DDD6FE 0%, #C4B5FD 50%, #A78BFA 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.text-gradient-cyan {
-  background: linear-gradient(135deg, #FFFFFF 0%, #00E5FF 100%);
+.text-gradient-amber {
+  background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.text-gradient-sunset {
-  background: linear-gradient(135deg, #FF6A3D 0%, #FFB347 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Subtle Perspective City Grid */
-.bg-cyber-grid {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 229, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
 }

@@ -1,0 +1,431 @@
+{
+  "timestamp": "2026-10-20T07:25:33.122Z",
+  "viewports": [],
+  "imageCheck": {
+    "totalChecked": 140,
+    "validImages": 100,
+    "brokenImages": 40,
+    "details": [
+      {
+        "page": "Homepage",
+        "viewport": "320px-mobile-compact",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "320px-mobile-compact",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "375px-mobile-standard",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "375px-mobile-standard",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "390px-mobile-modern",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "390px-mobile-modern",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "430px-mobile-large",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "430px-mobile-large",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "768px-tablet-portrait",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "768px-tablet-portrait",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "1024px-tablet-landscape",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "1024px-tablet-landscape",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "1440px-desktop",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Homepage",
+        "viewport": "1440px-desktop",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "320px-mobile-compact",
+        "src": "https://secure.meetupstatic.com/photos/event/e/6/3/2/600_526438930.jpeg",
+        "alt": "Software Architects Bangalore In-Person Meetup Photo",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "320px-mobile-compact",
+        "src": "https://secure.meetupstatic.com/photos/event/8/6/5/f/600_536374399.jpeg",
+        "alt": "BangPypers Python Meetup X Functional Programming India Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "320px-mobile-compact",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "Hackman X — 24-Hour Offline Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "320px-mobile-compact",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "320px-mobile-compact",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "320px-mobile-compact",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "DevForge — Yugaantar 2026 Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "375px-mobile-standard",
+        "src": "https://secure.meetupstatic.com/photos/event/e/6/3/2/600_526438930.jpeg",
+        "alt": "Software Architects Bangalore In-Person Meetup Photo",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "375px-mobile-standard",
+        "src": "https://secure.meetupstatic.com/photos/event/8/6/5/f/600_536374399.jpeg",
+        "alt": "BangPypers Python Meetup X Functional Programming India Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "375px-mobile-standard",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "Hackman X — 24-Hour Offline Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "375px-mobile-standard",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "375px-mobile-standard",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "375px-mobile-standard",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "DevForge — Yugaantar 2026 Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "390px-mobile-modern",
+        "src": "https://secure.meetupstatic.com/photos/event/8/6/5/f/600_536374399.jpeg",
+        "alt": "BangPypers Python Meetup X Functional Programming India Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "390px-mobile-modern",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "Hackman X — 24-Hour Offline Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "390px-mobile-modern",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "390px-mobile-modern",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "390px-mobile-modern",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "DevForge — Yugaantar 2026 Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "430px-mobile-large",
+        "src": "https://secure.meetupstatic.com/photos/event/8/6/5/f/600_536374399.jpeg",
+        "alt": "BangPypers Python Meetup X Functional Programming India Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "430px-mobile-large",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "Hackman X — 24-Hour Offline Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "430px-mobile-large",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "GEARS 2026 — Global Higher Education & AI Readiness Summit — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "430px-mobile-large",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "430px-mobile-large",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "DevForge — Yugaantar 2026 Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "768px-tablet-portrait",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "768px-tablet-portrait",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "DevForge — Yugaantar 2026 Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "1024px-tablet-landscape",
+        "src": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,qua",
+        "alt": "Beyond LLMs: A Glimpse of World Models & Physical AI Banner",
+        "issue": "naturalWidth is 0 or complete is false"
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "1024px-tablet-landscape",
+        "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMj",
+        "alt": "DevForge — Yugaantar 2026 Hackathon — ORBIT BLR Verified Series",
+        "issue": "naturalWidth is 0 or complete is false"
+      }
+    ]
+  },
+  "layoutCheck": {
+    "horizontalOverflowViolations": [
+      {
+        "page": "Homepage",
+        "viewport": "320px-mobile-compact",
+        "scrollWidth": 337,
+        "clientWidth": 320
+      },
+      {
+        "page": "Homepage",
+        "viewport": "768px-tablet-portrait",
+        "scrollWidth": 1107,
+        "clientWidth": 768
+      },
+      {
+        "page": "Homepage",
+        "viewport": "1024px-tablet-landscape",
+        "scrollWidth": 1193,
+        "clientWidth": 1024
+      },
+      {
+        "page": "Hackathons",
+        "viewport": "320px-mobile-compact",
+        "scrollWidth": 369,
+        "clientWidth": 320
+      },
+      {
+        "page": "Hackathons",
+        "viewport": "768px-tablet-portrait",
+        "scrollWidth": 1107,
+        "clientWidth": 768
+      },
+      {
+        "page": "Hackathons",
+        "viewport": "1024px-tablet-landscape",
+        "scrollWidth": 1193,
+        "clientWidth": 1024
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "320px-mobile-compact",
+        "scrollWidth": 337,
+        "clientWidth": 320
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "768px-tablet-portrait",
+        "scrollWidth": 1107,
+        "clientWidth": 768
+      },
+      {
+        "page": "Explore-All",
+        "viewport": "1024px-tablet-landscape",
+        "scrollWidth": 1193,
+        "clientWidth": 1024
+      },
+      {
+        "page": "EventDetail-HackmanX",
+        "viewport": "320px-mobile-compact",
+        "scrollWidth": 337,
+        "clientWidth": 320
+      },
+      {
+        "page": "EventDetail-HackmanX",
+        "viewport": "768px-tablet-portrait",
+        "scrollWidth": 1105,
+        "clientWidth": 768
+      },
+      {
+        "page": "EventDetail-HackmanX",
+        "viewport": "1024px-tablet-landscape",
+        "scrollWidth": 1191,
+        "clientWidth": 1024
+      },
+      {
+        "page": "EventDetail-DevForge",
+        "viewport": "320px-mobile-compact",
+        "scrollWidth": 337,
+        "clientWidth": 320
+      },
+      {
+        "page": "EventDetail-DevForge",
+        "viewport": "768px-tablet-portrait",
+        "scrollWidth": 1105,
+        "clientWidth": 768
+      },
+      {
+        "page": "EventDetail-DevForge",
+        "viewport": "1024px-tablet-landscape",
+        "scrollWidth": 1191,
+        "clientWidth": 1024
+      },
+      {
+        "page": "Saved-Events",
+        "viewport": "320px-mobile-compact",
+        "scrollWidth": 337,
+        "clientWidth": 320
+      },
+      {
+        "page": "Saved-Events",
+        "viewport": "768px-tablet-portrait",
+        "scrollWidth": 1105,
+        "clientWidth": 768
+      },
+      {
+        "page": "Saved-Events",
+        "viewport": "1024px-tablet-landscape",
+        "scrollWidth": 1191,
+        "clientWidth": 1024
+      },
+      {
+        "page": "Suggest-Event",
+        "viewport": "320px-mobile-compact",
+        "scrollWidth": 337,
+        "clientWidth": 320
+      },
+      {
+        "page": "Suggest-Event",
+        "viewport": "768px-tablet-portrait",
+        "scrollWidth": 1105,
+        "clientWidth": 768
+      },
+      {
+        "page": "Suggest-Event",
+        "viewport": "1024px-tablet-landscape",
+        "scrollWidth": 1191,
+        "clientWidth": 1024
+      }
+    ],
+    "badgeCollisionViolations": []
+  },
+  "pagesTested": [
+    "Homepage",
+    "Hackathons",
+    "Explore-All",
+    "EventDetail-HackmanX",
+    "EventDetail-DevForge",
+    "Saved-Events",
+    "Suggest-Event"
+  ]
+}

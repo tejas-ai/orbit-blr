@@ -223,24 +223,24 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
         <section id="events-directory" className="space-y-8 scroll-mt-24 pt-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-orbit-border/80 pb-6">
             <div>
-              <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider mb-1">
+              <div className="inline-flex items-center gap-1.5 text-xs font-mono text-purple-300 uppercase tracking-wider mb-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                 <span>The Bengaluru Edit • Live Directory</span>
               </div>
-              <h2 className="text-3xl sm:text-5xl font-display font-black text-white tracking-tight uppercase">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white tracking-tight leading-tight break-words">
                 DON&apos;T MISS WHAT&apos;S{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orbit-pink via-orbit-secondary to-orbit-signal">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-100 to-white">
                   COMING UP.
                 </span>
               </h2>
-              <p className="text-xs sm:text-sm text-orbit-muted mt-1.5 max-w-2xl font-normal font-sans">
+              <p className="text-xs sm:text-sm text-slate-300 mt-1.5 max-w-2xl font-normal font-sans">
                 Handpicked from verified organiser listings. 100% free entry across Bengaluru tech corridors.
               </p>
             </div>
 
             <Link
               href="/explore"
-              className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-orbit-signal hover:underline"
+              className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-purple-300 hover:text-white transition-colors"
             >
               <span>Explore all events</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -257,7 +257,7 @@ export default function HomeClient({ initialEvents }: HomeClientProps) {
           {/* Results Grid */}
           <div className="pt-2">
             {filteredEvents.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {filteredEvents.map((event, idx) => (
                   <EventCard
                     key={event.id}

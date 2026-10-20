@@ -68,24 +68,24 @@ export default function EventFiltersBar({ filters, onChange, totalResults }: Eve
   ];
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full max-w-full space-y-4 min-w-0">
       {/* 1. DISTRICT-STYLE SEARCH & PRIMARY CONTROLS */}
-      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2.5 sm:gap-3 w-full max-w-full min-w-0">
         {/* Modern Search Input with Instant Clear */}
-        <div className="relative flex-1 group">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-orbit-muted group-focus-within:text-orbit-signal transition-colors" />
+        <div className="relative flex-1 group min-w-0">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-purple-400 transition-colors" />
           <input
             type="text"
             value={filters.search || ""}
             onChange={(e) => update({ search: e.target.value })}
             placeholder="Search events, topics (e.g. Kotlin, LLMs, GenAI), venues, or tech hubs..."
-            className="w-full pl-11 pr-10 py-3 rounded-2xl bg-orbit-card/90 border border-orbit-border focus:border-orbit-signal/70 focus:outline-none focus:ring-2 focus:ring-orbit-signal/20 text-sm text-orbit-text placeholder-orbit-subtle font-sans transition-all shadow-card"
+            className="w-full pl-11 pr-10 py-2.5 sm:py-3 rounded-2xl bg-[#130D26] border border-purple-500/20 focus:border-purple-500/70 focus:outline-none focus:ring-2 focus:ring-purple-500/20 text-xs sm:text-sm text-white placeholder-slate-500 font-sans transition-all shadow-sm"
           />
           {filters.search && (
             <button
               type="button"
               onClick={() => update({ search: "" })}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-lg text-orbit-subtle hover:text-orbit-text hover:bg-orbit-surface"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.08]"
             >
               <X className="w-4 h-4" />
             </button>
@@ -93,13 +93,13 @@ export default function EventFiltersBar({ filters, onChange, totalResults }: Eve
         </div>
 
         {/* Sort & Filter Controls */}
-        <div className="flex items-center gap-2 self-end md:self-auto shrink-0">
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-1.5 sm:gap-2 w-full md:w-auto shrink-0 min-w-0">
           {/* Bengaluru Area Quick Dropdown */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-initial min-w-0">
             <select
               value={filters.area || "all"}
               onChange={(e) => update({ area: e.target.value })}
-              className="pl-8 pr-8 py-3 rounded-2xl bg-orbit-card border border-orbit-border text-xs font-mono text-orbit-text focus:border-orbit-signal focus:outline-none transition-all cursor-pointer shadow-card appearance-none"
+              className="w-full pl-7 pr-7 py-2.5 sm:py-3 rounded-2xl bg-[#130D26] border border-purple-500/20 text-[11px] sm:text-xs font-mono text-slate-300 focus:border-purple-500 focus:outline-none transition-all cursor-pointer shadow-sm appearance-none truncate"
             >
               <option value="all">📍 All Bengaluru Hubs</option>
               {BENGALURU_AREAS.map((a) => (
@@ -108,38 +108,38 @@ export default function EventFiltersBar({ filters, onChange, totalResults }: Eve
                 </option>
               ))}
             </select>
-            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-orbit-sunset pointer-events-none" />
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-orbit-subtle pointer-events-none" />
+            <MapPin className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-purple-400 pointer-events-none" />
+            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 pointer-events-none" />
           </div>
 
           {/* Sort Selector */}
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-initial min-w-0">
             <select
               value={filters.sortBy || "date_asc"}
               onChange={(e) => update({ sortBy: e.target.value as FilterState["sortBy"] })}
-              className="pl-3 pr-8 py-3 rounded-2xl bg-orbit-card border border-orbit-border text-xs font-mono text-orbit-text focus:border-orbit-signal focus:outline-none transition-all cursor-pointer shadow-card appearance-none"
+              className="w-full pl-3 pr-7 py-2.5 sm:py-3 rounded-2xl bg-[#130D26] border border-purple-500/20 text-[11px] sm:text-xs font-mono text-slate-300 focus:border-purple-500 focus:outline-none transition-all cursor-pointer shadow-sm appearance-none truncate"
             >
-              <option value="date_asc">📅 Date: Upcoming Soonest</option>
-              <option value="date_desc">📅 Date: Later First</option>
-              <option value="urgency">⚡ Urgency: Open RSVP First</option>
-              <option value="benefits">🎁 Perks: Highest Verified Perks</option>
+              <option value="date_asc">📅 Soonest</option>
+              <option value="date_desc">📅 Later First</option>
+              <option value="urgency">⚡ Open RSVP</option>
+              <option value="benefits">🎁 Top Perks</option>
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 text-orbit-subtle pointer-events-none" />
+            <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400 pointer-events-none" />
           </div>
 
           {/* Advanced Filter Toggle */}
           <button
             type="button"
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className={`inline-flex items-center gap-1.5 px-3.5 py-3 rounded-2xl text-xs font-mono border transition-all shadow-card ${
+            className={`inline-flex items-center gap-1.5 px-3 py-2.5 sm:py-3 rounded-2xl text-[11px] sm:text-xs font-mono border transition-all shadow-sm shrink-0 ${
               showAdvanced || hasActiveFilters
-                ? "bg-orbit-signal/15 text-orbit-signal border-orbit-signal/50 font-bold"
-                : "bg-orbit-card text-orbit-muted border-orbit-border hover:border-orbit-signal/40 hover:text-orbit-text"
+                ? "bg-purple-600/30 text-purple-200 border-purple-500/50 font-bold"
+                : "bg-[#130D26] text-slate-400 border-purple-500/20 hover:border-purple-500/40 hover:text-white"
             }`}
           >
             <SlidersHorizontal className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Filter</span>
-            {hasActiveFilters && <span className="w-2 h-2 rounded-full bg-orbit-signal" />}
+            {hasActiveFilters && <span className="w-2 h-2 rounded-full bg-purple-400" />}
             <ChevronDown
               className={`w-3.5 h-3.5 transition-transform ${showAdvanced ? "rotate-180" : ""}`}
             />
@@ -150,7 +150,7 @@ export default function EventFiltersBar({ filters, onChange, totalResults }: Eve
             <button
               type="button"
               onClick={resetFilters}
-              className="p-3 rounded-2xl bg-orbit-card text-orbit-subtle hover:text-orbit-text border border-orbit-border hover:border-orbit-signal/40 transition-all shadow-card"
+              className="p-2.5 sm:p-3 rounded-2xl bg-[#130D26] text-slate-400 hover:text-white border border-purple-500/20 hover:border-purple-500/40 transition-all shadow-sm shrink-0"
               title="Reset all filters"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -160,41 +160,43 @@ export default function EventFiltersBar({ filters, onChange, totalResults }: Eve
       </div>
 
       {/* 2. DISTRICT-STYLE CATEGORY HORIZONTAL PILLS SCROLLER */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-mono">
-        <button
-          type="button"
-          onClick={() => update({ category: "all" })}
-          className={`px-4 py-2 rounded-full transition-all shrink-0 border text-xs font-medium ${
-            filters.category === "all" || !filters.category
-              ? "bg-gradient-to-r from-orbit-signal to-orbit-signalHover text-orbit-bg font-extrabold border-orbit-signal shadow-glow"
-              : "bg-orbit-card text-orbit-muted border-orbit-border hover:border-orbit-signal/40 hover:text-white"
-          }`}
-        >
-          All Tech ({totalResults})
-        </button>
-        {CATEGORIES.map((cat) => (
+      <div className="w-full max-w-full overflow-hidden min-w-0">
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none text-xs font-mono w-full min-w-0">
           <button
-            key={cat}
             type="button"
-            onClick={() => update({ category: cat })}
-            className={`px-4 py-2 rounded-full transition-all shrink-0 border text-xs font-medium flex items-center gap-1.5 ${
-              filters.category?.toLowerCase() === cat.toLowerCase()
-                ? "bg-gradient-to-r from-orbit-signal to-orbit-signalHover text-orbit-bg font-extrabold border-orbit-signal shadow-glow"
-                : cat === "Hackathons"
-                ? "bg-amber-950/40 text-amber-300 border-amber-500/40 hover:border-amber-400"
-                : "bg-orbit-card text-orbit-muted border-orbit-border hover:border-orbit-signal/40 hover:text-white"
+            onClick={() => update({ category: "all" })}
+            className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full transition-all shrink-0 border text-xs font-medium ${
+              filters.category === "all" || !filters.category
+                ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-extrabold border-purple-500 shadow-sm"
+                : "bg-[#130D26] text-slate-400 border-purple-500/20 hover:border-purple-500/40 hover:text-white"
             }`}
           >
-            {cat === "Hackathons" && <Zap className="w-3.5 h-3.5 text-amber-400" />}
-            <span>{cat}</span>
+            All Tech ({totalResults})
           </button>
-        ))}
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              type="button"
+              onClick={() => update({ category: cat })}
+              className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full transition-all shrink-0 border text-xs font-medium flex items-center gap-1.5 ${
+                filters.category?.toLowerCase() === cat.toLowerCase()
+                  ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-extrabold border-purple-500 shadow-sm"
+                  : cat === "Hackathons"
+                  ? "bg-amber-950/40 text-amber-300 border-amber-500/40 hover:border-amber-400"
+                  : "bg-[#130D26] text-slate-400 border-purple-500/20 hover:border-purple-500/40 hover:text-white"
+              }`}
+            >
+              {cat === "Hackathons" && <Zap className="w-3.5 h-3.5 text-amber-400" />}
+              <span>{cat}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* 3. QUICK DATE CHIPS */}
-      <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-        <span className="text-[11px] text-orbit-subtle uppercase tracking-wider font-semibold mr-1 flex items-center gap-1">
-          <CalendarIcon className="w-3.5 h-3.5 text-orbit-pink" />
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-mono">
+        <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold mr-1 flex items-center gap-1">
+          <CalendarIcon className="w-3.5 h-3.5 text-purple-400" />
           When:
         </span>
         {dateShortcuts.map((ds) => (
@@ -202,10 +204,10 @@ export default function EventFiltersBar({ filters, onChange, totalResults }: Eve
             key={ds.id}
             type="button"
             onClick={() => update({ dateFilter: ds.id as any })}
-            className={`px-3 py-1 rounded-xl border transition-all text-xs ${
+            className={`px-2.5 py-1 sm:px-3 rounded-xl border transition-all text-xs ${
               (filters.dateFilter || "all") === ds.id
-                ? "bg-orbit-pink/20 text-orbit-pink border-orbit-pink/50 font-bold"
-                : "bg-orbit-surface/70 text-orbit-muted border-orbit-border hover:border-orbit-pink/30 hover:text-white"
+                ? "bg-purple-600/30 text-purple-200 border-purple-500/50 font-bold"
+                : "bg-[#130D26] text-slate-400 border-purple-500/20 hover:border-purple-500/40 hover:text-white"
             }`}
           >
             {ds.label}

@@ -58,20 +58,20 @@ export default function VerificationEngineExplainer() {
   ];
 
   return (
-    <section id="verification" className="my-20 scroll-mt-24">
-      <div className="bg-gradient-to-b from-orbit-card to-orbit-surface border border-orbit-border rounded-3xl p-6 sm:p-10 relative overflow-hidden shadow-card">
+    <section id="verification" className="my-16 scroll-mt-24">
+      <div className="bg-gradient-to-b from-[#140F26] to-[#0E0A1D] border border-purple-500/20 rounded-3xl p-6 sm:p-10 relative overflow-hidden shadow-card">
         {/* Decorative background glow */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-orbit-signal/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-3xl mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-orbit-signal/15 text-orbit-signal border border-orbit-signal/30 mb-3">
-            <ShieldCheck className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30 mb-3">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>The Orbit BLR Trust Standard</span>
           </div>
-          <h2 className="text-2xl sm:text-4xl font-display font-black text-orbit-text tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
             How We Distinguish Verified Facts From Assumptions.
           </h2>
-          <p className="text-sm text-orbit-muted mt-3 leading-relaxed">
+          <p className="text-sm text-slate-300 mt-3 leading-relaxed">
             Unlike aggregators that scrape and republish low-quality links, every single listing on ORBIT BLR passes through our 7-point verification protocol before publication.
           </p>
         </div>
@@ -81,20 +81,20 @@ export default function VerificationEngineExplainer() {
           {steps.map((s, idx) => (
             <div
               key={s.step}
-              className={`p-5 rounded-2xl bg-orbit-bg/60 border border-orbit-border/80 hover:border-orbit-signal/40 transition-all ${
+              className={`p-5 rounded-2xl bg-white/[0.03] border border-purple-500/20 hover:border-purple-500/40 transition-all ${
                 idx === 6 ? "md:col-span-2 lg:col-span-1" : ""
               }`}
             >
               <div className="flex items-center justify-between mb-3">
-                <span className="font-mono text-xs font-bold text-orbit-signal bg-orbit-signal/10 px-2 py-0.5 rounded border border-orbit-signal/20">
+                <span className="font-mono text-xs font-bold text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded border border-purple-500/30">
                   Step {s.step}
                 </span>
-                <s.icon className="w-4 h-4 text-orbit-muted" />
+                <s.icon className="w-4 h-4 text-slate-400" />
               </div>
-              <h3 className="font-display font-bold text-base text-orbit-text tracking-tight mb-1.5">
+              <h3 className="font-display font-bold text-base text-white tracking-tight mb-1.5">
                 {s.title}
               </h3>
-              <p className="text-xs text-orbit-muted leading-relaxed">
+              <p className="text-xs text-slate-300 leading-relaxed">
                 {s.desc}
               </p>
             </div>
@@ -102,13 +102,13 @@ export default function VerificationEngineExplainer() {
         </div>
 
         {/* Verification Status Legend */}
-        <div className="mt-8 pt-6 border-t border-orbit-border/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-          <div className="text-xs font-mono text-orbit-subtle flex items-center gap-2">
+        <div className="mt-8 pt-6 border-t border-purple-500/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="text-xs font-mono text-slate-400 flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-400" />
             <span>Our strict perk labelling criteria:</span>
           </div>
           <div className="flex flex-wrap gap-2 text-[11px] font-mono">
-            <span className="px-2.5 py-1 rounded bg-orbit-signal/15 text-orbit-signal border border-orbit-signal/30 font-semibold">
+            <span className="px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-semibold">
               Confirmed = Explicit Organiser Proof
             </span>
             <span className="px-2.5 py-1 rounded bg-purple-500/15 text-purple-300 border border-purple-500/30">

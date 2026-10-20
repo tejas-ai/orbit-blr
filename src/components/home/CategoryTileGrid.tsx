@@ -18,8 +18,8 @@ export default function CategoryTileGrid({
       label: "All Events",
       subtext: "Explore everything",
       icon: Sparkles,
-      color: "text-orbit-signal",
-      bgGradient: "from-orbit-signal/20 to-transparent",
+      color: "text-purple-400",
+      bgGradient: "from-purple-500/20 to-transparent",
     },
     {
       id: "Hackathons",
@@ -34,16 +34,16 @@ export default function CategoryTileGrid({
       label: "AI & ML",
       subtext: "LLMs, Agents & Vision",
       icon: Brain,
-      color: "text-orbit-pink",
-      bgGradient: "from-orbit-pink/20 to-transparent",
+      color: "text-purple-300",
+      bgGradient: "from-purple-500/20 to-transparent",
     },
     {
       id: "Developer",
       label: "Developer",
       subtext: "Code, Kotlin & Systems",
       icon: Code2,
-      color: "text-orbit-secondary",
-      bgGradient: "from-orbit-secondary/20 to-transparent",
+      color: "text-sky-400",
+      bgGradient: "from-sky-500/20 to-transparent",
     },
     {
       id: "Cybersecurity",
@@ -58,8 +58,8 @@ export default function CategoryTileGrid({
       label: "Cloud & Scale",
       subtext: "AWS, Azure & Kubernetes",
       icon: Cloud,
-      color: "text-sky-400",
-      bgGradient: "from-sky-500/20 to-transparent",
+      color: "text-indigo-400",
+      bgGradient: "from-indigo-500/20 to-transparent",
     },
   ];
 
@@ -67,17 +67,17 @@ export default function CategoryTileGrid({
     <div className="space-y-4 pt-4">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
         <div>
-          <span className="text-xs font-mono uppercase tracking-wider text-orbit-signal font-bold">
+          <span className="text-xs font-mono uppercase tracking-wider text-purple-400 font-bold">
             Explore Your Interests
           </span>
-          <h2 className="text-2xl sm:text-3xl font-display font-black text-white tracking-tight uppercase">
+          <h2 className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight uppercase">
             WHATEVER YOU&apos;RE INTO,{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orbit-pink to-orbit-signal">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-100 to-white">
               IT&apos;S HERE.
             </span>
           </h2>
         </div>
-        <p className="text-xs text-orbit-muted font-sans">
+        <p className="text-xs text-slate-400 font-sans">
           Curated streams across Bengaluru tech corridors
         </p>
       </div>
@@ -97,20 +97,20 @@ export default function CategoryTileGrid({
               onClick={() => onSelectCategory(tile.id)}
               className={`p-4 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between group ${
                 isSelected
-                  ? "bg-orbit-card border-orbit-signal shadow-glow"
-                  : "bg-orbit-card/60 hover:bg-orbit-card border-orbit-border hover:border-orbit-signal/40"
+                  ? "bg-[#18112E] border-purple-500 shadow-md ring-1 ring-purple-500/50"
+                  : "bg-[#120D24] hover:bg-[#18112E] border-purple-500/20 hover:border-purple-500/40"
               }`}
             >
               <div
-                className={`w-10 h-10 rounded-xl bg-orbit-surface flex items-center justify-center mb-3 ${tile.color} group-hover:scale-110 transition-transform`}
+                className={`w-10 h-10 rounded-xl bg-white/[0.05] border border-purple-500/20 flex items-center justify-center mb-3 ${tile.color} group-hover:scale-110 transition-transform`}
               >
                 <Icon className="w-5 h-5" />
               </div>
               <div className="space-y-0.5">
-                <strong className="block text-sm font-display font-bold text-white group-hover:text-orbit-signal transition-colors">
+                <strong className="block text-sm font-display font-bold text-white group-hover:text-purple-300 transition-colors">
                   {tile.label}
                 </strong>
-                <span className="block text-[11px] font-mono text-orbit-subtle truncate">
+                <span className="block text-[11px] font-mono text-slate-400 truncate">
                   {tile.subtext}
                 </span>
               </div>

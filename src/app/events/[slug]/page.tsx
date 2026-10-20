@@ -13,6 +13,7 @@ import {
   FreeEntryPill,
 } from "@/components/events/VerificationBadges";
 import EventDetailsActions from "@/components/events/EventDetailsActions";
+import EventHeroBanner from "@/components/events/EventHeroBanner";
 import { formatEventDate, formatEventTime, formatRelativeTime } from "@/lib/utils";
 import {
   Calendar,
@@ -153,19 +154,19 @@ export default async function EventPage({ params }: EventPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 pb-28 lg:pb-16">
-        {/* Breadcrumb Navigation */}
-        <nav className="flex items-center gap-2 text-xs font-mono text-orbit-muted">
-          <Link href="/" className="hover:text-orbit-signal transition-colors flex items-center gap-1">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8 pb-36 lg:pb-16">
+        {/* Breadcrumb Navigation with Safe Mobile Truncation */}
+        <nav className="flex items-center gap-2 text-xs font-mono text-slate-400">
+          <Link href="/" className="hover:text-purple-300 transition-colors flex items-center gap-1 shrink-0">
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Home</span>
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-orbit-subtle" />
-          <Link href="/explore" className="hover:text-orbit-signal transition-colors">
+          <ChevronRight className="w-3.5 h-3.5 text-slate-600 shrink-0" />
+          <Link href="/explore" className="hover:text-purple-300 transition-colors shrink-0">
             Explore Events
           </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-orbit-subtle" />
-          <span className="text-orbit-text truncate max-w-xs sm:max-w-md font-semibold">
+          <ChevronRight className="w-3.5 h-3.5 text-slate-600 shrink-0" />
+          <span className="text-white truncate max-w-[130px] xs:max-w-[200px] sm:max-w-xs md:max-w-md font-semibold">
             {event.name}
           </span>
         </nav>
@@ -173,84 +174,24 @@ export default async function EventPage({ params }: EventPageProps) {
         {/* ============================================================== */}
         {/* 1. DISTRICT-STYLE WIDESCREEN MEDIA BANNER & HERO HEADER       */}
         {/* ============================================================== */}
-        <div className="relative rounded-3xl overflow-hidden border border-orbit-border bg-orbit-card shadow-card">
-          <div className="relative w-full aspect-[21/9] min-h-[300px] sm:min-h-[420px] max-h-[540px] overflow-hidden bg-orbit-surface">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={thumbnailData.src}
-              alt={thumbnailData.alt}
-              className="w-full h-full object-cover object-center"
-            />
-            {/* High-Contrast Gradient Vignette Overlay for Readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-orbit-card via-orbit-card/65 to-black/40 pointer-events-none" />
-
-            {/* Top Overlay Badges */}
-            <div className="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none">
-              <div className="flex flex-wrap items-center gap-2 pointer-events-auto">
-                <span
-                  className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold tracking-wider uppercase backdrop-blur-md shadow-sm flex items-center gap-1.5 ${
-                    isHack
-                      ? "bg-amber-950/90 text-amber-300 border border-amber-500/40"
-                      : "bg-orbit-bg/90 text-orbit-highlight border border-orbit-signal/30"
-                  }`}
-                >
-                  {isHack ? (
-                    <Zap className="w-3.5 h-3.5 text-amber-400" />
-                  ) : (
-                    <span className="w-2 h-2 rounded-full bg-orbit-signal animate-pulse" />
-                  )}
-                  <span>{displayCategory}</span>
-                </span>
-                <FreeEntryPill />
-              </div>
-              <div className="pointer-events-auto">
-                <RegistrationBadge status={event.registration_status} />
-              </div>
-            </div>
-
-            {/* Bottom Overlay Info Banner */}
-            <div className="absolute bottom-4 left-4 right-4 sm:bottom-8 sm:left-8 sm:right-8 space-y-3 pointer-events-none">
-              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-display font-black text-white tracking-tight leading-tight max-w-4xl drop-shadow-md">
-                {event.name}
-              </h1>
-
-              <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs sm:text-sm text-orbit-muted pointer-events-auto">
-                <div className="flex items-center gap-1.5 font-medium text-white">
-                  <Building2 className="w-4 h-4 text-orbit-signal" />
-                  <span>
-                    Organised by <strong className="text-orbit-signal">{event.organizer}</strong>
-                  </span>
-                </div>
-                <span className="text-orbit-subtle hidden sm:inline">•</span>
-                <div className="flex items-center gap-1.5 font-mono text-orbit-text">
-                  <Calendar className="w-4 h-4 text-orbit-pink" />
-                  <span>{formatEventDate(event.start_at)}</span>
-                </div>
-                <span className="text-orbit-subtle hidden sm:inline">•</span>
-                <div className="flex items-center gap-1.5 font-mono text-orbit-highlight">
-                  <Clock className="w-4 h-4" />
-                  <span>{formatEventTime(event.start_at, event.end_at)}</span>
-                </div>
-                <span className="text-orbit-subtle hidden sm:inline">•</span>
-                <div className="flex items-center gap-1.5 font-mono text-emerald-400">
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>Verified: {formatRelativeTime(event.last_verified_at)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <EventHeroBanner
+          event={event}
+          initialSrc={thumbnailData.src}
+          alt={thumbnailData.alt}
+          displayCategory={displayCategory}
+          isHack={isHack}
+        />
 
         {/* ============================================================== */}
         {/* 2. DISTRICT SECTION NAVIGATION BAR                             */}
         {/* ============================================================== */}
-        <div className="sticky top-16 z-30 bg-orbit-bg/95 backdrop-blur-md py-2 border-y border-orbit-border/80 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-          <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+        <div className="sticky top-16 z-30 bg-[#0B0813]/95 backdrop-blur-md py-2 border-y border-purple-500/20 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 overflow-hidden">
+          <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth w-full">
             {navSections.map((sec) => (
               <a
                 key={sec.id}
                 href={`#${sec.id}`}
-                className="px-3.5 py-1.5 rounded-xl text-xs font-mono font-medium text-orbit-muted hover:text-orbit-signal hover:bg-orbit-surface/80 border border-transparent hover:border-orbit-border transition-all whitespace-nowrap"
+                className="px-3.5 py-1.5 rounded-xl text-xs font-mono font-medium text-slate-400 hover:text-white hover:bg-white/[0.06] border border-transparent hover:border-purple-500/20 transition-all whitespace-nowrap"
               >
                 {sec.label}
               </a>

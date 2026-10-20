@@ -11,35 +11,35 @@ const config: Config = {
     extend: {
       colors: {
         orbit: {
-          // Vice City meets Bengaluru — Neon After Dark Palette
-          bg: "#09090B", // Deep Obsidian
-          surface: "#140A26", // Midnight Violet
-          surfaceHover: "#1E0F38",
-          card: "#120524", // Deep Purple Card
-          cardHover: "#1D0A38",
-          border: "#2E1052", // Purple Border
-          borderLight: "#4A1A82",
+          // District-Inspired Royal Purple & Soft Lavender Palette
+          bg: "#0B0813", // Deep Obsidian Indigo
+          surface: "#140F24", // Refined Midnight Violet
+          surfaceHover: "#1C1533",
+          card: "#130D26", // Deep Slate Purple card surface
+          cardHover: "#1B1336",
+          border: "#2D1F4E", // Soft Lavender-Purple border
+          borderLight: "#432E73",
           
-          // Cinematic Highlights
-          signal: "#00E5FF", // Electric Cyan
-          signalHover: "#33EBFF",
-          signalGlow: "rgba(0, 229, 255, 0.25)",
+          // Refined Accents
+          signal: "#8B5CF6", // Electric Violet / Purple
+          signalHover: "#A78BFA",
+          signalGlow: "rgba(139, 92, 246, 0.25)",
           
-          pink: "#FF2D8D", // Hot Pink
-          pinkHover: "#FF4D9F",
-          magenta: "#D61C8C", // Neon Magenta
-          sunset: "#FF6A3D", // Sunset Orange
-          gold: "#FFB347", // Warm Gold
+          pink: "#A855F7", // Purple Accent
+          pinkHover: "#C084FC",
+          magenta: "#9333EA", // Royal Violet
+          sunset: "#F59E0B", // Warm Amber
+          gold: "#FBBF24", // Amber Gold
           
-          secondary: "#C084FC", // Soft Purple
-          highlight: "#00E5FF", // Electric Cyan
-          text: "#F8F7FC", // Soft White
-          muted: "#A5B4FC", // Twilight lavender
-          subtle: "#7C8BA1",
+          secondary: "#C4B5FD", // Soft Lavender
+          highlight: "#DDD6FE", // Lavender Glow
+          text: "#FFFFFF", // Crisp White
+          muted: "#CBD5E1", // Clean Slate Gray / Lavender for high readability
+          subtle: "#94A3B8", // Refined Muted Slate
           
-          danger: "#FF2D55",
-          warning: "#FFB347",
-          success: "#00F5A0", // Electric Emerald
+          danger: "#EF4444",
+          warning: "#F59E0B",
+          success: "#10B981", // Emerald
         },
       },
       fontFamily: {
@@ -48,11 +48,11 @@ const config: Config = {
         mono: ["var(--font-mono)", "IBM Plex Mono", "monospace"],
       },
       boxShadow: {
-        glow: "0 0 25px -5px rgba(0, 229, 255, 0.3)",
-        glowPink: "0 0 30px -5px rgba(255, 45, 141, 0.35)",
-        glowCyan: "0 0 30px -5px rgba(0, 229, 255, 0.35)",
-        glowSunset: "0 0 30px -5px rgba(255, 106, 61, 0.3)",
-        card: "0 8px 32px -4px rgba(0, 0, 0, 0.7)",
+        glow: "0 0 25px -5px rgba(139, 92, 246, 0.3)",
+        glowPink: "0 0 30px -5px rgba(168, 85, 247, 0.3)",
+        glowCyan: "0 0 30px -5px rgba(139, 92, 246, 0.3)",
+        glowSunset: "0 0 30px -5px rgba(245, 158, 11, 0.3)",
+        card: "0 8px 30px -4px rgba(0, 0, 0, 0.5)",
       },
       animation: {
         "spin-slow": "spin 25s linear infinite",

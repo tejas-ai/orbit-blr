@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { OrbitEvent } from "@/types/event";
-import { getEventThumbnail } from "@/lib/thumbnails";
+import { getEventThumbnail, getCategoryFallback } from "@/lib/thumbnails";
 import { isHackathonEvent } from "@/lib/hackathons";
 import { ShieldCheck, Sparkles, CheckCircle2, Clock, AlertTriangle, Lock, Zap } from "lucide-react";
 
@@ -24,15 +24,15 @@ export default function EventThumbnail({
   const displayCategory = isHack ? "Hackathons" : event.category;
   const [imgSrc, setImgSrc] = useState(thumbnailData.src);
   const [hasError, setHasError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const isStaticFallback = thumbnailData.src.startsWith("/thumbnails/");
+  const [isLoading, setIsLoading] = useState(!isStaticFallback);
 
-  // Fallback to category artwork on image load error
+  // Fallback to static category artwork on image load error
   const handleError = () => {
     if (!hasError) {
       setHasError(true);
-      // Fall back to category SVG
-      const fallback = getEventThumbnail({ ...event, thumbnail_url: null });
-      setImgSrc(fallback.src);
+      const fallback = getCategoryFallback(event);
+      setImgSrc(fallback);
       setIsLoading(false);
     }
   };
@@ -53,7 +53,7 @@ export default function EventThumbnail({
       <img
         src={imgSrc}
         alt={thumbnailData.alt}
-        loading={priority ? "eager" : "lazy"}
+        loading="eager"
         decoding="async"
         onLoad={() => setIsLoading(false)}
         onError={handleError}
@@ -69,22 +69,22 @@ export default function EventThumbnail({
       {showBadges && (
         <>
           {/* Top-Left: Category Badge + ₹0 Free Pill */}
-          <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 flex-wrap max-w-[78%]">
+          <div className="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5 flex-wrap max-w-[calc(100%-52px)]">
             <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase backdrop-blur-md shadow-sm ${
+              className={`inline-flex items-center gap-1 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[9px] sm:text-[11px] font-mono font-bold tracking-wider uppercase backdrop-blur-md shadow-sm ${
                 isHack
-                  ? "bg-amber-950/85 text-amber-300 border border-amber-500/40"
-                  : "bg-orbit-bg/90 text-orbit-highlight border border-orbit-signal/30"
+                  ? "bg-amber-950/90 text-amber-300 border border-amber-500/40"
+                  : "bg-purple-950/90 text-purple-200 border border-purple-500/30"
               }`}
             >
               {isHack ? (
-                <Zap className="w-3 h-3 text-amber-400" />
+                <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-400 shrink-0" />
               ) : (
-                <span className="w-1.5 h-1.5 rounded-full bg-orbit-signal animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0" />
               )}
-              <span>{displayCategory}</span>
+              <span className="truncate">{displayCategory}</span>
             </span>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-extrabold tracking-wider bg-emerald-500/25 backdrop-blur-md text-emerald-300 border border-emerald-400/50 shadow-[0_0_15px_rgba(16,185,129,0.35)]">
+            <span className="inline-flex items-center gap-0.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md text-[9px] sm:text-[11px] font-mono font-extrabold tracking-wider bg-emerald-950/80 backdrop-blur-md text-emerald-300 border border-emerald-500/40">
               <span>₹0 FREE</span>
             </span>
           </div>

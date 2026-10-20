@@ -13,9 +13,7 @@ import {
   X,
   MapPin,
   Search,
-  Sparkles,
   Home,
-  Flame,
   Zap,
 } from "lucide-react";
 
@@ -64,16 +62,16 @@ export default function Navbar() {
   return (
     <>
       {/* 1. TOPLINE VERIFICATION BANNER */}
-      <div className="w-full bg-[#1b123d] text-[#e5ddff] border-b border-[#2d1d52] text-[10px] sm:text-[11px] font-mono font-bold tracking-wider py-1.5 px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between sm:justify-center gap-2 sm:gap-4 truncate">
-          <span className="flex items-center gap-1.5 text-orbit-highlight">
+      <div className="w-full bg-[#140F24] text-purple-200 border-b border-purple-500/20 text-[10px] sm:text-[11px] font-mono font-bold tracking-wider py-1.5 px-3 overflow-hidden">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 sm:gap-4 text-center truncate">
+          <span className="flex items-center gap-1.5 text-purple-300 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             <span>VERIFIED TECH EXPERIENCES</span>
           </span>
-          <span className="text-white/40 hidden sm:inline">•</span>
-          <span className="text-white/90">ALWAYS ₹0 TO ATTEND</span>
-          <span className="text-white/40 hidden sm:inline">•</span>
-          <span className="text-orbit-muted hidden sm:inline">ORGANISER-FIRST LINKS ONLY</span>
+          <span className="text-purple-400/40 hidden sm:inline">•</span>
+          <span className="text-white/90 hidden xs:inline shrink-0">ALWAYS ₹0 TO ATTEND</span>
+          <span className="text-purple-400/40 hidden md:inline">•</span>
+          <span className="text-purple-300/70 hidden md:inline truncate">ORGANISER-FIRST LINKS ONLY</span>
         </div>
       </div>
 
@@ -81,30 +79,25 @@ export default function Navbar() {
       <header
         className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           isScrolled
-            ? "border-b border-orbit-border/90 bg-orbit-bg/95 backdrop-blur-2xl shadow-card py-2.5"
-            : "border-b border-white/5 bg-orbit-bg/80 backdrop-blur-md py-3"
+            ? "border-b border-purple-500/20 bg-[#0B0813]/95 backdrop-blur-2xl shadow-md py-2"
+            : "border-b border-white/5 bg-[#0B0813]/80 backdrop-blur-md py-2.5"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 flex items-center justify-between gap-2 sm:gap-4">
           {/* Left: Brand Logo & Location Badge */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-orbit-pink via-orbit-secondary to-orbit-signal p-[1.5px] shadow-[0_0_20px_rgba(255,45,141,0.35)] group-hover:shadow-[0_0_25px_rgba(0,229,255,0.5)] transition-all">
-                <div className="w-full h-full bg-orbit-bg rounded-[10px] flex items-center justify-center">
-                  <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-orbit-pink to-orbit-signal animate-pulse" />
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 p-[1.5px] shadow-[0_0_15px_rgba(139,92,246,0.3)] group-hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all">
+                <div className="w-full h-full bg-[#0B0813] rounded-[10px] flex items-center justify-center">
+                  <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
                 </div>
               </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-1.5">
-                  <span className="font-display font-black text-lg sm:text-xl tracking-wider text-white group-hover:text-orbit-signal transition-colors">
-                    ORBIT
-                  </span>
-                  <span className="font-mono text-[10px] font-black px-1.5 py-0.5 rounded bg-gradient-to-r from-orbit-pink/20 to-orbit-signal/20 text-orbit-signal border border-orbit-signal/30">
-                    BLR
-                  </span>
-                </div>
-                <span className="text-[9px] font-mono tracking-widest text-orbit-muted uppercase -mt-1 hidden sm:block">
-                  100% Free Events
+              <div className="flex items-center gap-1.5">
+                <span className="font-display font-black text-base sm:text-lg tracking-wider text-white group-hover:text-purple-300 transition-colors">
+                  ORBIT
+                </span>
+                <span className="font-mono text-[9px] sm:text-[10px] font-black px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                  BLR
                 </span>
               </div>
             </Link>
@@ -112,30 +105,30 @@ export default function Navbar() {
             {/* Location Pill */}
             <Link
               href="/explore"
-              className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-orbit-surface/80 border border-orbit-border text-orbit-muted hover:text-orbit-text hover:border-orbit-signal/40 text-xs font-mono transition-all"
+              className="hidden 2xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.04] border border-purple-500/20 text-slate-300 hover:text-white text-xs font-mono transition-all"
               title="Active Region: Bengaluru"
             >
-              <MapPin className="w-3 h-3 text-orbit-sunset" />
+              <MapPin className="w-3 h-3 text-purple-400" />
               <span className="font-semibold text-white">Bengaluru</span>
-              <span className="text-[10px] text-orbit-subtle">• 54+ Nodes</span>
+              <span className="text-[10px] text-slate-400">• 54+ Nodes</span>
             </Link>
           </div>
 
-          {/* Center: Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1 lg:gap-1.5">
+          {/* Center: Desktop Navigation — Shown on xl+ screens (1280px+) */}
+          <nav className="hidden xl:flex items-center gap-1">
             {navLinks.map((link) => {
               const active = isActive(link.href);
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-mono font-medium transition-all flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-mono font-medium transition-all flex items-center gap-1.5 ${
                     active
-                      ? "bg-orbit-surface text-orbit-signal border border-orbit-signal/40 shadow-glow font-bold"
-                      : "text-orbit-muted hover:text-orbit-text hover:bg-orbit-surface/60"
+                      ? "bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold"
+                      : "text-slate-400 hover:text-white hover:bg-white/[0.05]"
                   }`}
                 >
-                  {link.icon && <link.icon className="w-3.5 h-3.5 text-orbit-signal" />}
+                  {link.icon && <link.icon className="w-3.5 h-3.5 text-purple-400" />}
                   <span>{link.label}</span>
                 </Link>
               );
@@ -143,63 +136,63 @@ export default function Navbar() {
           </nav>
 
           {/* Right: Quick Search, Saved Events & Suggest CTA */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             {/* Quick Search Shortcut */}
             <Link
               href="/explore"
-              className="p-2 sm:px-3 sm:py-2 rounded-xl bg-orbit-surface/80 hover:bg-orbit-surface border border-orbit-border text-orbit-muted hover:text-orbit-text text-xs font-mono flex items-center gap-2 transition-all"
+              className="p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-purple-500/20 text-slate-300 hover:text-white text-xs font-mono flex items-center gap-2 transition-all"
               title="Search verified events"
             >
-              <Search className="w-4 h-4 text-orbit-signal" />
-              <span className="hidden lg:inline text-orbit-subtle">Search events...</span>
+              <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400" />
+              <span className="hidden 2xl:inline text-slate-400">Search events...</span>
             </Link>
 
             {/* Saved Events Button with Badge */}
             <Link
               href="/saved"
-              className={`relative p-2 sm:px-3 sm:py-2 rounded-xl border text-xs font-mono font-medium transition-all flex items-center gap-1.5 ${
+              className={`relative p-1.5 sm:px-2.5 sm:py-1.5 rounded-xl border text-xs font-mono font-medium transition-all flex items-center gap-1.5 ${
                 pathname === "/saved"
-                  ? "bg-orbit-signal/20 text-orbit-signal border-orbit-signal/50 shadow-glow"
-                  : "bg-orbit-surface/80 text-orbit-muted hover:text-orbit-text border-orbit-border hover:border-orbit-signal/30"
+                  ? "bg-purple-600/30 text-purple-200 border-purple-500/50"
+                  : "bg-white/[0.04] text-slate-300 hover:text-white border-purple-500/20 hover:border-purple-500/40"
               }`}
               title="Saved Events"
             >
-              <Bookmark className="w-4 h-4 text-orbit-signal" />
+              <Bookmark className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-400" />
               <span className="hidden sm:inline font-mono">My Events</span>
               {savedCount > 0 && (
                 <span
                   data-testid="saved-count-badge"
-                  className="w-4 h-4 rounded-full bg-orbit-signal text-orbit-bg font-extrabold text-[10px] flex items-center justify-center shadow-glow"
+                  className="w-4 h-4 rounded-full bg-purple-500 text-white font-extrabold text-[10px] flex items-center justify-center"
                 >
                   {savedCount}
                 </span>
               )}
             </Link>
 
-            {/* Suggest Event CTA */}
+            {/* Suggest Event CTA — on wide screens */}
             <Link
               href="/suggest"
-              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-mono font-bold uppercase tracking-wider bg-gradient-to-r from-orbit-signal to-orbit-signalHover hover:from-orbit-signalHover hover:to-orbit-signal text-orbit-bg shadow-[0_0_20px_rgba(0,229,255,0.35)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] transition-all transform active:scale-95"
+              className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-mono font-bold uppercase tracking-wider bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white shadow-sm transition-all"
             >
               <PlusCircle className="w-3.5 h-3.5" />
               <span>Suggest Event</span>
             </Link>
 
-            {/* Mobile menu trigger */}
+            {/* Mobile / Tablet menu trigger (screens below xl) */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 rounded-xl text-orbit-muted hover:text-orbit-text bg-orbit-surface border border-orbit-border"
+              className="xl:hidden p-1.5 sm:p-2 rounded-xl text-slate-300 hover:text-white bg-white/[0.04] border border-purple-500/20"
               aria-label="Toggle navigation menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5 text-orbit-pink" /> : <Menu className="w-5 h-5 text-orbit-text" />}
+              {mobileMenuOpen ? <X className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" /> : <Menu className="w-4 h-4 sm:w-5 sm:h-5 text-slate-200" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Drawer Menu */}
+        {/* Mobile / Tablet Drawer Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-orbit-bg/95 border-b border-orbit-border px-4 pt-3 pb-6 space-y-3 backdrop-blur-2xl">
+          <div className="xl:hidden bg-[#0F0A1E]/98 border-b border-purple-500/20 px-4 pt-3 pb-6 space-y-3 backdrop-blur-2xl">
             <div className="flex flex-col space-y-1">
               {navLinks.map((link) => (
                 <Link
@@ -208,25 +201,25 @@ export default function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`px-3 py-2.5 rounded-xl text-sm font-mono flex items-center gap-2.5 ${
                     isActive(link.href)
-                      ? "bg-orbit-surface text-orbit-signal font-bold border border-orbit-signal/30"
-                      : "text-orbit-muted hover:text-orbit-text"
+                      ? "bg-purple-500/20 text-purple-200 font-bold border border-purple-500/30"
+                      : "text-slate-400 hover:text-white"
                   }`}
                 >
-                  {link.icon && <link.icon className="w-4 h-4 text-orbit-signal" />}
+                  {link.icon && <link.icon className="w-4 h-4 text-purple-400" />}
                   <span>{link.label}</span>
                 </Link>
               ))}
               <Link
                 href="/saved"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2.5 rounded-xl text-sm font-mono flex items-center justify-between text-orbit-muted hover:text-orbit-text"
+                className="px-3 py-2.5 rounded-xl text-sm font-mono flex items-center justify-between text-slate-400 hover:text-white"
               >
                 <div className="flex items-center gap-2.5">
-                  <Bookmark className="w-4 h-4 text-orbit-signal" />
+                  <Bookmark className="w-4 h-4 text-purple-400" />
                   <span>My Saved Events</span>
                 </div>
                 {savedCount > 0 && (
-                  <span className="w-4 h-4 rounded-full bg-orbit-signal text-orbit-bg font-bold text-[10px] flex items-center justify-center">
+                  <span className="w-4 h-4 rounded-full bg-purple-500 text-white font-bold text-[10px] flex items-center justify-center">
                     {savedCount}
                   </span>
                 )}
@@ -234,7 +227,7 @@ export default function Navbar() {
               <Link
                 href="/suggest"
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2.5 rounded-xl text-sm font-mono flex items-center gap-2.5 text-orbit-bg font-extrabold uppercase tracking-wider bg-orbit-signal shadow-glow mt-3"
+                className="px-3 py-2.5 rounded-xl text-sm font-mono flex items-center gap-2.5 text-white font-extrabold uppercase tracking-wider bg-purple-600 hover:bg-purple-500 rounded-xl mt-3"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span>Suggest Free Tech Event</span>
@@ -244,19 +237,19 @@ export default function Navbar() {
         )}
       </header>
 
-      {/* 3. MOBILE BOTTOM NAVIGATION (Excluded on event detail page to prevent conflict with mobile booking bar) */}
+      {/* 3. MOBILE BOTTOM NAVIGATION (Excluded on event detail page) */}
       {!isEventDetailPage && (
         <nav
           aria-label="Mobile bottom navigation"
-          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-orbit-bg/95 backdrop-blur-xl border-t border-orbit-border px-3 py-2 shadow-[0_-8px_20px_rgba(0,0,0,0.4)]"
+          className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0B0813]/95 backdrop-blur-xl border-t border-purple-500/20 px-3 py-2 shadow-[0_-8px_20px_rgba(0,0,0,0.5)]"
         >
           <div className="grid grid-cols-4 items-center">
             <Link
               href="/"
               className={`flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition-colors ${
                 pathname === "/"
-                  ? "text-orbit-signal font-bold"
-                  : "text-orbit-muted hover:text-orbit-text"
+                  ? "text-purple-400 font-bold"
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               <Home className="w-5 h-5" />
@@ -267,8 +260,8 @@ export default function Navbar() {
               href="/explore"
               className={`flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition-colors ${
                 pathname === "/explore" && activeCategory !== "Hackathons"
-                  ? "text-orbit-signal font-bold"
-                  : "text-orbit-muted hover:text-orbit-text"
+                  ? "text-purple-400 font-bold"
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               <Compass className="w-5 h-5" />
@@ -279,8 +272,8 @@ export default function Navbar() {
               href="/explore?category=Hackathons"
               className={`flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition-colors ${
                 activeCategory === "Hackathons"
-                  ? "text-orbit-signal font-bold"
-                  : "text-orbit-muted hover:text-orbit-text"
+                  ? "text-amber-400 font-bold"
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               <Zap className="w-5 h-5 text-amber-400" />
@@ -291,14 +284,14 @@ export default function Navbar() {
               href="/saved"
               className={`relative flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition-colors ${
                 pathname === "/saved"
-                  ? "text-orbit-signal font-bold"
-                  : "text-orbit-muted hover:text-orbit-text"
+                  ? "text-purple-400 font-bold"
+                  : "text-slate-400 hover:text-white"
               }`}
             >
               <Bookmark className="w-5 h-5" />
               <span className="text-[10px] font-mono">Saved</span>
               {savedCount > 0 && (
-                <span className="absolute top-0 right-4 w-4 h-4 rounded-full bg-orbit-signal text-orbit-bg font-extrabold text-[9px] flex items-center justify-center">
+                <span className="absolute top-0 right-4 w-4 h-4 rounded-full bg-purple-500 text-white font-extrabold text-[9px] flex items-center justify-center">
                   {savedCount}
                 </span>
               )}

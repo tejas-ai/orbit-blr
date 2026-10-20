@@ -1,0 +1,293 @@
+{
+  "timestamp": "2026-10-20T06:47:35.520Z",
+  "testSummary": {
+    "total": 40,
+    "passed": 40,
+    "failed": 0
+  },
+  "tests": [
+    {
+      "name": "Public API returns success status",
+      "passed": true,
+      "details": "Status: 200"
+    },
+    {
+      "name": "Strict published event count equals 8",
+      "passed": true,
+      "details": "Count: 8"
+    },
+    {
+      "name": "All public events strictly have publication_status = 'published'",
+      "passed": true,
+      "details": "Verified across 8 records"
+    },
+    {
+      "name": "Zero unverified/suspicious seed records published",
+      "passed": true,
+      "details": "Suspicious records found: 0"
+    },
+    {
+      "name": "Event [blrdroid-blrkotlin-october-2026-meetup-133]: Verified data integrity",
+      "passed": true,
+      "details": "Status: open, Organizer: BlrDroid Community, Free: true"
+    },
+    {
+      "name": "Event [owasp-null-bangalore-monthly-meet-2026-10-24]: Verified data integrity",
+      "passed": true,
+      "details": "Status: approval_required, Organizer: OWASP Bangalore, Free: true"
+    },
+    {
+      "name": "Event [software-architects-meetup-2026-10-24]: Verified data integrity",
+      "passed": true,
+      "details": "Status: open, Organizer: Software Architects Bangalore, Free: true"
+    },
+    {
+      "name": "Event [bangpypers-functional-programming-india-oct-24-2026]: Verified data integrity",
+      "passed": true,
+      "details": "Status: waitlist, Organizer: BangPypers - Bangalore Python Users Group, Free: true"
+    },
+    {
+      "name": "Event [hackman-x-2026-dsce-bengaluru]: Verified data integrity",
+      "passed": true,
+      "details": "Status: approval_required, Organizer: GENESIS — Department of Information Science & Engineering, Dayananda Sagar College of Engineering, Free: true"
+    },
+    {
+      "name": "Event [gears-2026-global-higher-education-ai-readiness-summit]: Verified data integrity",
+      "passed": true,
+      "details": "Status: open, Organizer: HigherEdBPO, Free: true"
+    },
+    {
+      "name": "Event [beyond-llms-world-models-physical-ai-2026-10-31]: Verified data integrity",
+      "passed": true,
+      "details": "Status: waitlist, Organizer: Tech Coach Circle, Free: true"
+    },
+    {
+      "name": "Event [devforge-hackathon-yugaantar-2026]: Verified data integrity",
+      "passed": true,
+      "details": "Status: approval_required, Organizer: Scaler School of Technology — Yugaantar 2026, Free: true"
+    },
+    {
+      "name": "Hackman X is in database and active",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "DevForge is in database and active",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Hackman X has valid offline DSCE venue and free admission",
+      "passed": true,
+      "details": "Venue: Dayananda Sagar College of Engineering (DSCE) campus"
+    },
+    {
+      "name": "DevForge has valid Scaler SST venue and free admission",
+      "passed": true,
+      "details": "Venue: Scaler School of Technology (new campus), Wipro Limited Gate 7, Electronic City, Bengaluru 560100"
+    },
+    {
+      "name": "Search query 'Kotlin' filters results correctly",
+      "passed": true,
+      "details": "Found 1 matching card(s): BlrDroid + Blrkotlin October 2026 Meetup #133"
+    },
+    {
+      "name": "Direct navigation to /explore?category=Hackathons displays hackathons",
+      "passed": true,
+      "details": "Displaying: Hackman X — 24-Hour Offline Hackathon, DevForge — Yugaantar 2026 Hackathon"
+    },
+    {
+      "name": "Bookmarking an event updates Saved badge in navbar",
+      "passed": true,
+      "details": "Badge text: 1"
+    },
+    {
+      "name": "Saved events dashboard shows the bookmarked event",
+      "passed": true,
+      "details": "Saved count: 1"
+    },
+    {
+      "name": "Un-saving event clears dashboard to empty state",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Event detail page renders correct H1 title",
+      "passed": true,
+      "details": "Title: Hackman X — 24-Hour Offline Hackathon"
+    },
+    {
+      "name": "District ₹0 FREE ADMISSION pricing banner displayed",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Sticky booking rail CTA button is present and reflects status",
+      "passed": true,
+      "details": "CTA: APPLY ON OFFICIAL SITE"
+    },
+    {
+      "name": "Independent Verification Audit Trail section rendered",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "Suggest event submission form renders",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "[Mobile iPhone SE] Responsive navigation bar visible on homepage",
+      "passed": true,
+      "details": "Width: 320px"
+    },
+    {
+      "name": "[Mobile iPhone SE] General bottom nav strictly hidden on event detail page to prevent clash",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "[Mobile iPhone SE] Sticky booking CTA present without navigation collision",
+      "passed": true,
+      "details": "Height: 69.5px"
+    },
+    {
+      "name": "[Mobile iPhone 12/14] Responsive navigation bar visible on homepage",
+      "passed": true,
+      "details": "Width: 390px"
+    },
+    {
+      "name": "[Mobile iPhone 12/14] General bottom nav strictly hidden on event detail page to prevent clash",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "[Mobile iPhone 12/14] Sticky booking CTA present without navigation collision",
+      "passed": true,
+      "details": "Height: 69.5px"
+    },
+    {
+      "name": "[Tablet iPad Portrait] Responsive navigation bar visible on homepage",
+      "passed": true,
+      "details": "Width: 768px"
+    },
+    {
+      "name": "[Tablet iPad Portrait] General bottom nav strictly hidden on event detail page to prevent clash",
+      "passed": true,
+      "details": ""
+    },
+    {
+      "name": "[Tablet iPad Portrait] Sticky booking CTA present without navigation collision",
+      "passed": true,
+      "details": "Height: 69.5px"
+    },
+    {
+      "name": "Unauthenticated /api/admin/events rejected (status 401)",
+      "passed": true,
+      "details": "Received status: 401"
+    },
+    {
+      "name": "Public website navigation contains zero links to /admin",
+      "passed": true,
+      "details": "Found: 0"
+    },
+    {
+      "name": "Zero unhandled console errors detected",
+      "passed": true,
+      "details": "Clean console"
+    },
+    {
+      "name": "Zero broken image assets (HTTP 404/500)",
+      "passed": true,
+      "details": "All images valid"
+    },
+    {
+      "name": "Zero failed network requests",
+      "passed": true,
+      "details": "All requests 200/304"
+    }
+  ],
+  "consoleErrors": [],
+  "brokenImages": [],
+  "networkFailures": [],
+  "viewportsTested": [
+    "1440x900 (Desktop)",
+    "Mobile iPhone SE (320x667)",
+    "Mobile iPhone 12/14 (390x844)",
+    "Tablet iPad Portrait (768x1024)"
+  ],
+  "eventsAudited": [
+    {
+      "id": "evt-blrdroid-blrkotlin-20261024",
+      "slug": "blrdroid-blrkotlin-october-2026-meetup-133",
+      "name": "BlrDroid + Blrkotlin October 2026 Meetup #133",
+      "organizer": "BlrDroid Community",
+      "registration_status": "open",
+      "registration_url": "https://luma.com/1dfd73wq",
+      "thumbnail_url": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,quality=85,width=1200,height=630/event-social/ai/7c42073d-5453-43c2-926e-fb74b02a6a19.png"
+    },
+    {
+      "id": "evt-owasp-null-20261024",
+      "slug": "owasp-null-bangalore-monthly-meet-2026-10-24",
+      "name": "OWASP Bangalore / Null Bangalore Monthly Meet",
+      "organizer": "OWASP Bangalore",
+      "registration_status": "approval_required",
+      "registration_url": "https://luma.com/wlstrxqv",
+      "thumbnail_url": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,quality=85,width=1200,height=630/event-social/2c/b1684be2-8b75-4a2f-b480-a019b8910ae0.png"
+    },
+    {
+      "id": "evt-software-architects-20261024",
+      "slug": "software-architects-meetup-2026-10-24",
+      "name": "Software Architects Meetup (in-person) on 24-October-2026",
+      "organizer": "Software Architects Bangalore",
+      "registration_status": "open",
+      "registration_url": "https://www.meetup.com/softwarearchitectsbangalore/events/316719692/",
+      "thumbnail_url": "https://secure.meetupstatic.com/photos/event/e/6/3/2/600_526438930.jpeg"
+    },
+    {
+      "id": "evt-bangpypers-fp-20261024",
+      "slug": "bangpypers-functional-programming-india-oct-24-2026",
+      "name": "Python Meetup X Functional Programming India",
+      "organizer": "BangPypers - Bangalore Python Users Group",
+      "registration_status": "waitlist",
+      "registration_url": "https://www.meetup.com/bangpypers/events/312819339/",
+      "thumbnail_url": "https://secure.meetupstatic.com/photos/event/8/6/5/f/600_536374399.jpeg"
+    },
+    {
+      "id": "evt-hackman-x-20261026",
+      "slug": "hackman-x-2026-dsce-bengaluru",
+      "name": "Hackman X — 24-Hour Offline Hackathon",
+      "organizer": "GENESIS — Department of Information Science & Engineering, Dayananda Sagar College of Engineering",
+      "registration_status": "approval_required",
+      "registration_url": "https://hackman-x.devfolio.co/",
+      "thumbnail_url": null
+    },
+    {
+      "id": "evt-gears-20261027",
+      "slug": "gears-2026-global-higher-education-ai-readiness-summit",
+      "name": "GEARS 2026 — Global Higher Education & AI Readiness Summit",
+      "organizer": "HigherEdBPO",
+      "registration_status": "open",
+      "registration_url": "https://in.bookmyshow.com/events/gears-2026-higher-education-ai-summit/ET00520132",
+      "thumbnail_url": null
+    },
+    {
+      "id": "evt-world-models-20261031",
+      "slug": "beyond-llms-world-models-physical-ai-2026-10-31",
+      "name": "Beyond LLMs: A Glimpse of World Models & Physical AI",
+      "organizer": "Tech Coach Circle",
+      "registration_status": "waitlist",
+      "registration_url": "https://luma.com/lwzwhpz5",
+      "thumbnail_url": "https://images.lumacdn.com/cdn-cgi/image/format=auto,fit=cover,dpr=1,anim=false,background=white,quality=85,width=1200,height=630/event-social/62/a0229644-ea5b-4915-92e8-77599ba89156.png"
+    },
+    {
+      "id": "evt-devforge-yugaantar-20261126",
+      "slug": "devforge-hackathon-yugaantar-2026",
+      "name": "DevForge — Yugaantar 2026 Hackathon",
+      "organizer": "Scaler School of Technology — Yugaantar 2026",
+      "registration_status": "approval_required",
+      "registration_url": "https://yugaantar.org/events/devforge/register",
+      "thumbnail_url": null
+    }
+  ]
+}

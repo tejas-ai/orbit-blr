@@ -1,0 +1,34 @@
+{
+  "timestamp": "2026-10-20T08:00:52.366Z",
+  "pagesAudited": [
+    "Homepage",
+    "Hackathons",
+    "Explore-All",
+    "EventDetail-HackmanX",
+    "EventDetail-DevForge",
+    "Saved-Events",
+    "Suggest-Event"
+  ],
+  "viewportsAudited": [
+    "320px-mobile-compact",
+    "375px-mobile-standard",
+    "390px-mobile-modern",
+    "430px-mobile-large",
+    "768px-tablet-portrait",
+    "1024px-tablet-landscape",
+    "1440px-desktop"
+  ],
+  "summary": {
+    "totalImagesChecked": 140,
+    "validImages": 140,
+    "brokenImages": 0,
+    "overflowViolations": 0,
+    "badgeCollisions": 0,
+    "interactionsPassed": 4,
+    "interactionsFailed": 0
+  },
+  "brokenImageDetails": [],
+  "overflowDetails": [],
+  "badgeCollisionDetails": [],
+  "interactionDetails": []
+}

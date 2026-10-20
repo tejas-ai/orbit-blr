@@ -59,24 +59,24 @@ const HUBS: Hub[] = [
 
 export default function BengaluruRadarMap() {
   return (
-    <section className="my-20">
+    <section className="my-16">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-1.5 text-xs font-mono text-purple-400 uppercase tracking-wider mb-2">
             <MapPin className="w-4 h-4" />
             <span>Bengaluru Geography</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-display font-black text-orbit-text tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
             Explore Free Events by Bengaluru Tech District
           </h2>
-          <p className="text-xs sm:text-sm text-orbit-muted mt-1.5">
+          <p className="text-xs sm:text-sm text-slate-400 mt-1.5">
             Bengaluru&apos;s tech ecosystem is distributed across distinctive corridors. Filter by the tech park closest to you.
           </p>
         </div>
 
         <Link
           href="/explore"
-          className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal hover:underline shrink-0"
+          className="inline-flex items-center gap-1.5 text-xs font-mono text-purple-400 hover:text-white hover:underline shrink-0"
         >
           <span>View All Locations</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -88,28 +88,28 @@ export default function BengaluruRadarMap() {
           <Link
             key={hub.name}
             href={`/explore?area=${encodeURIComponent(hub.name)}`}
-            className="group block p-5 rounded-2xl bg-orbit-card hover:bg-orbit-cardHover border border-orbit-border hover:border-orbit-signal/40 transition-all shadow-card hover:shadow-glow"
+            className="group block p-5 rounded-2xl bg-[#120D24] hover:bg-[#18112E] border border-purple-500/20 hover:border-purple-500/40 transition-all shadow-sm"
           >
             <div className="flex items-start justify-between gap-2 mb-2">
-              <h3 className="font-display font-bold text-base text-orbit-text group-hover:text-orbit-signal transition-colors">
+              <h3 className="font-display font-bold text-base text-white group-hover:text-purple-300 transition-colors">
                 {hub.name}
               </h3>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-orbit-surface text-orbit-highlight border border-orbit-border">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.05] text-purple-300 border border-purple-500/20">
                 {hub.eventCount} Active
               </span>
             </div>
 
-            <div className="text-xs text-orbit-signal font-mono mb-2.5">
+            <div className="text-xs text-purple-400 font-mono mb-2.5">
               {hub.tagline}
             </div>
 
-            <div className="space-y-1.5 text-xs text-orbit-muted pt-2 border-t border-orbit-border/60">
+            <div className="space-y-1.5 text-xs text-slate-400 pt-2 border-t border-purple-500/20">
               <div className="flex items-center gap-2">
-                <Building2 className="w-3.5 h-3.5 text-orbit-subtle shrink-0" />
+                <Building2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                 <span className="line-clamp-1">{hub.majorTechPresences}</span>
               </div>
-              <div className="flex items-center gap-2 text-[11px] text-orbit-subtle">
-                <Train className="w-3.5 h-3.5 text-orbit-secondary shrink-0" />
+              <div className="flex items-center gap-2 text-[11px] text-slate-500">
+                <Train className="w-3.5 h-3.5 text-purple-400 shrink-0" />
                 <span className="line-clamp-1">{hub.metroInfo}</span>
               </div>
             </div>
