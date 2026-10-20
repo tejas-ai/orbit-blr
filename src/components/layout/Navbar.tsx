@@ -61,21 +61,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* 1. TOPLINE VERIFICATION BANNER */}
-      <div className="w-full bg-[#FAF9FF] text-[#6A38EB] border-b border-purple-100 text-[10px] sm:text-[11px] font-medium tracking-wide py-1.5 px-3 overflow-hidden">
-        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 sm:gap-4 text-center truncate">
-          <span className="flex items-center gap-1.5 font-bold shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span>VERIFIED TECH EXPERIENCES</span>
-          </span>
-          <span className="text-purple-300 hidden sm:inline">•</span>
-          <span className="text-slate-700 hidden xs:inline shrink-0 font-semibold">ALWAYS ₹0 TO ATTEND</span>
-          <span className="text-purple-300 hidden md:inline">•</span>
-          <span className="text-slate-500 hidden md:inline truncate">DIRECT ORGANISER REGISTRATION ONLY</span>
-        </div>
-      </div>
-
-      {/* 2. STICKY HEADER */}
+      {/* STICKY HEADER */}
       <header
         className={`sticky top-0 z-40 w-full transition-all duration-200 ${
           isScrolled
