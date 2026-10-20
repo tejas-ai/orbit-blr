@@ -43,16 +43,16 @@ export default function EventHeroBanner({
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* 1. CLEAN VISUAL MEDIA FRAME — ORIGINAL ASPECT RATIO, ZERO OVERLAYS */}
-      <div className="w-full rounded-3xl overflow-hidden bg-[#FAF9FF] dark:bg-[#151022] border border-purple-100/80 dark:border-[#2D224C] shadow-sm flex items-center justify-center p-3 sm:p-5 md:p-6 transition-colors">
-        <div className="relative w-full max-w-4xl max-h-[480px] sm:max-h-[520px] flex items-center justify-center">
-          {/* Banner Media with Guaranteed Fallback */}
+      {/* 1. CLEAN VISUAL MEDIA FRAME — ADAPTIVE CONTAINER, ZERO OVERLAYS, MINIMAL WASTED SPACE */}
+      <div className="w-full rounded-3xl overflow-hidden bg-[#FAF9FF] dark:bg-[#151022] border border-purple-100/80 dark:border-[#2D224C] shadow-sm flex items-center justify-center p-1.5 sm:p-2.5 transition-colors">
+        <div className="w-full flex items-center justify-center">
+          {/* Banner Media: Full Width & Auto Height up to a balanced max-height, completely uncropped */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={imgSrc}
             alt={alt}
             onError={handleError}
-            className="w-auto h-auto max-w-full max-h-[480px] sm:max-h-[520px] object-contain rounded-2xl shadow-sm transition-all"
+            className="w-auto h-auto max-w-full max-h-[500px] object-contain rounded-2xl shadow-sm transition-all block mx-auto"
           />
         </div>
       </div>

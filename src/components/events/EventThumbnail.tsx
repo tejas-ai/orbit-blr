@@ -33,14 +33,14 @@ export default function EventThumbnail({
 
   return (
     <div
-      className={`relative w-full aspect-[16/10] overflow-hidden rounded-t-2xl bg-[#FAF9FF] dark:bg-[#151022] border-b border-purple-100/70 dark:border-[#2D224C] flex items-center justify-center p-2.5 transition-colors ${className}`}
+      className={`relative w-full aspect-[16/9] overflow-hidden rounded-t-2xl bg-[#FAF9FF] dark:bg-[#151022] border-b border-purple-100/70 dark:border-[#2D224C] flex items-center justify-center transition-colors ${className}`}
     >
       {/* Loading Skeleton */}
       {isLoading && (
         <div className="absolute inset-0 bg-gradient-to-r from-purple-50 via-white to-purple-50 dark:from-[#151022] dark:via-[#1E1830] dark:to-[#151022] animate-pulse" />
       )}
 
-      {/* Main Authentic Event Image — Complete Poster, Original Aspect Ratio */}
+      {/* Main Authentic Event Image — Complete Poster, 16:9 Aspect Ratio, Minimal Empty Space */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={imgSrc}
@@ -49,7 +49,7 @@ export default function EventThumbnail({
         decoding="async"
         onLoad={() => setIsLoading(false)}
         onError={handleError}
-        className={`w-auto h-auto max-w-full max-h-full object-contain object-center rounded-xl transition-all ${
+        className={`w-full h-full object-contain object-center transition-all ${
           isLoading ? "opacity-0" : "opacity-100"
         }`}
       />

@@ -77,7 +77,7 @@ function DefensivePosterImage({
       alt={thumb.alt}
       fill
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      className={`${className} rounded-xl`}
+      className={className}
       priority={priority}
       loading="eager"
       onError={() => {
@@ -109,9 +109,9 @@ export default function EventCard({
       data-testid="event-card"
       className="group bg-white dark:bg-[#1D1B2C] rounded-3xl border border-purple-100/80 dark:border-[#302B43] shadow-sm hover:shadow-xl dark:hover:shadow-[0_12px_32px_-6px_rgba(139,92,246,0.22)] dark:hover:border-[#8B5CF6]/50 hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden focus-within:ring-2 focus-within:ring-[#8B5CF6]"
     >
-      {/* 1. CLEAN POSTER CONTAINER — NO OVERLAYS, INTRINSIC ASPECT RATIO PRESERVED */}
-      <div className="relative aspect-[16/10] bg-[#FAF9FF] dark:bg-[#151022] border-b border-purple-100/70 dark:border-[#2D224C] overflow-hidden flex items-center justify-center p-2.5 transition-colors">
-        <Link href={`/events/${event.slug}`} className="relative w-full h-full flex items-center justify-center">
+      {/* 1. CLEAN POSTER CONTAINER — 16:9 INTRINSIC ASPECT RATIO, ZERO OVERLAYS, MINIMAL WASTED SPACE */}
+      <div className="relative aspect-[16/9] w-full bg-[#FAF9FF] dark:bg-[#151022] border-b border-purple-100/70 dark:border-[#2D224C] overflow-hidden flex items-center justify-center transition-colors">
+        <Link href={`/events/${event.slug}`} className="relative w-full h-full block">
           <DefensivePosterImage
             event={event}
             priority={priority}

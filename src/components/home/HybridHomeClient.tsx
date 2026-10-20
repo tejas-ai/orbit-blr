@@ -91,7 +91,7 @@ function DefensivePosterImage({
       alt={thumb.alt}
       fill
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      className={`${className} rounded-xl`}
+      className={className}
       priority={priority}
       loading="eager"
       onError={() => {
@@ -478,9 +478,9 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
 
               <div className="rounded-3xl bg-gradient-to-r from-purple-50 via-white to-indigo-50/60 dark:from-[#1D1B2C] dark:via-[#191629] dark:to-[#1D1B2C] border border-purple-200/80 dark:border-[#302B43] p-4 sm:p-7 shadow-sm transition-all hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)]">
                 <div className="flex flex-col lg:flex-row items-center gap-5 sm:gap-8">
-                  {/* Spotlight Banner Graphic — Original Aspect Ratio, Zero Overlays */}
-                  <div className="relative w-full lg:w-96 min-h-[200px] max-h-[300px] lg:max-h-[320px] aspect-[16/10] rounded-2xl overflow-hidden shrink-0 shadow-sm bg-[#FAF9FF] dark:bg-[#151022] border border-purple-100/70 dark:border-[#2D224C] flex items-center justify-center p-2.5 sm:p-3 transition-colors">
-                    <div className="relative w-full h-full flex items-center justify-center">
+                  {/* Spotlight Banner Graphic — 16:9 Aspect Ratio, Zero Overlays, Minimal Empty Space */}
+                  <div className="relative w-full lg:w-[400px] aspect-[16/9] rounded-2xl overflow-hidden shrink-0 shadow-sm bg-[#FAF9FF] dark:bg-[#151022] border border-purple-100/70 dark:border-[#2D224C] flex items-center justify-center transition-colors">
+                    <div className="relative w-full h-full">
                       <DefensivePosterImage
                         event={spotlightEvent}
                         priority={true}
