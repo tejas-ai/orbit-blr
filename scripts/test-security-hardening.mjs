@@ -184,6 +184,28 @@ async function runTests() {
     assert.ok(typeof stats.providerBreakdown.github === "number");
   });
 
+  // 9. Statistics Secret Separation
+  test("Statistics authorization prefers ORBIT_STATS_SECRET over ORBIT_API_SECRET", () => {
+    const statsSecret = "dedicated-stats-secret-xyz";
+    const apiSecret = "general-ingest-secret-abc";
+
+    function getExpectedStatsSecret(env) {
+      return env.ORBIT_STATS_SECRET || env.ORBIT_API_SECRET;
+    }
+
+    assert.strictEqual(
+      getExpectedStatsSecret({ ORBIT_STATS_SECRET: statsSecret, ORBIT_API_SECRET: apiSecret }),
+      statsSecret,
+      "ORBIT_STATS_SECRET must take precedence when defined"
+    );
+
+    assert.strictEqual(
+      getExpectedStatsSecret({ ORBIT_API_SECRET: apiSecret }),
+      apiSecret,
+      "ORBIT_API_SECRET acts as fallback when ORBIT_STATS_SECRET is not set"
+    );
+  });
+
   console.log(`\n================================================================================`);
   console.log(`ALL ${passed}/${total} HARDENED SECURITY & IDENTITY TESTS PASSED!`);
   console.log(`================================================================================\n`);

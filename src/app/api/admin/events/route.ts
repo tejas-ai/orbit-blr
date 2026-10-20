@@ -1,55 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
-import { verifyAdminAuth } from "@/lib/auth";
-import { getAllEvents, createEvent } from "@/lib/db";
-import { OrbitEvent } from "@/types/event";
+import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
-
-export async function GET(request: NextRequest) {
-  const isAuthorized = await verifyAdminAuth(request);
-  if (!isAuthorized) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized" },
-      { status: 401 }
-    );
-  }
-
-  const events = await getAllEvents({ includeUnpublished: true });
-
-  return NextResponse.json({
-    success: true,
-    count: events.length,
-    events,
-  });
+/**
+ * RETIRED ENDPOINT — ORBIT BLR 3.0+
+ * All /admin and /api/admin/* endpoints are permanently retired.
+ * Direct requests return 404 Not Found (double-layer protection with middleware).
+ */
+export async function GET() {
+  return new NextResponse("Not Found", { status: 404, statusText: "Not Found" });
 }
 
-export async function POST(request: NextRequest) {
-  const isAuthorized = await verifyAdminAuth(request);
-  if (!isAuthorized) {
-    return NextResponse.json(
-      { success: false, error: "Unauthorized" },
-      { status: 401 }
-    );
-  }
-
-  try {
-    const data: Partial<OrbitEvent> = await request.json();
-
-    if (!data.name || !data.registration_url) {
-      return NextResponse.json(
-        { success: false, error: "Event name and registration_url are required" },
-        { status: 400 }
-      );
-    }
-
-    const created = await createEvent(data, "admin_portal");
-
-    return NextResponse.json({
-      success: true,
-      event: created,
-    });
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : "Creation failed";
-    return NextResponse.json({ success: false, error: msg }, { status: 500 });
-  }
+export async function POST() {
+  return new NextResponse("Not Found", { status: 404, statusText: "Not Found" });
 }

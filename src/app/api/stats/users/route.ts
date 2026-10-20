@@ -21,12 +21,14 @@ const NO_CACHE_HEADERS = {
 
 /**
  * Protected Registered User Statistics
- * Security: Requires x-orbit-stats-key or Authorization Bearer header matching ORBIT_API_SECRET.
+ * Security: Requires x-orbit-stats-key or Authorization Bearer header matching ORBIT_STATS_SECRET (or ORBIT_API_SECRET as fallback).
+ * This separates sensitive user metrics from automated event ingestion pipelines.
  * Does NOT recreate retired public /admin routes.
  */
 export async function GET(request: Request) {
   const authHeader = request.headers.get("authorization") || request.headers.get("x-orbit-stats-key");
-  const expectedSecret = process.env.ORBIT_API_SECRET;
+  // Dedicated statistics secret takes precedence to enforce principle of least privilege
+  const expectedSecret = process.env.ORBIT_STATS_SECRET || process.env.ORBIT_API_SECRET;
 
   const token = authHeader?.replace(/^Bearer\s+/i, "").trim();
 

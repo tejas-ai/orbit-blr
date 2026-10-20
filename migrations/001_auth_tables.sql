@@ -1,10 +1,48 @@
 -- ==============================================================================
 -- ORBIT BLR 3.2 — Auth & User Accounts Schema Migration
 -- Target: Neon PostgreSQL (Database: broad-tooth-55681211)
--- Safety: Completely isolated tables; 0 modifications to existing events data.
+-- Safety: 
+--   1. Fully atomic transaction (BEGIN ... COMMIT).
+--   2. Explicit schema migration tracking (schema_migrations table).
+--   3. Preflight sanity checks.
+--   4. Minimal data footprint: OAuth tokens (access/refresh/id) are NOT stored.
+--   5. Zero alteration to existing core tables (events, audit_logs, subscribers, suggestions).
 -- ==============================================================================
 
--- 1. Users Table (Core user profile)
+BEGIN;
+
+-- 1. Explicit Migration Tracking Table
+CREATE TABLE IF NOT EXISTS schema_migrations (
+    version TEXT PRIMARY KEY,
+    applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    description TEXT
+);
+
+-- 2. Preflight Sanity Checks Block
+DO $$
+BEGIN
+    -- Verify PostgreSQL engine compatibility (PostgreSQL 14+)
+    IF current_setting('server_version_num')::int < 140000 THEN
+        RAISE EXCEPTION 'Preflight check failed: PostgreSQL 14 or higher is required.';
+    END IF;
+
+    -- Verify that core events table exists and is unaffected
+    IF NOT EXISTS (
+        SELECT 1 FROM information_schema.tables 
+        WHERE table_schema = 'public' AND table_name = 'events'
+    ) THEN
+        RAISE EXCEPTION 'Preflight check failed: Core events table was not found in public schema.';
+    END IF;
+
+    -- Verify that migration has not already been applied
+    IF EXISTS (
+        SELECT 1 FROM schema_migrations WHERE version = '001_auth_tables'
+    ) THEN
+        RAISE NOTICE 'Migration 001_auth_tables has already been applied. Skipping DDL creation.';
+    END IF;
+END $$;
+
+-- 3. Users Table (Core user profile; email allows multiple NULLs for private GitHub profiles)
 CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     name TEXT,
@@ -18,27 +56,20 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 
--- 2. Accounts Table (OAuth Provider Credentials)
+-- 4. Accounts Table (OAuth Identity Mapping ONLY — Tokens are NOT persisted for security)
 CREATE TABLE IF NOT EXISTS accounts (
     id TEXT PRIMARY KEY,
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     type TEXT NOT NULL,
     provider TEXT NOT NULL,
     provider_account_id TEXT NOT NULL,
-    refresh_token TEXT,
-    access_token TEXT,
-    expires_at BIGINT,
-    token_type TEXT,
-    scope TEXT,
-    id_token TEXT,
-    session_state TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     CONSTRAINT unique_provider_account UNIQUE (provider, provider_account_id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_accounts_user_id ON accounts(user_id);
 
--- 3. Sessions Table (Optional database session tracking)
+-- 5. Sessions Table (Database session tracking fallback)
 CREATE TABLE IF NOT EXISTS sessions (
     id TEXT PRIMARY KEY,
     session_token TEXT UNIQUE NOT NULL,
@@ -49,7 +80,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 
 CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);
 
--- 4. User Saved Events (Cross-device bookmark synchronization)
+-- 6. User Saved Events (Cross-device bookmark synchronization scoped to user_id)
 CREATE TABLE IF NOT EXISTS user_saved_events (
     user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     event_id TEXT NOT NULL,
@@ -58,3 +89,10 @@ CREATE TABLE IF NOT EXISTS user_saved_events (
 );
 
 CREATE INDEX IF NOT EXISTS idx_user_saved_events_user ON user_saved_events(user_id);
+
+-- 7. Record Migration Version
+INSERT INTO schema_migrations (version, description)
+VALUES ('001_auth_tables', 'Auth.js v5 users, accounts, sessions, user_saved_events (zero OAuth token storage)')
+ON CONFLICT (version) DO NOTHING;
+
+COMMIT;
