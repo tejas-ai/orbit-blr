@@ -25,6 +25,13 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+import {
+  SITE_URL,
+  SITE_NAME,
+  HOMEPAGE_TITLE,
+  HOMEPAGE_DESCRIPTION,
+} from "@/lib/site";
+
 export const viewport: Viewport = {
   themeColor: "#FFFFFF",
   colorScheme: "light",
@@ -33,9 +40,12 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "ORBIT BLR — Discover Free Tech Events & Meetups in Bengaluru",
-  description:
-    "Bengaluru's verified directory for 100% free, in-person technology meetups, workshops, hackathons, and professional networking. Verified swags, certificates, food, and direct registration links.",
+  metadataBase: new URL(SITE_URL),
+  title: HOMEPAGE_TITLE,
+  description: HOMEPAGE_DESCRIPTION,
+  alternates: {
+    canonical: "/",
+  },
   keywords: [
     "Bengaluru tech events",
     "Bangalore free meetups",
@@ -48,22 +58,30 @@ export const metadata: Metadata = {
     "AI meetups Bengaluru",
     "Koramangala tech events",
     "HSR Layout hackathons",
+    "Bengaluru hackathons 2026",
   ],
   authors: [{ name: "ORBIT BLR Team" }],
   openGraph: {
-    title: "ORBIT BLR — Discover Free Tech Events in Bengaluru",
-    description:
-      "Find genuinely free in-person developer meetups, workshops, and tech networking in Bengaluru with verified goodies, certificates, and direct official registration.",
-    url: "https://orbitblr.in",
-    siteName: "ORBIT BLR",
+    title: HOMEPAGE_TITLE,
+    description: HOMEPAGE_DESCRIPTION,
+    url: `${SITE_URL}/`,
+    siteName: SITE_NAME,
     locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "ORBIT BLR — Discover Free Tech Events & Hackathons in Bengaluru",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ORBIT BLR — Free Tech Events in Bengaluru",
-    description:
-      "Discover genuinely free tech events, meetups, and workshops in Bengaluru with verified perks.",
+    title: HOMEPAGE_TITLE,
+    description: HOMEPAGE_DESCRIPTION,
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,

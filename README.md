@@ -148,7 +148,7 @@ node tests/test-live-api.mjs
 2. Add environment variables:
    - `ORBIT_ADMIN_PASSWORD`: Your chosen secure admin dashboard password
    - `ORBIT_API_SECRET`: Secret token for automated AI updates
-   - `NEXT_PUBLIC_APP_URL`: Your live domain (e.g., `https://orbitblr.in`)
+   - `NEXT_PUBLIC_APP_URL`: Your live domain (e.g., `https://orbit-blr.vercel.app`)
 3. For cloud databases, configure `DATABASE_URL` with your Supabase or Neon PostgreSQL connection string and run `schema.sql`.
 
 ---

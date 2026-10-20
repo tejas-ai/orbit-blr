@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import ExploreClient from "@/components/explore/ExploreClient";
 import { getAllEvents } from "@/lib/db";
 import { Metadata } from "next";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -9,6 +10,33 @@ export const metadata: Metadata = {
   title: "Explore Free Tech Events in Bengaluru — ORBIT BLR",
   description:
     "Search and filter through upcoming free in-person developer meetups, hackathons, and AI conferences across Koramangala, HSR Layout, Whitefield, and Bengaluru tech hubs.",
+  alternates: {
+    canonical: "/explore",
+  },
+  openGraph: {
+    title: "Explore Free Tech Events in Bengaluru — ORBIT BLR",
+    description:
+      "Search and filter through upcoming free in-person developer meetups, hackathons, and AI conferences across Koramangala, HSR Layout, Whitefield, and Bengaluru tech hubs.",
+    url: `${SITE_URL}/explore`,
+    siteName: SITE_NAME,
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Explore Free Tech Events in Bengaluru — ORBIT BLR",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Explore Free Tech Events in Bengaluru — ORBIT BLR",
+    description:
+      "Search and filter through upcoming free in-person developer meetups, hackathons, and AI conferences in Bengaluru.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default async function ExplorePage() {

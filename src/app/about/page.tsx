@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 import {
   ShieldCheck,
   CheckCircle2,
@@ -16,6 +17,33 @@ export const metadata: Metadata = {
   title: "About ORBIT BLR — Bengaluru's Free In-Person Tech Directory",
   description:
     "Learn about ORBIT BLR's mission, our strict 7-point event verification standard, and how we help developers and students in Bengaluru discover authentic free tech opportunities.",
+  alternates: {
+    canonical: "/about",
+  },
+  openGraph: {
+    title: "About ORBIT BLR — Bengaluru's Free In-Person Tech Directory",
+    description:
+      "Learn about ORBIT BLR's mission, our strict 7-point event verification standard, and how we help developers and students in Bengaluru discover authentic free tech opportunities.",
+    url: `${SITE_URL}/about`,
+    siteName: SITE_NAME,
+    locale: "en_IN",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "About ORBIT BLR — Verification Standard",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About ORBIT BLR — Bengaluru's Free In-Person Tech Directory",
+    description:
+      "Learn about ORBIT BLR's mission and strict 7-point verification standard.",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function AboutPage() {

@@ -73,6 +73,8 @@ export function formatRelativeTime(isoString: string | null): string {
   }
 }
 
+import { SITE_URL } from "@/lib/site";
+
 // Generate Google Calendar Link
 export function getGoogleCalendarUrl(event: OrbitEvent): string {
   const formatUtcDate = (isoStr: string) => {
@@ -83,7 +85,7 @@ export function getGoogleCalendarUrl(event: OrbitEvent): string {
   const startUtc = formatUtcDate(event.start_at);
   const endUtc = formatUtcDate(event.end_at);
   const location = `${event.venue}, ${event.area}, Bengaluru, Karnataka, India`;
-  const details = `${event.description}\n\nOfficial Registration: ${event.registration_url}\n\nDiscovered via ORBIT BLR (https://orbitblr.in)`;
+  const details = `${event.description}\n\nOfficial Registration: ${event.registration_url}\n\nDiscovered via ORBIT BLR (${SITE_URL}/events/${event.slug})`;
 
   const params = new URLSearchParams({
     action: "TEMPLATE",
@@ -115,12 +117,14 @@ export function generateIcsContent(event: OrbitEvent): string {
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
+    // Preserve existing calendar event UID for subscriber stability
     `UID:${event.id}@orbitblr.in`,
     `DTSTAMP:${nowIcs}`,
     `DTSTART:${startIcs}`,
     `DTEND:${endIcs}`,
     `SUMMARY:${event.name}`,
-    `DESCRIPTION:${event.description.replace(/\n/g, "\\n")} \\n\\nRegister: ${event.registration_url}`,
+    `DESCRIPTION:${event.description.replace(/\n/g, "\\n")} \\n\\nOfficial Register: ${event.registration_url} \\n\\nEvent Details: ${SITE_URL}/events/${event.slug}`,
+    `URL:${SITE_URL}/events/${event.slug}`,
     `LOCATION:${location}`,
     "STATUS:CONFIRMED",
     "END:VEVENT",

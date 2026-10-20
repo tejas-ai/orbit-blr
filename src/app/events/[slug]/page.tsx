@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
 import { getEventBySlug } from "@/lib/db";
-import { getEventThumbnail } from "@/lib/thumbnails";
+import { getEventThumbnail, getEventSocialImage } from "@/lib/thumbnails";
+import { SITE_URL, SITE_NAME } from "@/lib/site";
 import { isHackathonEvent, extractHackathonDetails } from "@/lib/hackathons";
 import {
   RegistrationBadge,
@@ -48,35 +49,52 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
   const { slug } = await params;
   const event = await getEventBySlug(slug);
 
-  if (!event) {
+  if (!event || event.publication_status !== "published") {
     return {
       title: "Event Not Found — ORBIT BLR",
+      robots: { index: false, follow: false },
     };
   }
 
-  const thumb = getEventThumbnail(event);
+  const socialImage = getEventSocialImage(event, SITE_URL);
+  const cleanDescription =
+    event.description.length > 155
+      ? `${event.description.slice(0, 152).trim()}...`
+      : event.description;
+
+  const eventUrl = `${SITE_URL}/events/${event.slug}`;
 
   return {
     title: `${event.name} — Free Tech Event in Bengaluru | ORBIT BLR`,
-    description: event.description.slice(0, 160),
+    description: cleanDescription,
+    alternates: {
+      canonical: eventUrl,
+    },
     openGraph: {
       title: `${event.name} — Free Tech Event in Bengaluru`,
-      description: event.description.slice(0, 160),
-      url: `https://orbitblr.in/events/${event.slug}`,
-      siteName: "ORBIT BLR",
+      description: cleanDescription,
+      url: eventUrl,
+      siteName: SITE_NAME,
+      locale: "en_IN",
       type: "website",
       images: [
         {
-          url: thumb.src,
-          alt: thumb.alt,
+          url: socialImage.url,
+          width: 1200,
+          height: 630,
+          alt: socialImage.alt,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
       title: `${event.name} — ORBIT BLR`,
-      description: event.description.slice(0, 160),
-      images: [thumb.src],
+      description: cleanDescription,
+      images: [socialImage.url],
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
@@ -85,23 +103,49 @@ export default async function EventPage({ params }: EventPageProps) {
   const { slug } = await params;
   const event = await getEventBySlug(slug);
 
-  if (!event) {
+  if (!event || event.publication_status !== "published") {
     notFound();
   }
 
   const thumbnailData = getEventThumbnail(event);
+  const socialImage = getEventSocialImage(event, SITE_URL);
   const isHack = isHackathonEvent(event);
   const hackathon = extractHackathonDetails(event);
   const displayCategory = isHack ? "Hackathons" : event.category;
 
+  const eventUrl = `${SITE_URL}/events/${event.slug}`;
+
+  // Build verified Schema.org Offer object
+  const offersObj: Record<string, any> = {
+    "@type": "Offer",
+    url: event.registration_url,
+    price: "0",
+    priceCurrency: "INR",
+    validFrom: event.created_at,
+  };
+
+  // Only assign supported, verified availability values; omit when uncertain
+  // (e.g. waitlist or approval_required do not map cleanly to InStock/SoldOut)
+  if (event.registration_status === "open") {
+    offersObj.availability = "https://schema.org/InStock";
+  } else if (event.registration_status === "closed") {
+    offersObj.availability = "https://schema.org/SoldOut";
+  }
+
+  // Schema.org Event Structured Data strictly using verified database fields
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Event",
     name: event.name,
+    url: eventUrl,
+    description: event.description,
     startDate: event.start_at,
     endDate: event.end_at,
     eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventAttendanceMode: event.is_in_person
+      ? "https://schema.org/OfflineEventAttendanceMode"
+      : "https://schema.org/OnlineEventAttendanceMode",
+    isAccessibleForFree: true,
     location: {
       "@type": "Place",
       name: event.venue,
@@ -114,16 +158,8 @@ export default async function EventPage({ params }: EventPageProps) {
         addressCountry: "IN",
       },
     },
-    image: [thumbnailData.src],
-    description: event.description,
-    offers: {
-      "@type": "Offer",
-      url: event.registration_url,
-      price: "0",
-      priceCurrency: "INR",
-      availability: "https://schema.org/InStock",
-      validFrom: event.created_at,
-    },
+    image: [socialImage.url],
+    offers: offersObj,
     organizer: {
       "@type": "Organization",
       name: event.organizer,

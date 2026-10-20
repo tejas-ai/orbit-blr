@@ -55,7 +55,7 @@ export default function AiIntegrationDocsPage() {
   ]
 }`;
 
-  const curlExample = `curl -X POST https://orbitblr.in/api/admin/events/import \\
+  const curlExample = `curl -X POST https://orbit-blr.vercel.app/api/admin/events/import \\
   -H "Content-Type: application/json" \\
   -H "Authorization: Bearer YOUR_ORBIT_API_SECRET" \\
   -d '${exampleJson.replace(/\n/g, "")}'`;
@@ -63,7 +63,7 @@ export default function AiIntegrationDocsPage() {
   const pythonScript = `import os
 import requests
 
-API_URL = "https://orbitblr.in/api/admin/events/import"
+API_URL = "https://orbit-blr.vercel.app/api/admin/events/import"
 API_SECRET = os.environ["ORBIT_API_SECRET"]  # Configured in your secure environment
 
 payload = {

@@ -81,3 +81,50 @@ export function getEventThumbnail(event: Partial<OrbitEvent>): ResolvedThumbnail
     attribution: "ORBIT BLR Verified Category Visual",
   };
 }
+
+/**
+ * Returns a guaranteed raster (PNG/JPG) image for Open Graph and Twitter cards.
+ * Social scrapers (WhatsApp, X, LinkedIn, Facebook) do not render SVG metadata images.
+ */
+export function getEventSocialImage(event: Partial<OrbitEvent>, siteUrl: string): { url: string; alt: string } {
+  // 1. If authentic verified raster thumbnail exists and is not SVG
+  if (
+    event.thumbnail_url &&
+    event.thumbnail_url.trim() !== "" &&
+    event.thumbnail_verification_status === "verified" &&
+    !event.thumbnail_url.endsWith(".svg")
+  ) {
+    return {
+      url: event.thumbnail_url,
+      alt: event.thumbnail_alt || `${event.name || "Tech Event"} — Official Banner`,
+    };
+  }
+
+  // 2. High-resolution raster PNG category fallback
+  const isHack = isHackathonEvent(event);
+  const categoryKey = isHack ? "Hackathons" : (event.category || "Developer");
+  const normKey = categoryKey.toLowerCase().replace(/ & /g, "-").replace(/\s+/g, "-");
+
+  const categoryPngMap: Record<string, string> = {
+    hackathons: "/thumbnails/hackathons.png",
+    "ai-ml": "/thumbnails/ai-ml.png",
+    ai: "/thumbnails/ai-ml.png",
+    developer: "/thumbnails/developer.png",
+    cybersecurity: "/thumbnails/cybersecurity.png",
+    security: "/thumbnails/cybersecurity.png",
+    cloud: "/thumbnails/cloud.png",
+    "data-science": "/thumbnails/data-science.png",
+    robotics: "/thumbnails/robotics.png",
+    quantum: "/thumbnails/quantum.png",
+    startup: "/thumbnails/startup.png",
+    networking: "/thumbnails/networking.png",
+    workshops: "/thumbnails/workshops.png",
+  };
+
+  const pngPath = categoryPngMap[normKey] || "/thumbnails/developer.png";
+  return {
+    url: `${siteUrl}${pngPath}`,
+    alt: `${event.name || categoryKey} — ORBIT BLR Verified Series`,
+  };
+}
+

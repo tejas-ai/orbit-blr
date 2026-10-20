@@ -1,8 +1,9 @@
 import { MetadataRoute } from "next";
 import { getAllEvents } from "@/lib/db";
+import { SITE_URL } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://orbitblr.in";
+  const baseUrl = SITE_URL;
   const events = await getAllEvents({ includeUnpublished: false });
 
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -17,12 +18,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: new Date(),
       changeFrequency: "hourly",
       priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/suggest`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.7,
     },
     {
       url: `${baseUrl}/about`,
