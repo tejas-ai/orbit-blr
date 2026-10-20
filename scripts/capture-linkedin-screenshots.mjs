@@ -127,7 +127,14 @@ async function captureAll() {
       delay: 2500,
     });
 
-    console.log("\n🎉 All 10 cinematic high-resolution screenshots generated successfully!");
+    // 11. Mobile District Event Detail Page with Sticky Booking Bar
+    await snap(
+      "https://orbit-blr.vercel.app/events/blrdroid-blrkotlin-october-2026-meetup-133",
+      "11-district-mobile-detail-sticky-bar.png",
+      { delay: 3000 }
+    );
+
+    console.log("\n🎉 All 11 cinematic high-resolution screenshots generated successfully!");
     console.log(`📁 Files are located strictly in: ${outputDir}`);
   } catch (err) {
     console.error("Screenshot error:", err);
