@@ -56,11 +56,12 @@ function formatDate(iso?: string | null) {
 /**
  * Defensive poster image component:
  * Guarantees zero broken images by automatically replacing failed URLs with category SVG artwork.
+ * Displays the complete uncropped image with intrinsic aspect ratio.
  */
 function DefensivePosterImage({
   event,
   priority = false,
-  className = "object-cover",
+  className = "object-contain",
 }: {
   event: OrbitEvent;
   priority?: boolean;
@@ -76,7 +77,7 @@ function DefensivePosterImage({
       alt={thumb.alt}
       fill
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      className={className}
+      className={`${className} rounded-xl`}
       priority={priority}
       loading="eager"
       onError={() => {
@@ -108,84 +109,85 @@ export default function EventCard({
       data-testid="event-card"
       className="group bg-white dark:bg-[#1D1B2C] rounded-3xl border border-purple-100/80 dark:border-[#302B43] shadow-sm hover:shadow-xl dark:hover:shadow-[0_12px_32px_-6px_rgba(139,92,246,0.22)] dark:hover:border-[#8B5CF6]/50 hover:-translate-y-1 transition-all duration-300 flex flex-col overflow-hidden focus-within:ring-2 focus-within:ring-[#8B5CF6]"
     >
-      {/* 1. POSTER THUMBNAIL CONTAINER WITH DISTRICT DATE BADGE */}
-      <div className="relative aspect-[4/3] bg-purple-50 dark:bg-[#151522] overflow-hidden">
-        <Link href={`/events/${event.slug}`} className="block w-full h-full">
+      {/* 1. CLEAN POSTER CONTAINER — NO OVERLAYS, INTRINSIC ASPECT RATIO PRESERVED */}
+      <div className="relative aspect-[16/10] bg-[#FAF9FF] dark:bg-[#151022] border-b border-purple-100/70 dark:border-[#2D224C] overflow-hidden flex items-center justify-center p-2.5 transition-colors">
+        <Link href={`/events/${event.slug}`} className="relative w-full h-full flex items-center justify-center">
           <DefensivePosterImage
             event={event}
             priority={priority}
-            className="object-cover group-hover:scale-[1.03] transition-transform duration-500"
+            className="object-contain object-center"
           />
         </Link>
-
-        {/* Floating Bookmark Button */}
-        {onToggleSave && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              onToggleSave(event.id);
-            }}
-            aria-label={isSaved ? "Remove from saved events" : "Save this event"}
-            className={`absolute top-3 right-3 w-9 h-9 rounded-full flex items-center justify-center shadow-md backdrop-blur transition-all active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#1D1B2C] ${
-              isSaved
-                ? "bg-[#6A38EB] dark:bg-[#8B5CF6] text-white"
-                : "bg-white/90 dark:bg-[#151522]/90 text-slate-700 dark:text-[#F7F5FF] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] border border-transparent dark:border-[#302B43]"
-            }`}
-          >
-            <Bookmark className={`w-4 h-4 ${isSaved ? "fill-white" : ""}`} />
-          </button>
-        )}
-
-        {/* Registration Status Pill */}
-        <div className="absolute top-3 left-3 pointer-events-none">
-          <span
-            className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-sm backdrop-blur ${
-              isClosed
-                ? "bg-slate-700 dark:bg-slate-800 text-white"
-                : event.registration_status === "open"
-                ? "bg-emerald-600 dark:bg-emerald-600 text-white"
-                : event.registration_status === "approval_required"
-                ? "bg-amber-600 dark:bg-amber-600 text-white"
-                : "bg-purple-900 dark:bg-purple-900 text-white"
-            }`}
-          >
-            {isClosed
-              ? "Closed"
-              : event.registration_status === "open"
-              ? "Open"
-              : event.registration_status === "approval_required"
-              ? "Approval Req"
-              : "Waitlist"}
-          </span>
-        </div>
-
-        {/* Signature District Date Badge (Bottom Right) */}
-        <div className="absolute bottom-3 right-3 bg-white/95 dark:bg-[#151522]/95 backdrop-blur-md rounded-2xl px-3 py-1.5 text-center shadow-md border border-purple-100 dark:border-[#302B43] min-w-[50px] pointer-events-none">
-          <div className="text-[10px] font-extrabold text-[#6A38EB] dark:text-[#A78BFA] tracking-wider uppercase">
-            {dateInfo.month}
-          </div>
-          <div className="text-lg font-black text-slate-900 dark:text-[#F7F5FF] leading-none">
-            {dateInfo.day}
-          </div>
-        </div>
       </div>
 
-      {/* 2. CARD CONTENT BODY */}
+      {/* 2. CARD CONTENT BODY — ALL METADATA ORGANIZED OUTSIDE THE IMAGE */}
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div>
-          {/* Category Tag + Hackathon Highlights */}
-          <div className="flex items-center gap-1.5 mb-2 flex-wrap">
-            <span className="px-2 py-0.5 rounded-md bg-purple-50 dark:bg-[#151522] text-[#6A38EB] dark:text-[#A78BFA] border border-transparent dark:border-[#302B43] text-[10px] font-bold uppercase tracking-wider">
-              {isHack ? "Hackathon" : event.category}
-            </span>
-
-            {isHack && hackathon?.teamSize && (
-              <span className="px-2 py-0.5 rounded-md bg-amber-50 dark:bg-[#2A1D0D] text-amber-800 dark:text-amber-300 border border-transparent dark:border-amber-900/60 text-[10px] font-semibold flex items-center gap-1">
-                <Users className="w-3 h-3 text-amber-600 dark:text-amber-400" />
-                <span>{hackathon.teamSize}</span>
+          {/* Top Row: Category + Registration Status + Bookmark Button */}
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="px-2.5 py-0.5 rounded-full bg-purple-50 dark:bg-[#251D3D] text-[#6A38EB] dark:text-[#A78BFA] border border-purple-200/60 dark:border-[#382C58] text-[10px] font-bold uppercase tracking-wider">
+                {isHack ? "Hackathon" : event.category}
               </span>
+
+              <span
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                  isClosed
+                    ? "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400"
+                    : event.registration_status === "open"
+                    ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800/50"
+                    : event.registration_status === "approval_required"
+                    ? "bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200/60 dark:border-amber-800/50"
+                    : "bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border border-purple-200/60 dark:border-purple-800/50"
+                }`}
+              >
+                {isClosed
+                  ? "Closed"
+                  : event.registration_status === "open"
+                  ? "Open"
+                  : event.registration_status === "approval_required"
+                  ? "Approval Req"
+                  : "Waitlist"}
+              </span>
+
+              {isHack && hackathon?.teamSize && (
+                <span className="px-2 py-0.5 rounded-full bg-amber-50 dark:bg-[#2A1D0D] text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-amber-900/60 text-[10px] font-semibold flex items-center gap-1">
+                  <Users className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                  <span>{hackathon.teamSize}</span>
+                </span>
+              )}
+            </div>
+
+            {/* Floating Bookmark Button Moved Cleanly Outside the Image */}
+            {onToggleSave && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onToggleSave(event.id);
+                }}
+                aria-label={isSaved ? "Remove from saved events" : "Save this event"}
+                className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] shrink-0 ${
+                  isSaved
+                    ? "bg-[#6A38EB] dark:bg-[#8B5CF6] text-white shadow-sm"
+                    : "bg-slate-100 dark:bg-[#1E1830] text-slate-600 dark:text-[#CBD5E1] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] hover:bg-purple-50 dark:hover:bg-[#251D3D] border border-transparent dark:border-[#382C58]"
+                }`}
+              >
+                <Bookmark className={`w-3.5 h-3.5 ${isSaved ? "fill-white" : ""}`} />
+              </button>
+            )}
+          </div>
+
+          {/* Prominent Date & Time Row */}
+          <div className="flex items-center gap-1.5 text-xs font-bold text-[#6A38EB] dark:text-[#A78BFA] mb-1.5">
+            <Calendar className="w-3.5 h-3.5 text-[#6A38EB] dark:text-[#8B5CF6] shrink-0" />
+            <span>{dateInfo.full}</span>
+            {dateInfo.time && (
+              <>
+                <span className="text-slate-300 dark:text-[#382C58]">•</span>
+                <span className="text-[11px] font-medium text-slate-600 dark:text-[#CBD5E1]">{dateInfo.time}</span>
+              </>
             )}
           </div>
 
@@ -202,20 +204,14 @@ export default function EventCard({
             <span>{event.organizer}</span>
           </p>
 
-          {/* Location & Time */}
-          <div className="mt-2.5 text-xs text-slate-600 dark:text-[#C4C0D6] space-y-1">
+          {/* Location */}
+          <div className="mt-2 text-xs text-slate-600 dark:text-[#C4C0D6]">
             <div className="flex items-center gap-1.5 text-[11px]">
               <MapPin className="w-3.5 h-3.5 text-purple-400 dark:text-[#A78BFA] shrink-0" />
               <span className="line-clamp-1">
                 {event.area}, {event.venue}
               </span>
             </div>
-            {dateInfo.time && (
-              <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-[#C4C0D6]/90">
-                <Clock className="w-3.5 h-3.5 text-purple-400 dark:text-[#A78BFA] shrink-0" />
-                <span>{dateInfo.time}</span>
-              </div>
-            )}
           </div>
 
           {/* Verified Perks: Displayed ONLY when confirmed by organisers */}

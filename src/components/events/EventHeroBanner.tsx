@@ -43,48 +43,53 @@ export default function EventHeroBanner({
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* 1. CLEAN VISUAL MEDIA FRAME — NEVER OVERLAY TITLE OR METADATA ON ARTWORK */}
-      <div className="relative w-full aspect-[21/9] min-h-[220px] sm:min-h-[340px] max-h-[460px] rounded-3xl overflow-hidden bg-slate-900 border border-slate-200/90 dark:border-[#302B43] shadow-sm flex items-center justify-center">
-        {/* Banner Media with Guaranteed Fallback */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={imgSrc}
-          alt={alt}
-          onError={handleError}
-          className="w-full h-full object-cover object-center"
-        />
+      {/* 1. CLEAN VISUAL MEDIA FRAME — ORIGINAL ASPECT RATIO, ZERO OVERLAYS */}
+      <div className="w-full rounded-3xl overflow-hidden bg-[#FAF9FF] dark:bg-[#151022] border border-purple-100/80 dark:border-[#2D224C] shadow-sm flex items-center justify-center p-3 sm:p-5 md:p-6 transition-colors">
+        <div className="relative w-full max-w-4xl max-h-[480px] sm:max-h-[520px] flex items-center justify-center">
+          {/* Banner Media with Guaranteed Fallback */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imgSrc}
+            alt={alt}
+            onError={handleError}
+            className="w-auto h-auto max-w-full max-h-[480px] sm:max-h-[520px] object-contain rounded-2xl shadow-sm transition-all"
+          />
+        </div>
+      </div>
 
-        {/* Minimal Floating Category Pill at Top Left (does not obscure artwork) */}
-        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-2">
+      {/* 2. DEDICATED EVENT METADATA HEADER — DISPLAYED CLEANLY BELOW THE VISUAL */}
+      <div className="bg-white dark:bg-[#1D1B2C] border border-slate-200/90 dark:border-[#302B43] rounded-3xl p-5 sm:p-7 shadow-sm dark:shadow-[0_8px_24px_rgba(0,0,0,0.35)] space-y-4 transition-colors">
+        {/* Top Badges Row (Moved outside and below the image) */}
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Category Pill */}
           <span
-            className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider backdrop-blur-md shadow-sm flex items-center gap-1.5 ${
+            className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5 ${
               isHack
-                ? "bg-amber-500/90 text-white"
-                : "bg-white/95 dark:bg-[#151522]/95 text-[#6A38EB] dark:text-[#A78BFA] border border-transparent dark:border-[#302B43]"
+                ? "bg-amber-100 dark:bg-[#2A1D0D] text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900/60"
+                : "bg-purple-100 dark:bg-[#251D3D] text-[#6A38EB] dark:text-[#A78BFA] border border-purple-200/80 dark:border-[#382C58]"
             }`}
           >
             {isHack ? (
-              <Zap className="w-3.5 h-3.5 text-white" />
+              <Zap className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
             ) : (
               <span className="w-2 h-2 rounded-full bg-[#6A38EB] dark:bg-[#8B5CF6]" />
             )}
             <span>{displayCategory}</span>
           </span>
 
-          <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-600/95 text-white shadow-sm backdrop-blur-md">
+          {/* ₹0 Free Entry Pill */}
+          <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-800/60 shadow-sm">
             ₹0 Free Entry
           </span>
-        </div>
 
-        {/* Floating Registration Status Pill at Top Right */}
-        <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
+          {/* Registration Status Pill */}
           <span
-            className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm backdrop-blur-md ${
+            className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm ${
               event.registration_status === "open"
-                ? "bg-emerald-600/95 text-white"
+                ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-800/60"
                 : event.registration_status === "approval_required"
-                ? "bg-amber-600/95 text-white"
-                : "bg-slate-900/90 dark:bg-slate-800 text-white"
+                ? "bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 border border-amber-200/80 dark:border-amber-800/60"
+                : "bg-slate-100 dark:bg-[#1E1830] text-slate-700 dark:text-[#CBD5E1] border border-slate-200/80 dark:border-[#302B43]"
             }`}
           >
             {event.registration_status === "open"
@@ -93,11 +98,13 @@ export default function EventHeroBanner({
               ? "Approval Required"
               : "Waitlist"}
           </span>
-        </div>
-      </div>
 
-      {/* 2. DEDICATED EVENT METADATA HEADER — DISPLAYED CLEANLY BELOW THE VISUAL */}
-      <div className="bg-white dark:bg-[#1D1B2C] border border-slate-200/90 dark:border-[#302B43] rounded-3xl p-5 sm:p-7 shadow-sm dark:shadow-[0_8px_24px_rgba(0,0,0,0.35)] space-y-4 transition-colors">
+          {/* Organiser Verified Pill */}
+          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 dark:bg-[#1E1830] text-slate-700 dark:text-[#CBD5E1] border border-slate-200/80 dark:border-[#302B43] flex items-center gap-1.5 ml-auto sm:ml-0">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <span>Independently Verified</span>
+          </span>
+        </div>
         {/* Title */}
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-950 dark:text-[#F7F5FF] tracking-tight font-serif leading-tight">
           {event.name}

@@ -70,11 +70,12 @@ function formatDate(iso?: string | null) {
 /**
  * Defensive poster image component:
  * Guarantees zero broken image icons by automatically falling back to category SVG artwork.
+ * Displays the complete uncropped image with intrinsic aspect ratio.
  */
 function DefensivePosterImage({
   event,
   priority = false,
-  className = "object-cover",
+  className = "object-contain",
 }: {
   event: OrbitEvent;
   priority?: boolean;
@@ -90,7 +91,7 @@ function DefensivePosterImage({
       alt={thumb.alt}
       fill
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-      className={className}
+      className={`${className} rounded-xl`}
       priority={priority}
       loading="eager"
       onError={() => {
@@ -477,42 +478,47 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
 
               <div className="rounded-3xl bg-gradient-to-r from-purple-50 via-white to-indigo-50/60 dark:from-[#1D1B2C] dark:via-[#191629] dark:to-[#1D1B2C] border border-purple-200/80 dark:border-[#302B43] p-4 sm:p-7 shadow-sm transition-all hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)]">
                 <div className="flex flex-col lg:flex-row items-center gap-5 sm:gap-8">
-                  {/* Spotlight Banner Graphic with Date Badge */}
-                  <div className="relative w-full lg:w-96 aspect-[16/9] lg:aspect-[4/3] rounded-2xl overflow-hidden shrink-0 shadow-sm bg-slate-100 dark:bg-[#151522]">
-                    <DefensivePosterImage event={spotlightEvent} priority={true} />
-
-                    <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-white/95 dark:bg-[#151522]/95 text-[#6A38EB] dark:text-[#A78BFA] font-extrabold text-[10px] tracking-wide uppercase shadow-sm backdrop-blur border border-transparent dark:border-[#302B43]">
-                      {spotlightHack?.isHackathon ? "Offline Hackathon" : "Verified Spotlight"}
-                    </div>
-
-                    {/* Overlaid District Date Badge */}
-                    <div className="absolute bottom-3 right-3 bg-white/95 dark:bg-[#151522]/95 backdrop-blur rounded-2xl px-3.5 py-1.5 text-center shadow-md border border-purple-100 dark:border-[#302B43] min-w-[54px]">
-                      <div className="text-[10px] font-extrabold text-[#6A38EB] dark:text-[#A78BFA] tracking-wider uppercase">
-                        {spotlightDate.month}
-                      </div>
-                      <div className="text-xl font-black text-slate-900 dark:text-[#F7F5FF] leading-none">
-                        {spotlightDate.day}
-                      </div>
+                  {/* Spotlight Banner Graphic — Original Aspect Ratio, Zero Overlays */}
+                  <div className="relative w-full lg:w-96 min-h-[200px] max-h-[300px] lg:max-h-[320px] aspect-[16/10] rounded-2xl overflow-hidden shrink-0 shadow-sm bg-[#FAF9FF] dark:bg-[#151022] border border-purple-100/70 dark:border-[#2D224C] flex items-center justify-center p-2.5 sm:p-3 transition-colors">
+                    <div className="relative w-full h-full flex items-center justify-center">
+                      <DefensivePosterImage
+                        event={spotlightEvent}
+                        priority={true}
+                        className="object-contain object-center"
+                      />
                     </div>
                   </div>
 
                   {/* Spotlight Content */}
                   <div className="flex-1 w-full flex flex-col justify-between">
                     <div>
+                      {/* Top Badges Row (Moved outside the image) */}
+                      <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                        <span className="px-3 py-1 rounded-full bg-purple-100 dark:bg-[#251D3D] text-[#6A38EB] dark:text-[#A78BFA] font-extrabold text-[11px] tracking-wide uppercase border border-purple-200/80 dark:border-[#382C58]">
+                          {spotlightHack?.isHackathon ? "Offline Hackathon" : "Verified Spotlight"}
+                        </span>
+                        <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 font-bold text-[11px] uppercase tracking-wide border border-emerald-200/60 dark:border-emerald-800/50">
+                          ₹0 Free Admission
+                        </span>
+                        <span className="px-3 py-1 rounded-full bg-slate-100 dark:bg-[#1E1830] text-slate-700 dark:text-[#CBD5E1] font-semibold text-[11px] border border-slate-200/70 dark:border-[#302B43]">
+                          {spotlightEvent.registration_status === "open" ? "RSVP Open" : "Approval Required"}
+                        </span>
+                      </div>
+
                       {/* Meta Info */}
-                      <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-purple-800 dark:text-[#A78BFA] mb-2">
+                      <div className="flex flex-wrap items-center gap-2 text-xs font-bold text-[#6A38EB] dark:text-[#A78BFA] mb-2">
                         <div className="flex items-center gap-1.5">
-                          <Calendar className="w-3.5 h-3.5 text-[#6A38EB] dark:text-[#A78BFA]" />
+                          <Calendar className="w-3.5 h-3.5 text-[#6A38EB] dark:text-[#8B5CF6]" />
                           <span>{spotlightDate.full}</span>
                         </div>
-                        <span className="text-purple-300 dark:text-purple-600">•</span>
-                        <div className="flex items-center gap-1.5">
-                          <MapPin className="w-3.5 h-3.5 text-[#6A38EB] dark:text-[#A78BFA]" />
+                        <span className="text-purple-300 dark:text-[#382C58]">•</span>
+                        <div className="flex items-center gap-1.5 text-slate-700 dark:text-[#CBD5E1] font-semibold">
+                          <MapPin className="w-3.5 h-3.5 text-purple-400 dark:text-[#A78BFA]" />
                           <span>{spotlightEvent.area}, Bengaluru</span>
                         </div>
                         {spotlightHack?.duration && (
                           <>
-                            <span className="text-purple-300 dark:text-purple-600">•</span>
+                            <span className="text-purple-300 dark:text-[#382C58]">•</span>
                             <span className="px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200 text-[11px] font-bold">
                               {spotlightHack.duration}
                             </span>
