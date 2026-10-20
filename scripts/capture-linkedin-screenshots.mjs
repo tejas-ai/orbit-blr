@@ -9,20 +9,15 @@ if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
 }
 
-// Read admin password from .env.local
-const envContent = fs.readFileSync("D:\\Orbit Bengaluru\\.env.local", "utf-8");
-const pwdMatch = envContent.match(/ORBIT_ADMIN_PASSWORD=(.*)/);
-const adminPassword = pwdMatch ? pwdMatch[1].trim().replace(/^["']|["']$/g, "") : "Tejas#2004";
-
 async function captureAll() {
-  console.log("🚀 Launching Chrome to capture LinkedIn showcase screenshots...");
+  console.log("🚀 Launching Chrome to capture Vice City meets Bengaluru cinematic showcase screenshots...");
   const browser = await puppeteer.launch({
     executablePath: chromePath,
     headless: true,
     defaultViewport: {
       width: 1920,
       height: 1080,
-      deviceScaleFactor: 2, // 2x Retina resolution for razor-sharp social cards
+      deviceScaleFactor: 2, // 2x Retina resolution for ultra-sharp 4K LinkedIn cards
     },
     args: [
       "--no-sandbox",
@@ -51,88 +46,91 @@ async function captureAll() {
   }
 
   try {
-    // 1. Hero Landing Page with 3D Globe & Stats
+    // 1. Cinematic Hero with Sunset Atmosphere & 3D Globe
     await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
-    await snap("https://orbit-blr.vercel.app", "01-hero-landing-page.png", {
-      delay: 3000, // Wait for Three.js 3D canvas and animations
+    await snap("https://orbit-blr.vercel.app", "01-cinematic-hero-sunset.png", {
+      delay: 3500, // Wait for Three.js 3D canvas and atmospheric layers
     });
 
-    // 2. Trust & 7-Point Verification Protocol Section
-    console.log("📸 Capturing: 02-verification-protocol.png...");
-    await page.goto("https://orbit-blr.vercel.app#verification", { waitUntil: "networkidle2" });
+    // 2. Authentic Thumbnails Gallery on Homepage
+    await page.evaluate(() => {
+      const el = document.getElementById("events-directory");
+      if (el) el.scrollIntoView();
+    });
     await new Promise((r) => setTimeout(r, 2000));
-    const verificationEl = await page.$("#verification");
-    if (verificationEl) {
-      await verificationEl.screenshot({
-        path: path.join(outputDir, "02-verification-protocol.png"),
-      });
-      console.log(`✅ Saved: 02-verification-protocol.png`);
-    }
+    await page.screenshot({
+      path: path.join(outputDir, "02-authentic-thumbnails-directory.png"),
+      fullPage: false,
+    });
+    console.log("✅ Saved: 02-authentic-thumbnails-directory.png");
 
-    // 3. Explore Directory & Strict Evidence Policy View
-    await snap("https://orbit-blr.vercel.app/explore", "03-explore-directory-filters.png", {
+    // 3. Explore Gallery with Category & Area Filters
+    await snap("https://orbit-blr.vercel.app/explore", "03-explore-gallery-filters.png", {
+      delay: 2500,
+    });
+
+    // 4. Event Editorial Detail Page with Large Poster Hero
+    await snap(
+      "https://orbit-blr.vercel.app/events/blrdroid-blrkotlin-october-2026-meetup-133",
+      "04-event-editorial-detail-hero.png",
+      { delay: 3000 }
+    );
+
+    // 5. Verified Benefits & Audit Trail
+    await page.evaluate(() => {
+      window.scrollBy(0, 500);
+    });
+    await new Promise((r) => setTimeout(r, 1500));
+    await page.screenshot({
+      path: path.join(outputDir, "05-verified-perks-evidence-breakdown.png"),
+      fullPage: false,
+    });
+    console.log("✅ Saved: 05-verified-perks-evidence-breakdown.png");
+
+    // 6. Community Event Suggestion Form
+    await snap("https://orbit-blr.vercel.app/suggest", "06-community-suggest-event.png", {
       delay: 2000,
-      fullPage: false,
     });
 
-    // 4. Community Event Submission / Suggestion Form
-    await snap("https://orbit-blr.vercel.app/suggest", "04-community-event-suggest.png", {
-      delay: 1500,
-      fullPage: false,
+    // 7. Bengaluru Tech Corridors Radar Section
+    await page.goto("https://orbit-blr.vercel.app", { waitUntil: "networkidle2" });
+    await page.evaluate(() => {
+      window.scrollBy(0, 1600);
     });
-
-    // 5. Admin Authentication Portal (Pre-login)
-    await snap("https://orbit-blr.vercel.app/admin", "05-admin-login-portal.png", {
-      delay: 1500,
-    });
-
-    // 6. Authenticate into Admin Dashboard
-    console.log("🔐 Authenticating into Admin Dashboard with configured credentials...");
-    await page.goto("https://orbit-blr.vercel.app/admin", { waitUntil: "networkidle2" });
-    await page.waitForSelector("input[type='password']", { timeout: 10000 });
-    await page.type("input[type='password']", adminPassword);
-    await page.click("button[type='submit']");
-    await page.waitForNavigation({ waitUntil: "networkidle2", timeout: 20000 });
-    await new Promise((r) => setTimeout(r, 2500));
-
-    // Capture Full Authenticated Admin Dashboard Overview
-    console.log("📸 Capturing: 06-admin-dashboard-overview.png...");
+    await new Promise((r) => setTimeout(r, 2000));
     await page.screenshot({
-      path: path.join(outputDir, "06-admin-dashboard-overview.png"),
+      path: path.join(outputDir, "07-bengaluru-tech-corridors.png"),
       fullPage: false,
     });
-    console.log("✅ Saved: 06-admin-dashboard-overview.png");
+    console.log("✅ Saved: 07-bengaluru-tech-corridors.png");
 
-    // Capture Review Queue & Event Inventory Table
-    console.log("📸 Capturing: 07-admin-review-queue.png...");
-    await page.screenshot({
-      path: path.join(outputDir, "07-admin-review-queue.png"),
-      fullPage: true,
+    // 8. 7-Point Verification Protocol Section
+    await snap("https://orbit-blr.vercel.app/about#verification", "08-verification-protocol.png", {
+      delay: 2500,
     });
-    console.log("✅ Saved: 07-admin-review-queue.png");
 
-    // 7. Mobile Viewport (iPhone 15 Pro / Pixel dimensions)
+    // 9. Mobile Cinematic Hero Experience
     console.log("📱 Capturing Mobile Responsive Views...");
     await page.setViewport({
-      width: 412,
-      height: 915,
-      deviceScaleFactor: 2.6,
+      width: 390,
+      height: 844,
+      deviceScaleFactor: 2,
       isMobile: true,
       hasTouch: true,
     });
-
-    await snap("https://orbit-blr.vercel.app", "08-mobile-hero-experience.png", {
-      delay: 3000,
+    await snap("https://orbit-blr.vercel.app", "09-mobile-hero-experience.png", {
+      delay: 3500,
     });
 
-    await snap("https://orbit-blr.vercel.app/explore", "09-mobile-directory-view.png", {
-      delay: 2000,
+    // 10. Mobile Event Card Thumbnails
+    await snap("https://orbit-blr.vercel.app/explore", "10-mobile-directory-thumbnails.png", {
+      delay: 2500,
     });
 
-    console.log("\n🎉 All 9 professional high-resolution screenshots generated successfully!");
-    console.log(`📁 Files are located in: ${outputDir}`);
+    console.log("\n🎉 All 10 cinematic high-resolution screenshots generated successfully!");
+    console.log(`📁 Files are located strictly in: ${outputDir}`);
   } catch (err) {
-    console.error("❌ Screenshot capture error:", err);
+    console.error("Screenshot error:", err);
   } finally {
     await browser.close();
   }
