@@ -100,6 +100,17 @@ function getSqliteDb(): DatabaseSync {
   return db;
 }
 
+export class AccountLinkingConflictError extends Error {
+  existingProvider: string;
+  attemptedProvider: string;
+  constructor(existingProvider: string, attemptedProvider: string) {
+    super(`OAuthAccountNotLinked: An account with this email already exists via ${existingProvider}. Please sign in with ${existingProvider} to access your account.`);
+    this.name = "AccountLinkingConflictError";
+    this.existingProvider = existingProvider;
+    this.attemptedProvider = attemptedProvider;
+  }
+}
+
 /**
  * Upsert user on successful OAuth login
  */
@@ -116,7 +127,7 @@ export async function upsertOAuthUser(params: {
 
   if (pool) {
     try {
-      // 1. Check if account already exists
+      // 1. Check if account already exists for this exact OAuth provider identity
       const accRes = await pool.query(
         "SELECT user_id FROM accounts WHERE provider = $1 AND provider_account_id = $2",
         [params.provider, params.providerAccountId]
@@ -124,14 +135,8 @@ export async function upsertOAuthUser(params: {
 
       let userId = accRes.rows[0]?.user_id;
 
-      if (!userId && params.email) {
-        // Find existing user with matching email
-        const userRes = await pool.query("SELECT id FROM users WHERE email = $1", [params.email]);
-        userId = userRes.rows[0]?.id;
-      }
-
       if (userId) {
-        // Update user profile and last sign-in
+        // Returning user with same provider: update user profile & last_sign_in_at
         const updateRes = await pool.query(
           `UPDATE users SET
              name = COALESCE($1, name),
@@ -141,19 +146,42 @@ export async function upsertOAuthUser(params: {
            RETURNING *`,
           [params.name, params.image, now, userId]
         );
-
-        // Ensure account link exists
-        await pool.query(
-          `INSERT INTO accounts (id, user_id, type, provider, provider_account_id, created_at)
-           VALUES ($1, $2, 'oauth', $3, $4, $5)
-           ON CONFLICT (provider, provider_account_id) DO NOTHING`,
-          [`acc-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, userId, params.provider, params.providerAccountId, now]
-        );
-
         return updateRes.rows[0];
       }
 
-      // New user
+      // 2. Account does not exist yet. Check if email is already claimed by an existing user
+      if (params.email) {
+        const userRes = await pool.query("SELECT id, primary_provider FROM users WHERE email = $1", [params.email]);
+        const existingUser = userRes.rows[0];
+        if (existingUser) {
+          // SECURITY HARDENING: Insecure cross-provider automatic linking prevention
+          // If an account exists with a different provider, throw error to prevent account takeover (Scenario D & F)
+          if (existingUser.primary_provider && existingUser.primary_provider !== params.provider) {
+            throw new AccountLinkingConflictError(existingUser.primary_provider, params.provider);
+          }
+          userId = existingUser.id;
+          const updateRes = await pool.query(
+            `UPDATE users SET
+               name = COALESCE($1, name),
+               image = COALESCE($2, image),
+               last_sign_in_at = $3
+             WHERE id = $4
+             RETURNING *`,
+            [params.name, params.image, now, userId]
+          );
+
+          await pool.query(
+            `INSERT INTO accounts (id, user_id, type, provider, provider_account_id, created_at)
+             VALUES ($1, $2, 'oauth', $3, $4, $5)
+             ON CONFLICT (provider, provider_account_id) DO NOTHING`,
+            [`acc-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, userId, params.provider, params.providerAccountId, now]
+          );
+
+          return updateRes.rows[0];
+        }
+      }
+
+      // 3. New user (Scenario A, C, E)
       const newUserId = params.id || `usr-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
       const insertUser = await pool.query(
         `INSERT INTO users (id, name, email, image, primary_provider, created_at, last_sign_in_at)
@@ -164,12 +192,16 @@ export async function upsertOAuthUser(params: {
 
       await pool.query(
         `INSERT INTO accounts (id, user_id, type, provider, provider_account_id, created_at)
-         VALUES ($1, $2, 'oauth', $3, $4, $5)`,
+         VALUES ($1, $2, 'oauth', $3, $4, $5)
+         ON CONFLICT (provider, provider_account_id) DO NOTHING`,
         [`acc-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`, newUserId, params.provider, params.providerAccountId, now]
       );
 
       return insertUser.rows[0];
     } catch (err) {
+      if (err instanceof AccountLinkingConflictError) {
+        throw err;
+      }
       console.warn("PostgreSQL upsertOAuthUser warning:", err instanceof Error ? err.message : err);
     }
   }
@@ -179,19 +211,27 @@ export async function upsertOAuthUser(params: {
   const acc = db.prepare("SELECT user_id FROM accounts WHERE provider = ? AND provider_account_id = ?").get(params.provider, params.providerAccountId) as { user_id: string } | undefined;
   let userId = acc?.user_id;
 
-  if (!userId && params.email) {
-    const existing = db.prepare("SELECT id FROM users WHERE email = ?").get(params.email) as { id: string } | undefined;
-    userId = existing?.id;
-  }
-
   if (userId) {
     db.prepare("UPDATE users SET name = COALESCE(?, name), image = COALESCE(?, image), last_sign_in_at = ? WHERE id = ?").run(params.name || null, params.image || null, now, userId);
     return db.prepare("SELECT * FROM users WHERE id = ?").get(userId) as unknown as UserProfile;
   }
 
+  if (params.email) {
+    const existing = db.prepare("SELECT id, primary_provider FROM users WHERE email = ?").get(params.email) as { id: string; primary_provider: string } | undefined;
+    if (existing) {
+      if (existing.primary_provider && existing.primary_provider !== params.provider) {
+        throw new AccountLinkingConflictError(existing.primary_provider, params.provider);
+      }
+      userId = existing.id;
+      db.prepare("UPDATE users SET name = COALESCE(?, name), image = COALESCE(?, image), last_sign_in_at = ? WHERE id = ?").run(params.name || null, params.image || null, now, userId);
+      db.prepare("INSERT OR IGNORE INTO accounts (id, user_id, type, provider, provider_account_id, created_at) VALUES (?, ?, 'oauth', ?, ?, ?)").run(`acc-${Date.now()}`, userId, params.provider, params.providerAccountId, now);
+      return db.prepare("SELECT * FROM users WHERE id = ?").get(userId) as unknown as UserProfile;
+    }
+  }
+
   const newUserId = params.id || `usr-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
   db.prepare("INSERT INTO users (id, name, email, image, primary_provider, created_at, last_sign_in_at) VALUES (?, ?, ?, ?, ?, ?, ?)").run(newUserId, params.name || null, params.email || null, params.image || null, params.provider, now, now);
-  db.prepare("INSERT INTO accounts (id, user_id, type, provider, provider_account_id, created_at) VALUES (?, ?, 'oauth', ?, ?, ?)").run(`acc-${Date.now()}`, newUserId, params.provider, params.providerAccountId, now);
+  db.prepare("INSERT OR IGNORE INTO accounts (id, user_id, type, provider, provider_account_id, created_at) VALUES (?, ?, 'oauth', ?, ?, ?)").run(`acc-${Date.now()}`, newUserId, params.provider, params.providerAccountId, now);
   return db.prepare("SELECT * FROM users WHERE id = ?").get(newUserId) as unknown as UserProfile;
 }
 

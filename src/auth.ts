@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
-import { upsertOAuthUser } from "@/lib/auth-db";
+import { upsertOAuthUser, AccountLinkingConflictError } from "@/lib/auth-db";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
@@ -33,8 +33,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             user.id = profile.id;
           }
         } catch (err) {
+          if (err instanceof AccountLinkingConflictError) {
+            console.warn(
+              `[Auth Security] Insecure cross-provider linking blocked for email: ${user.email}. Registered via: ${err.existingProvider}, attempted: ${err.attemptedProvider}`
+            );
+            return `/signin?error=OAuthAccountNotLinked&provider=${err.existingProvider}`;
+          }
           console.error("Error upserting OAuth user to database:", err);
-          // Allow login even if DB write temporarily fails
+          return false;
         }
       }
       return true;
