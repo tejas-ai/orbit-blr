@@ -92,6 +92,14 @@ export interface OrbitEvent {
   last_verified_at: string | null;
   publication_status: PublicationStatus;
 
+  // Authentic Event Thumbnail & Visual Identity
+  thumbnail_url?: string | null;
+  thumbnail_source_url?: string | null;
+  thumbnail_alt?: string | null;
+  thumbnail_verification_status?: "verified" | "fallback" | "unverified" | null;
+  thumbnail_verified_at?: string | null;
+  thumbnail_attribution?: string | null;
+
   // Rich Details
   who_should_attend?: string[];
   topics_covered?: string[];

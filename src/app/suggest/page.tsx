@@ -70,7 +70,7 @@ export default function SuggestEventPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-8">
+    <div className="max-w-2xl mx-auto py-8 px-4">
       {/* Back button */}
       <Link
         href="/explore"

@@ -85,6 +85,12 @@ function getSqliteDb(): DatabaseSync {
       prerequisites TEXT,
       agenda TEXT,
       featured INTEGER NOT NULL DEFAULT 0,
+      thumbnail_url TEXT,
+      thumbnail_source_url TEXT,
+      thumbnail_alt TEXT,
+      thumbnail_verification_status TEXT DEFAULT 'unverified',
+      thumbnail_verified_at TEXT,
+      thumbnail_attribution TEXT,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
@@ -164,6 +170,12 @@ function mapRowToEvent(row: Record<string, unknown>): OrbitEvent {
     prerequisites: row.prerequisites ? String(row.prerequisites) : null,
     agenda: parseJsonField(row.agenda),
     featured: Boolean(row.featured),
+    thumbnail_url: row.thumbnail_url ? String(row.thumbnail_url) : null,
+    thumbnail_source_url: row.thumbnail_source_url ? String(row.thumbnail_source_url) : null,
+    thumbnail_alt: row.thumbnail_alt ? String(row.thumbnail_alt) : null,
+    thumbnail_verification_status: (row.thumbnail_verification_status as OrbitEvent["thumbnail_verification_status"]) || null,
+    thumbnail_verified_at: row.thumbnail_verified_at ? new Date(String(row.thumbnail_verified_at)).toISOString() : null,
+    thumbnail_attribution: row.thumbnail_attribution ? String(row.thumbnail_attribution) : null,
     created_at: new Date(String(row.created_at || Date.now())).toISOString(),
     updated_at: new Date(String(row.updated_at || Date.now())).toISOString(),
   };
@@ -386,6 +398,7 @@ export async function createEvent(data: Partial<OrbitEvent>, actor = "admin"): P
         goodies_status, goodies_details, certificate_status, certificate_format, certificate_requirements,
         food_status, food_details, source_urls, verification_notes, last_verified_at,
         publication_status, who_should_attend, topics_covered, prerequisites, agenda, featured,
+        thumbnail_url, thumbnail_source_url, thumbnail_alt, thumbnail_verification_status, thumbnail_verified_at, thumbnail_attribution,
         created_at, updated_at
       ) VALUES (
         $1, $2, $3, $4, $5, $6, $7, $8, $9,
@@ -394,7 +407,8 @@ export async function createEvent(data: Partial<OrbitEvent>, actor = "admin"): P
         $22, $23, $24, $25, $26,
         $27, $28, $29, $30, $31,
         $32, $33, $34, $35, $36, $37,
-        $38, $39
+        $38, $39, $40, $41, $42, $43,
+        $44, $45
       ) RETURNING *;
     `;
 
@@ -436,6 +450,12 @@ export async function createEvent(data: Partial<OrbitEvent>, actor = "admin"): P
       data.prerequisites || null,
       JSON.stringify(data.agenda || []),
       data.featured ? true : false,
+      data.thumbnail_url || null,
+      data.thumbnail_source_url || null,
+      data.thumbnail_alt || null,
+      data.thumbnail_verification_status || "unverified",
+      data.thumbnail_verified_at || null,
+      data.thumbnail_attribution || null,
       now,
       now,
     ]);
@@ -538,8 +558,9 @@ export async function updateEvent(
         goodies_status = $21, goodies_details = $22, certificate_status = $23, certificate_format = $24, certificate_requirements = $25,
         food_status = $26, food_details = $27, source_urls = $28, verification_notes = $29, last_verified_at = $30,
         publication_status = $31, who_should_attend = $32, topics_covered = $33, prerequisites = $34, agenda = $35,
-        featured = $36, updated_at = $37
-      WHERE id = $38 RETURNING *;
+        featured = $36, thumbnail_url = $37, thumbnail_source_url = $38, thumbnail_alt = $39,
+        thumbnail_verification_status = $40, thumbnail_verified_at = $41, thumbnail_attribution = $42, updated_at = $43
+      WHERE id = $44 RETURNING *;
     `;
 
     const res = await pool.query(updateQuery, [
@@ -579,6 +600,12 @@ export async function updateEvent(
       merged.prerequisites || null,
       JSON.stringify(merged.agenda || []),
       merged.featured ? true : false,
+      merged.thumbnail_url || null,
+      merged.thumbnail_source_url || null,
+      merged.thumbnail_alt || null,
+      merged.thumbnail_verification_status || "unverified",
+      merged.thumbnail_verified_at || null,
+      merged.thumbnail_attribution || null,
       now,
       id,
     ]);

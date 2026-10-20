@@ -15,8 +15,10 @@ export default async function ExplorePage() {
   const events = await getAllEvents({ includeUnpublished: false });
 
   return (
-    <Suspense fallback={<div className="p-12 text-center text-orbit-muted font-mono">Loading events directory...</div>}>
-      <ExploreClient initialEvents={events} />
-    </Suspense>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <Suspense fallback={<div className="p-12 text-center text-orbit-muted font-mono">Loading events directory...</div>}>
+        <ExploreClient initialEvents={events} />
+      </Suspense>
+    </div>
   );
 }

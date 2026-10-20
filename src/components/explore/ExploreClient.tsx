@@ -160,13 +160,13 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider mb-1">
             <Compass className="w-3.5 h-3.5" />
-            <span>Event Directory Explorer</span>
+            <span>Bengaluru Verified Gallery</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-display font-black text-orbit-text tracking-tight">
-            Explore All Free Bengaluru Tech Events
+          <h1 className="text-3xl sm:text-5xl font-display font-black text-orbit-text tracking-tight uppercase">
+            YOUR NEXT BIG OPPORTUNITY STARTS HERE.
           </h1>
-          <p className="text-xs sm:text-sm text-orbit-muted mt-1">
-            Filter through verified developer meetups, AI workshops, and founder mixers with 100% free RSVP.
+          <p className="text-xs sm:text-sm text-orbit-muted mt-1.5 font-normal max-w-2xl">
+            Filter through verified developer meetups, AI workshops, and founder mixers with authentic event posters and 100% free admission.
           </p>
         </div>
 

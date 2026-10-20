@@ -43,7 +43,7 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="space-y-12 py-6 max-w-4xl mx-auto">
+    <div className="space-y-12 py-6 max-w-4xl mx-auto px-4 sm:px-6">
       {/* Hero Header */}
       <div className="border-b border-orbit-border/80 pb-8 space-y-4">
         <div className="inline-flex items-center gap-1.5 text-xs font-mono text-orbit-signal uppercase tracking-wider">

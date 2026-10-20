@@ -66,10 +66,10 @@ export default function OrbitGlobe3D({ onSelectCategory }: OrbitGlobe3DProps) {
     const sphereRadius = 7.5;
     const sphereGeo = new THREE.IcosahedronGeometry(sphereRadius, 3);
     const sphereMat = new THREE.MeshBasicMaterial({
-      color: 0x1e293b,
+      color: 0x4a1a82, // Deep Purple Wireframe
       wireframe: true,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.45,
     });
     const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
     globeGroup.add(sphereMesh);
@@ -77,16 +77,16 @@ export default function OrbitGlobe3D({ onSelectCategory }: OrbitGlobe3DProps) {
     // Inner glowing core
     const coreGeo = new THREE.SphereGeometry(sphereRadius * 0.75, 24, 24);
     const coreMat = new THREE.MeshBasicMaterial({
-      color: 0x070a12,
+      color: 0x09090b,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.95,
     });
     const coreMesh = new THREE.Mesh(coreGeo, coreMat);
     globeGroup.add(coreMesh);
 
-    // 2. Orbital Rings
+    // 2. Orbital Rings with Vice City sunset neon
     const createRing = (radius: number, tiltX: number, tiltY: number, color: number, opacity: number) => {
-      const ringGeo = new THREE.RingGeometry(radius - 0.04, radius + 0.04, 64);
+      const ringGeo = new THREE.RingGeometry(radius - 0.05, radius + 0.05, 64);
       const ringMat = new THREE.MeshBasicMaterial({
         color,
         side: THREE.DoubleSide,
@@ -100,9 +100,9 @@ export default function OrbitGlobe3D({ onSelectCategory }: OrbitGlobe3DProps) {
       return ring;
     };
 
-    const ring1 = createRing(sphereRadius * 1.35, Math.PI / 3, Math.PI / 6, 0xcafd79, 0.4);
-    const ring2 = createRing(sphereRadius * 1.55, -Math.PI / 4, Math.PI / 4, 0x67e8f9, 0.3);
-    const ring3 = createRing(sphereRadius * 1.2, Math.PI / 2, 0, 0xa5b4fc, 0.25);
+    const ring1 = createRing(sphereRadius * 1.35, Math.PI / 3, Math.PI / 6, 0xff2d8d, 0.45); // Hot Pink
+    const ring2 = createRing(sphereRadius * 1.55, -Math.PI / 4, Math.PI / 4, 0x00e5ff, 0.4);  // Electric Cyan
+    const ring3 = createRing(sphereRadius * 1.2, Math.PI / 2, 0, 0xff6a3d, 0.35);             // Sunset Orange
 
     // 3. Floating Tech Event Nodes
     const techNodesData: TechNode[] = [
@@ -110,36 +110,36 @@ export default function OrbitGlobe3D({ onSelectCategory }: OrbitGlobe3DProps) {
         id: "ai-node",
         name: "AI & ML Nexus",
         category: "AI & ML",
-        area: "Old Madras Rd / HSR",
+        area: "Koramangala / HSR",
         position: new THREE.Vector3(4.8, 3.2, 5.0),
-        color: "#CAFD79",
+        color: "#FF2D8D",
         eventCount: 3,
       },
       {
         id: "cloud-node",
         name: "Cloud Native Orbit",
         category: "Cloud",
-        area: "Malleshwaram / ORR",
+        area: "Malleshwaram / Whitefield",
         position: new THREE.Vector3(-5.2, 2.5, 4.2),
-        color: "#67E8F9",
+        color: "#00E5FF",
         eventCount: 2,
       },
       {
         id: "dev-node",
         name: "Developer & FOSS Hub",
         category: "Developer",
-        area: "JP Nagar / Koramangala",
+        area: "Bellandur / Koramangala",
         position: new THREE.Vector3(2.2, -4.5, 5.5),
-        color: "#A5B4FC",
-        eventCount: 2,
+        color: "#C084FC",
+        eventCount: 3,
       },
       {
         id: "cyber-node",
         name: "Cybersecurity Shield",
         category: "Cybersecurity",
-        area: "Koramangala 4th Block",
+        area: "Whitefield Tech Hub",
         position: new THREE.Vector3(-4.5, -3.8, 4.0),
-        color: "#F43F5E",
+        color: "#FF2D8D",
         eventCount: 1,
       },
       {
@@ -148,16 +148,16 @@ export default function OrbitGlobe3D({ onSelectCategory }: OrbitGlobe3DProps) {
         category: "Robotics",
         area: "IISc Malleshwaram",
         position: new THREE.Vector3(0.5, 6.5, 2.8),
-        color: "#F59E0B",
+        color: "#FFB347",
         eventCount: 1,
       },
       {
         id: "startup-node",
-        name: "Founder & Builders Grid",
+        name: "Founders & Mixer Grid",
         category: "Networking",
-        area: "Koramangala 5th Block",
+        area: "Indiranagar / Central BLR",
         position: new THREE.Vector3(6.0, -1.5, 3.5),
-        color: "#10B981",
+        color: "#FF6A3D",
         eventCount: 1,
       },
     ];
@@ -385,7 +385,7 @@ export default function OrbitGlobe3D({ onSelectCategory }: OrbitGlobe3DProps) {
   return (
     <div className="relative w-full h-[420px] md:h-[540px] flex items-center justify-center overflow-hidden">
       {/* Subtle radial atmosphere */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(202,253,121,0.08)_0%,rgba(103,232,249,0.04)_40%,transparent_70%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,45,141,0.12)_0%,rgba(0,229,255,0.06)_40%,transparent_70%)] pointer-events-none" />
 
       {/* Three.js Container */}
       <div ref={containerRef} className="w-full h-full relative cursor-grab active:cursor-grabbing" />

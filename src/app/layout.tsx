@@ -82,7 +82,7 @@ export default function RootLayout({
         className={`${syne.variable} ${dmSans.variable} ${plexMono.variable} bg-orbit-bg text-orbit-text font-body antialiased selection:bg-orbit-signal selection:text-orbit-bg min-h-screen flex flex-col`}
       >
         <Navbar />
-        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <main className="flex-1 w-full">
           {children}
         </main>
         <Footer />
