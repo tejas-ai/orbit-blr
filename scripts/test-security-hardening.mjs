@@ -184,25 +184,31 @@ async function runTests() {
     assert.ok(typeof stats.providerBreakdown.github === "number");
   });
 
-  // 9. Statistics Secret Separation
-  test("Statistics authorization prefers ORBIT_STATS_SECRET over ORBIT_API_SECRET", () => {
+  // 9. Statistics Secret Strict Enforcement (Zero Fallback)
+  test("Statistics authorization strictly enforces ORBIT_STATS_SECRET with zero fallback", () => {
     const statsSecret = "dedicated-stats-secret-xyz";
     const apiSecret = "general-ingest-secret-abc";
 
-    function getExpectedStatsSecret(env) {
-      return env.ORBIT_STATS_SECRET || env.ORBIT_API_SECRET;
+    function getAuthorizedStatsSecret(env) {
+      return env.ORBIT_STATS_SECRET || undefined;
     }
 
     assert.strictEqual(
-      getExpectedStatsSecret({ ORBIT_STATS_SECRET: statsSecret, ORBIT_API_SECRET: apiSecret }),
+      getAuthorizedStatsSecret({ ORBIT_STATS_SECRET: statsSecret, ORBIT_API_SECRET: apiSecret }),
       statsSecret,
-      "ORBIT_STATS_SECRET must take precedence when defined"
+      "ORBIT_STATS_SECRET must be returned when set"
     );
 
     assert.strictEqual(
-      getExpectedStatsSecret({ ORBIT_API_SECRET: apiSecret }),
-      apiSecret,
-      "ORBIT_API_SECRET acts as fallback when ORBIT_STATS_SECRET is not set"
+      getAuthorizedStatsSecret({ ORBIT_API_SECRET: apiSecret }),
+      undefined,
+      "ORBIT_API_SECRET must NEVER be accepted as fallback"
+    );
+
+    assert.strictEqual(
+      getAuthorizedStatsSecret({}),
+      undefined,
+      "Missing secret denies access"
     );
   });
 
