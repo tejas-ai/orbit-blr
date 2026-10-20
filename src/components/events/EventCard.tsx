@@ -98,23 +98,26 @@ export default function EventCard({
           </div>
 
           {/* Date & Time in IST */}
-          <div className="space-y-1.5 bg-orbit-surface/70 rounded-xl p-3 border border-orbit-border/80">
-            <div className="flex items-center gap-2 text-xs text-orbit-text font-mono font-medium">
-              <Calendar className="w-3.5 h-3.5 text-orbit-pink shrink-0" />
-              <span>{formatEventDate(event.start_at)}</span>
-              <span className="text-orbit-subtle">•</span>
-              <span className="text-orbit-highlight">{formatEventTime(event.start_at, event.end_at)}</span>
+          <div className="space-y-2 bg-orbit-surface/70 rounded-xl p-3 border border-orbit-border/80">
+            <div className="flex items-center justify-between gap-2 text-xs font-mono">
+              <div className="flex items-center gap-1.5 text-orbit-text font-bold">
+                <Calendar className="w-3.5 h-3.5 text-orbit-pink shrink-0" />
+                <span>{formatEventDate(event.start_at)}</span>
+              </div>
+              <span className="text-[11px] font-semibold text-orbit-highlight px-2 py-0.5 rounded-md bg-orbit-card border border-orbit-border/80">
+                {formatEventTime(event.start_at, event.end_at)}
+              </span>
             </div>
 
             {/* Venue & Bengaluru Tech Corridor */}
-            <div className="flex items-start gap-2 text-xs text-orbit-muted">
+            <div className="flex items-start gap-2 text-xs text-orbit-muted pt-1.5 border-t border-orbit-border/50">
               <MapPin className="w-3.5 h-3.5 text-orbit-sunset shrink-0 mt-0.5" />
               <div className="leading-snug truncate">
                 <span className="font-semibold text-orbit-text">{event.venue}</span>
-                <span className="text-orbit-subtle"> ({event.area})</span>
+                <span className="text-orbit-subtle"> • {event.area}</span>
                 {event.metro_station && (
-                  <div className="text-[11px] text-orbit-subtle flex items-center gap-1 mt-0.5">
-                    <Train className="w-3 h-3 text-orbit-secondary" />
+                  <div className="text-[10px] text-orbit-secondary flex items-center gap-1 mt-0.5 font-mono">
+                    <Train className="w-3 h-3 text-orbit-signal" />
                     <span>{event.metro_station}</span>
                   </div>
                 )}

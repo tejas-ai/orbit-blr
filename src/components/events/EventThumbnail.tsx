@@ -65,17 +65,13 @@ export default function EventThumbnail({
       {/* Optional Top Badges */}
       {showBadges && (
         <>
-          {/* Top-Left: Category Badge */}
-          <div className="absolute top-3 left-3 z-10">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase bg-orbit-bg/85 backdrop-blur-md text-orbit-highlight border border-orbit-signal/30 shadow-sm">
+          {/* Top-Left: Category Badge + ₹0 Free Pill */}
+          <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 flex-wrap max-w-[78%]">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-bold tracking-wider uppercase bg-orbit-bg/90 backdrop-blur-md text-orbit-highlight border border-orbit-signal/30 shadow-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-orbit-signal animate-pulse" />
               <span>{event.category}</span>
             </span>
-          </div>
-
-          {/* Top-Right: ₹0 FREE Badge */}
-          <div className="absolute top-3 right-3 z-10">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-extrabold tracking-wider bg-emerald-500/20 backdrop-blur-md text-emerald-300 border border-emerald-400/50 shadow-[0_0_15px_rgba(16,185,129,0.35)]">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-extrabold tracking-wider bg-emerald-500/25 backdrop-blur-md text-emerald-300 border border-emerald-400/50 shadow-[0_0_15px_rgba(16,185,129,0.35)]">
               <span>₹0 FREE</span>
             </span>
           </div>
