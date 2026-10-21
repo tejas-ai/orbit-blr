@@ -1,0 +1,17 @@
+name: ORBIT BLR Hourly Maintenance & Ingestion Scheduler
+
+on:
+  schedule:
+    # Runs every hour at minute 0
+    - cron: '0 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger ORBIT BLR Hourly Maintenance & Archival
+        run: |
+          curl -sS -X POST "https://orbit-blr.vercel.app/api/cron/events-maintenance" \
+            -H "Authorization: Bearer ${{ secrets.ORBIT_API_SECRET }}" \
+            -H "Content-Type: application/json"
