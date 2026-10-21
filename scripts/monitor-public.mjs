@@ -51,8 +51,10 @@ for (const [path, expected] of requests) {
           if (!j.events.length) faults.push("No published events in the public API: investigate DB sync");
           for (const e of j.events) {
             if (e.publication_status !== "published") faults.push("Nonpublished event exposed: " + e.slug);
-            if (!e.slug || eventUrls.has(e.slug)) faults.push("Missing or duplicate published slug: " + e.slug);
-            eventUrls.add(e.slug);
+            if (path === "/api/events") {
+              if (!e.slug || eventUrls.has(e.slug)) faults.push("Missing or duplicate published slug: " + e.slug);
+              eventUrls.add(e.slug);
+            }
             if (!e.registration_url?.startsWith("https://")) faults.push("Insecure or missing event registration URL: " + e.slug);
           }
           console.log(`Published event count: ${j.events.length}`);
