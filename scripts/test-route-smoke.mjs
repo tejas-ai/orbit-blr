@@ -45,6 +45,18 @@ try {
     if (path === "/explore?category=Hackathons" && new URL(response.headers.get("location") || "/", origin).pathname !== "/hackathons") {
       throw new Error("Old hackathon link must redirect to /hackathons");
     }
+    if (["/", "/explore", "/hackathons", "/saved", "/suggest"].includes(path)) {
+      const html = await response.text();
+      if (!/<html\b[^>]*class="[^"]*\bdark\b[^"]*"/.test(html)) {
+        throw new Error(`${path} did not render with the permanent dark HTML class`);
+      }
+      if (/data-testid="theme-toggle"|Switch to Light Mode/i.test(html)) {
+        throw new Error(`${path} still displays the removed light/dark toggle`);
+      }
+      if (path === "/" && !/name="color-scheme"\s+content="dark"|content="dark"\s+name="color-scheme"/.test(html)) {
+        throw new Error("Dark-only browser color-scheme metadata is missing");
+      }
+    }
     if (path.startsWith("/wallpapers/")) {
       const expectedType = path.endsWith(".webp") ? "image/webp" : "video/mp4";
       const type = response.headers.get("content-type") || "";

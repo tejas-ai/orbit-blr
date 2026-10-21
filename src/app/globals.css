@@ -9,18 +9,19 @@
   --orbit-purple: #6A38EB;
   --orbit-purple-hover: #5826D4;
 
-  /* Semantic Theme Tokens - Light Mode */
-  --bg-page: #FFFFFF;
-  --bg-surface: #FAF9FF;
-  --bg-card: #FFFFFF;
-  --text-primary: #101223;
-  --text-secondary: #64748B;
-  --border-subtle: #E9E5F2;
-  --accent-primary: #6A38EB;
+  /* Dark mode is permanent across browsers and installed PWAs. */
+  color-scheme: dark;
+  --bg-page: #0E0E16;
+  --bg-surface: #151522;
+  --bg-card: #1D1B2C;
+  --text-primary: #F7F5FF;
+  --text-secondary: #A9A5BC;
+  --border-subtle: #302B43;
+  --accent-primary: #8B5CF6;
 }
 
 html.dark {
-  /* Semantic Theme Tokens - Midnight Violet */
+  /* Retain existing dark-specific component styling. */
   --bg-page: #0E0E16;
   --bg-surface: #151522;
   --bg-card: #1D1B2C;

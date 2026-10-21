@@ -11,7 +11,7 @@ export default function Footer() {
       
       {/* Mobile: keep this compact; the fixed bottom nav already links to Events/Hackathons/Saved. */}
       <div className="mx-auto max-w-xl px-5 pt-4 pb-3 md:hidden">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
           <Link href="/" aria-label="ORBIT BLR home" className="inline-flex items-center gap-2 min-w-0">
             <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-gradient-to-tr from-[#6A38EB] to-[#9333EA] text-xs font-extrabold text-white">
               O
@@ -19,13 +19,6 @@ export default function Footer() {
             <span className="whitespace-nowrap font-serif text-base font-extrabold tracking-tight text-slate-950 dark:text-[#F7F5FF]">
               ORBIT <span className="text-[#6A38EB] dark:text-[#A78BFA]">BLR</span>
             </span>
-          </Link>
-          <Link
-            href="/about#verification"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-emerald-200/70 bg-emerald-50/80 px-2.5 py-1.5 text-[10px] font-semibold text-emerald-800 transition-colors hover:bg-emerald-100 dark:border-emerald-800/60 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-950/70"
-          >
-            <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
-            Verified · ₹0
           </Link>
         </div>
         <p className="mt-2 text-[11px] leading-[1.5] text-slate-600 dark:text-[#CBD5E1]">
