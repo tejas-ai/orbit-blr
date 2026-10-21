@@ -7,9 +7,9 @@ import { BENGALURU_AREAS } from "@/types/event";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 dark:border-[#302B43] bg-white dark:bg-[#0E0E16] text-xs text-slate-500 dark:text-[#CBD5E1] pb-16 md:pb-0 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 md:py-9">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 mb-6 md:mb-7">
+    <footer className="border-t border-slate-200 dark:border-[#302B43] bg-white dark:bg-[#0E0E16] text-xs text-slate-500 dark:text-[#CBD5E1] pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8 mb-4 md:mb-5">
           {/* Col 1: Brand & Mission */}
           <div className="space-y-3.5 md:col-span-5">
             <div className="flex items-center gap-2">
@@ -89,7 +89,7 @@ export default function Footer() {
         </div>
 
         {/* Verification Guarantee & Disclaimer Banner */}
-        <div className="border-t border-slate-200/80 dark:border-[#302B43] pt-4 mt-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[11px] text-slate-500 dark:text-[#CBD5E1]">
+        <div className="border-t border-slate-200/80 dark:border-[#302B43] pt-4 mt-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[11px] text-slate-500 dark:text-[#CBD5E1]">
           <div className="flex items-start gap-2 max-w-3xl">
             <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
