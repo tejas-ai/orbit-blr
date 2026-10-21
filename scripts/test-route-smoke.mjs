@@ -14,6 +14,10 @@ const tests = [
   ["/", 200],
   ["/explore", 200],
   ["/hackathons", 200],
+  ["/wallpapers/liquid-cobalt.webp", 200],
+  ["/wallpapers/electric-azure.webp", 200],
+  ["/wallpapers/aurora-violet.mp4", 200],
+  ["/wallpapers/neon-spectra.mp4", 200],
   ["/explore?category=Hackathons", 307],
   ["/api/events?type=events", 200],
   ["/api/events?type=hackathons", 200],
@@ -40,6 +44,26 @@ try {
     if (response.status !== expected) throw new Error(`${path}: expected ${expected}, got ${response.status}`);
     if (path === "/explore?category=Hackathons" && new URL(response.headers.get("location") || "/", origin).pathname !== "/hackathons") {
       throw new Error("Old hackathon link must redirect to /hackathons");
+    }
+    if (path.startsWith("/wallpapers/")) {
+      const expectedType = path.endsWith(".webp") ? "image/webp" : "video/mp4";
+      const type = response.headers.get("content-type") || "";
+      if (!type.includes(expectedType)) {
+        throw new Error(`${path} has unexpected content type ${type}`);
+      }
+      const media = await response.arrayBuffer();
+      if (media.byteLength < 10000) {
+        throw new Error(`${path} is unexpectedly small (${media.byteLength} bytes)`);
+      }
+      // Confirm actual WebP and MP4 file signatures rather than accepting an HTML error page.
+      const b = new Uint8Array(media);
+      const sig = new TextDecoder().decode(b.subarray(0, 12));
+      if (path.endsWith(".webp") && !(sig.startsWith("RIFF") && sig.slice(8, 12) === "WEBP")) {
+        throw new Error(`${path} has invalid WebP signature`);
+      }
+      if (path.endsWith(".mp4") && sig.slice(4, 8) !== "ftyp") {
+        throw new Error(`${path} has invalid MP4 signature`);
+      }
     }
     if (path.startsWith("/api/events")) {
       const data = await response.json();
