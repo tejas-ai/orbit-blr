@@ -1,0 +1,21 @@
+name: ORBIT BLR Thumbnail Health Audit
+
+on:
+  schedule:
+    - cron: '45 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  thumbnail-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify official images and category fallbacks
+        run: node scripts/check-event-images.mjs

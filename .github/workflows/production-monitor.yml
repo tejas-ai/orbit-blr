@@ -1,0 +1,21 @@
+name: ORBIT BLR Public Production Monitoring
+
+on:
+  schedule:
+    - cron: '15 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Live public routes, event API and auth boundary checks
+        run: node scripts/monitor-public.mjs
