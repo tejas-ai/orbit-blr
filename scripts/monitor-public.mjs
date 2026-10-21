@@ -38,7 +38,7 @@ for (const [path, expected] of requests) {
       faults.push(`${path}: HTTP ${response.status}, expected ${expected}`);
     } else {
       console.log(`PASS ${expected} ${path}`);
-      if (path === "/explore?category=Hackathons" && response.headers.get("location") !== "/hackathons") faults.push("Legacy hackathon redirect target incorrect");
+      if (path === "/explore?category=Hackathons" && new URL(response.headers.get("location") || "/", origin).pathname !== "/hackathons") faults.push("Legacy hackathon redirect target incorrect");
       if (path.startsWith("/api/events")) {
         const j = await response.json();
         if (j.success !== true || !Array.isArray(j.events)) faults.push("Public event API invalid JSON");
