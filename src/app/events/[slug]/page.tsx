@@ -186,7 +186,7 @@ export default async function EventPage({ params }: EventPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8 pb-32 lg:pb-16 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] min-h-screen transition-colors duration-300">
+      <div className="orbit-wallpaper-page max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-6 sm:space-y-8 pb-32 lg:pb-16 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] min-h-screen transition-colors duration-300">
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#CBD5E1] font-medium">
           <Link href="/" className="hover:text-[#6A38EB] dark:hover:text-[#A78BFA] transition-colors flex items-center gap-1 shrink-0">

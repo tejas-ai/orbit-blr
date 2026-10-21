@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import LiquidWallpaper from "@/components/layout/LiquidWallpaper";
 import { ThemeProvider } from "@/context/ThemeContext";
 import AuthProvider from "@/components/auth/AuthProvider";
 import { Analytics } from "@vercel/analytics/react";
@@ -110,8 +111,9 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <AuthProvider>
+            <LiquidWallpaper />
             <Navbar />
-            <main className="flex-1 w-full max-w-full overflow-x-hidden">
+            <main className="relative z-10 flex-1 w-full max-w-full overflow-x-hidden">
               {children}
             </main>
             <Footer />
