@@ -16,7 +16,6 @@ import {
   Home,
   Zap,
 } from "lucide-react";
-import ThemeToggle from "@/components/ui/ThemeToggle";
 import UserMenu from "@/components/auth/UserMenu";
 
 export default function Navbar() {
@@ -108,7 +107,7 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right: Search, Saved Events, Theme Toggle & Suggest CTA */}
+          {/* Right: Search, Saved Events, Account & Suggest CTA */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             {/* Quick Search Shortcut */}
             <Link
@@ -143,11 +142,6 @@ export default function Navbar() {
               )}
             </Link>
 
-            {/* Desktop Theme Switcher */}
-            <div className="hidden sm:block">
-              <ThemeToggle size="md" />
-            </div>
-
             {/* Desktop User Account / Sign In */}
             <div className="hidden sm:block">
               <UserMenu />
@@ -162,10 +156,9 @@ export default function Navbar() {
               <span>+ Submit Meetup</span>
             </Link>
 
-            {/* Mobile Controls: User Menu, Theme Toggle & Hamburger */}
+            {/* Mobile Controls: User Menu & Hamburger */}
             <div className="flex sm:hidden items-center gap-1.5">
               <UserMenu />
-              <ThemeToggle size="sm" />
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
