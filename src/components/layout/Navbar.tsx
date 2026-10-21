@@ -190,10 +190,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={(event) => {
-                    setMobileMenuOpen(false);
-                    handleExploreNavigation(event, link.href);
-                  }}
+                  onClick={() => setMobileMenuOpen(false)}
                   className={`px-3 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] ${
                     isActive(link.href)
                       ? "bg-purple-50 text-[#6A38EB] dark:bg-[#1D1B2C] dark:text-[#A78BFA] font-bold"
