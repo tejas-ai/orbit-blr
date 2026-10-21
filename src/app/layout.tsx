@@ -8,21 +8,6 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import AuthProvider from "@/components/auth/AuthProvider";
 import { Analytics } from "@vercel/analytics/react";
 
-const themeScript = `
-(function() {
-  try {
-    var stored = localStorage.getItem('orbit_theme');
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (stored === 'dark' || (!stored && prefersDark)) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  } catch (e) {}
-})();
-`;
-
-
 import {
   SITE_URL,
   SITE_NAME,
@@ -31,11 +16,8 @@ import {
 } from "@/lib/site";
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FFFFFF" },
-    { media: "(prefers-color-scheme: dark)", color: "#0E0E16" },
-  ],
-  colorScheme: "light dark",
+  themeColor: "#0E0E16",
+  colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -96,7 +78,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="scroll-smooth overflow-x-hidden">
+    <html lang="en" className="dark scroll-smooth overflow-x-hidden">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -104,10 +86,9 @@ export default function RootLayout({
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Syne:wght@700;800&display=swap"
         />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body
-        className="bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] font-sans antialiased selection:bg-[#6A38EB] selection:text-white min-h-screen flex flex-col overflow-x-hidden w-full max-w-full"
+        className="bg-[#0E0E16] text-[#F7F5FF] font-sans antialiased selection:bg-[#6A38EB] selection:text-white min-h-screen flex flex-col overflow-x-hidden w-full max-w-full"
       >
         <ThemeProvider>
           <AuthProvider>
