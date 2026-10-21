@@ -7,11 +7,11 @@ import { BENGALURU_AREAS } from "@/types/event";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-slate-200 dark:border-[#302B43] bg-white dark:bg-[#0E0E16] text-xs text-slate-500 dark:text-[#CBD5E1] pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0 transition-colors duration-300">
+    <footer className="relative z-10 isolate w-full border-t border-slate-200/90 dark:border-[#383052] bg-white/95 dark:bg-[#101325]/95 backdrop-blur-xl text-xs text-slate-500 dark:text-[#CBD5E1] pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0 transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-8 mb-4 md:mb-5">
+        <div className="grid grid-cols-2 md:grid-cols-12 gap-x-4 gap-y-5 md:gap-8 mb-4 md:mb-5">
           {/* Col 1: Brand & Mission */}
-          <div className="space-y-3.5 md:col-span-5">
+          <div className="col-span-2 md:col-span-5 space-y-2.5 md:space-y-3.5">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-[#6A38EB] to-[#9333EA] flex items-center justify-center text-white font-bold text-xs">
                 O
@@ -30,11 +30,11 @@ export default function Footer() {
           </div>
 
           {/* Col 2: Navigation */}
-          <div className="md:col-span-3">
+          <div className="min-w-0 md:col-span-3">
             <h4 className="text-xs uppercase tracking-wider text-slate-900 dark:text-[#F7F5FF] font-bold mb-3.5">
               Platform Directory
             </h4>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-1.5 md:space-y-2 text-xs">
               <li>
                 <Link href="/explore" className="text-slate-600 dark:text-[#CBD5E1] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] rounded">
                   Explore Verified Events
@@ -69,17 +69,17 @@ export default function Footer() {
           </div>
 
           {/* Col 3: Bengaluru Tech Hubs */}
-          <div className="md:col-span-4">
+          <div className="min-w-0 md:col-span-4">
             <h4 className="text-xs uppercase tracking-wider text-slate-900 dark:text-[#F7F5FF] font-bold mb-3.5 flex items-center gap-1.5">
               <MapPin className="w-3.5 h-3.5 text-[#6A38EB] dark:text-[#A78BFA]" />
               <span>Bengaluru Tech Hubs</span>
             </h4>
-            <div className="flex flex-wrap gap-1.5 text-[11px]">
+            <div className="flex flex-wrap gap-1 text-[11px]">
               {BENGALURU_AREAS.slice(0, 10).map((area) => (
                 <Link
                   key={area}
                   href={`/explore?area=${encodeURIComponent(area)}`}
-                  className="px-2.5 py-1 rounded-full bg-slate-50 dark:bg-[#151522] hover:bg-purple-50 dark:hover:bg-[#1D1B2C] text-slate-700 dark:text-[#CBD5E1] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] border border-slate-200/80 dark:border-[#302B43] dark:hover:border-[#4A4366] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]"
+                  className="px-2 py-1 rounded-full bg-slate-50 dark:bg-[#151522] hover:bg-purple-50 dark:hover:bg-[#1D1B2C] text-slate-700 dark:text-[#CBD5E1] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] border border-slate-200/80 dark:border-[#302B43] dark:hover:border-[#4A4366] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]"
                 >
                   {area}
                 </Link>
@@ -89,7 +89,7 @@ export default function Footer() {
         </div>
 
         {/* Verification Guarantee & Disclaimer Banner */}
-        <div className="border-t border-slate-200/80 dark:border-[#302B43] pt-4 mt-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[11px] text-slate-500 dark:text-[#CBD5E1]">
+        <div className="border-t border-slate-200/80 dark:border-[#302B43] pt-4 mt-0 flex flex-col md:flex-row items-start md:items-center justify-between gap-2.5 md:gap-4 text-[11px] text-slate-500 dark:text-[#CBD5E1]">
           <div className="flex items-start gap-2 max-w-3xl">
             <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
             <p className="leading-relaxed">
