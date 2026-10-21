@@ -212,7 +212,22 @@ export const EventSubmissionSchema = z.object({
 
   // Provenance & Verification Evidence
   source_urls: z
-    .array(z.string().url())
+    .array(
+      z
+        .string()
+        .url("Each source URL must be a valid URL")
+        .refine(
+          (u) => {
+            try {
+              const parsed = new URL(u);
+              return parsed.pathname.length > 1;
+            } catch {
+              return false;
+            }
+          },
+          { message: "Source URLs must point to specific event pages, not generic platform homepages" }
+        )
+    )
     .min(1, "At least one authentic source URL is mandatory for evidence tracking"),
   verification_notes: z
     .string()
@@ -229,10 +244,24 @@ export const EventSubmissionSchema = z.object({
   // Client / Ingestion Metadata
   verified_by: z.string().default("automated-ingestion-engine"),
   forceVerifiedWithEvidence: z.boolean().default(false),
-}).refine(
+})
+.refine(
   (data) => new Date(data.end_at).getTime() >= new Date(data.start_at).getTime(),
   {
     message: "end_at must be equal to or later than start_at",
+    path: ["end_at"],
+  }
+)
+.refine(
+  (data) => {
+    if (data.publication_status === "published") {
+      // Must not be expired when published
+      return new Date(data.end_at).getTime() >= Date.now() - 3600000;
+    }
+    return true;
+  },
+  {
+    message: "Cannot publish an event whose end date has already passed. Must be an upcoming event.",
     path: ["end_at"],
   }
 );

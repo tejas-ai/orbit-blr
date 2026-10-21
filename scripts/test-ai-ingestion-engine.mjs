@@ -252,10 +252,12 @@ async function runTestSuite() {
         registration_status: "open",
         approval_required: false,
         goodies_status: "confirmed",
+        goodies_details: "Official developer swag t-shirt and sticker pack.",
         certificate_status: "confirmed",
         food_status: "refreshments_confirmed",
+        food_details: "Evening tea, coffee and hot snacks.",
         source_urls: ["https://test-example.com/source"],
-        verification_notes: "Automated test provenance note.",
+        verification_notes: "Automated test provenance note with confirmed swag kit and food.",
         publication_status: "published",
         verified_by: "test-suite",
         forceVerifiedWithEvidence: false,
@@ -346,6 +348,63 @@ async function runTestSuite() {
     assert.strictEqual(resAdminApi.status, 404, "/api/admin/events must return 404");
   });
 
+  // 7. Unverified Organiser Claims & Date Defense
+  await test("Unverified organiser perk claims are sanitized to unverified", async () => {
+    const testUnverifiedPerks = {
+      name: `Unverified Claims Test ${Date.now()}`,
+      category: "Developer",
+      organizer: "Hype Meetups",
+      description: "Meetup claiming goodies and meals with zero concrete details or evidence.",
+      start_at: new Date(Date.now() + 86400000).toISOString(),
+      end_at: new Date(Date.now() + 90000000).toISOString(),
+      timezone: "Asia/Kolkata",
+      venue: "HSR Coworking",
+      area: "HSR Layout",
+      is_in_person: true,
+      is_free: true,
+      registration_url: `https://test-claims.com/event-${Date.now()}`,
+      registration_status: "open",
+      approval_required: false,
+      goodies_status: "confirmed", // Claimed but no details or notes evidence
+      food_status: "complimentary_meals_confirmed", // Claimed but no details or notes evidence
+      source_urls: ["https://test-claims.com/event/meetup-1"],
+      verification_notes: "Organizer says it will be fun.", // No evidence of swag or food
+      publication_status: "published",
+      verified_by: "test-suite",
+      forceVerifiedWithEvidence: false,
+    };
+
+    const res = await ingestEvent(testUnverifiedPerks, "test-suite");
+    assert.strictEqual(res.success, true);
+    assert.strictEqual(res.event.goodies_status, "unverified", "Goodies must be sanitized to unverified");
+    assert.strictEqual(res.event.food_status, "unverified", "Food must be sanitized to unverified");
+
+    // Clean up
+    await pool.query("DELETE FROM events WHERE id = $1", [res.eventId]);
+  });
+
+  await test("Rejects published events whose end date has already passed", async () => {
+    const expiredEvent = {
+      name: "Past Expired Event",
+      category: "Developer",
+      organizer: "Past Tech",
+      description: "An event that has already ended.",
+      start_at: "2024-01-01T10:00:00.000Z",
+      end_at: "2024-01-01T17:00:00.000Z",
+      venue: "Tech Park",
+      area: "Whitefield",
+      is_free: true,
+      registration_url: "https://example.com/event/past-1",
+      source_urls: ["https://example.com/event/past-1"],
+      verification_notes: "Historical event listing.",
+      publication_status: "published", // VIOLATION: Cannot publish past event
+    };
+    const res = EventSubmissionSchema.safeParse(expiredEvent);
+    assert.strictEqual(res.success, false);
+    const dateIssue = res.error.issues.find((i) => i.path.includes("end_at"));
+    assert.ok(dateIssue, "Must reject past end date for published events");
+  });
+
   await pool.end();
 
   console.log("\n================================================================================");
@@ -354,6 +413,8 @@ async function runTestSuite() {
 
   if (failed > 0) {
     process.exit(1);
+  } else {
+    process.exit(0);
   }
 }
 

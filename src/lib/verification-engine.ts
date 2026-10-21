@@ -208,7 +208,9 @@ export async function verifyRegistrationUrl(
       htmlText.includes("registrations are closed") ||
       htmlText.includes("applications closed") ||
       htmlText.includes("event has ended") ||
-      htmlText.includes("this event is sold out")
+      htmlText.includes("this event is sold out") ||
+      htmlText.includes("ticket sales have ended") ||
+      htmlText.includes("no longer accepting responses")
     ) {
       isRegistrationClosed = true;
     }
@@ -263,14 +265,42 @@ export async function verifyRegistrationUrl(
       };
     }
 
+    if (isRegistrationClosed) {
+      return {
+        isValid: false,
+        statusCode,
+        finalUrl,
+        isHttps: true,
+        isPaymentTrap: false,
+        isRegistrationClosed: true,
+        titleMatched,
+        antiBotProtected: false,
+        reason: "Registration is closed, ended, or sold out for this event",
+      };
+    }
+
+    if (expectedEventTitle && !titleMatched) {
+      return {
+        isValid: false,
+        statusCode,
+        finalUrl,
+        isHttps: true,
+        isPaymentTrap: false,
+        isRegistrationClosed: false,
+        titleMatched: false,
+        antiBotProtected: false,
+        reason: "Event identity mismatch: Destination page content does not correlate with the submitted event title",
+      };
+    }
+
     return {
       isValid: true,
       statusCode,
       finalUrl,
       isHttps: true,
       isPaymentTrap: false,
-      isRegistrationClosed,
-      titleMatched,
+      isRegistrationClosed: false,
+      titleMatched: true,
       antiBotProtected: false,
     };
   } catch (err: unknown) {

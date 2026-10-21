@@ -16,7 +16,13 @@ export interface HackathonMetadata {
  */
 export function isHackathonEvent(event: Partial<OrbitEvent>): boolean {
   if (!event) return false;
-  if (event.category === "Hackathons") return true;
+  if (
+    event.category === "Hackathons" ||
+    (event.category && event.category.toLowerCase() === "hackathons") ||
+    Boolean(event.hackathon_details)
+  ) {
+    return true;
+  }
 
   const name = (event.name || "").toLowerCase();
   const desc = (event.description || "").toLowerCase();
@@ -25,8 +31,10 @@ export function isHackathonEvent(event: Partial<OrbitEvent>): boolean {
     name.includes("hackathon") ||
     name.includes("hackman") ||
     name.includes("devforge") ||
+    name.includes("hack day") ||
     desc.includes("hackathon") ||
-    desc.includes("offline hackathon")
+    desc.includes("offline hackathon") ||
+    desc.includes("hack day")
   );
 }
 

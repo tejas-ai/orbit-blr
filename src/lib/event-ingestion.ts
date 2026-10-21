@@ -144,6 +144,29 @@ export async function ingestEvent(
     let targetSlug: string;
     let actionType: "created" | "updated";
 
+    // 3. Benefit Claim Verification Defense:
+    // Ensure unverified organizer claims cannot directly cause publication of confirmed perks.
+    // If confirmed perks are asserted without concrete details or evidence, sanitize to 'unverified'.
+    let verifiedGoodiesStatus = data.goodies_status;
+    let verifiedGoodiesDetails = data.goodies_details || null;
+    if (verifiedGoodiesStatus === "confirmed" && (!verifiedGoodiesDetails || verifiedGoodiesDetails.trim().length < 5)) {
+      const notesLower = (data.verification_notes || "").toLowerCase();
+      if (!notesLower.includes("swag") && !notesLower.includes("t-shirt") && !notesLower.includes("sticker") && !notesLower.includes("goodie") && !notesLower.includes("kit")) {
+        verifiedGoodiesStatus = "unverified";
+        verifiedGoodiesDetails = null;
+      }
+    }
+
+    let verifiedFoodStatus = data.food_status;
+    let verifiedFoodDetails = data.food_details || null;
+    if ((verifiedFoodStatus === "complimentary_meals_confirmed" || verifiedFoodStatus === "refreshments_confirmed") && (!verifiedFoodDetails || verifiedFoodDetails.trim().length < 5)) {
+      const notesLower = (data.verification_notes || "").toLowerCase();
+      if (!notesLower.includes("food") && !notesLower.includes("lunch") && !notesLower.includes("refreshment") && !notesLower.includes("meal") && !notesLower.includes("breakfast") && !notesLower.includes("snack")) {
+        verifiedFoodStatus = "unverified";
+        verifiedFoodDetails = null;
+      }
+    }
+
     if (existingRow) {
       // Update existing record
       targetId = existingRow.id;
@@ -216,13 +239,13 @@ export async function ingestEvent(
         canonicalUrl,
         data.registration_status,
         data.approval_required,
-        data.goodies_status,
-        data.goodies_details || null,
-        data.certificate_status,
+        verifiedGoodiesStatus,
+        verifiedGoodiesDetails,
+        data.certificate_status || "unverified",
         data.certificate_format || null,
         data.certificate_requirements || null,
-        data.food_status,
-        data.food_details || null,
+        verifiedFoodStatus,
+        verifiedFoodDetails,
         JSON.stringify(data.source_urls),
         data.verification_notes,
         data.last_verified_at || nowIso,
@@ -300,13 +323,13 @@ export async function ingestEvent(
         canonicalUrl,
         data.registration_status,
         data.approval_required,
-        data.goodies_status,
-        data.goodies_details || null,
-        data.certificate_status,
+        verifiedGoodiesStatus,
+        verifiedGoodiesDetails,
+        data.certificate_status || "unverified",
         data.certificate_format || null,
         data.certificate_requirements || null,
-        data.food_status,
-        data.food_details || null,
+        verifiedFoodStatus,
+        verifiedFoodDetails,
         JSON.stringify(data.source_urls),
         data.verification_notes,
         data.last_verified_at || nowIso,
