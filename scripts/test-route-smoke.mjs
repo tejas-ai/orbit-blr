@@ -3,7 +3,7 @@ import { setTimeout as pause } from "node:timers/promises";
 
 const port = 39741;
 const origin = `http://127.0.0.1:${port}`;
-const child = spawn(process.platform === "win32" ? "npm.cmd" : "npm", ["run", "start", "--", "-p", String(port)], {
+const child = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", String(port)], {
   stdio: ["ignore", "pipe", "pipe"],
   env: { ...process.env, PORT: String(port), DATABASE_URL: "", AUTH_GITHUB_ID: "", AUTH_GITHUB_SECRET: "" }
 });
@@ -46,4 +46,6 @@ try {
   process.exitCode = 1;
 } finally {
   child.kill("SIGTERM");
+  child.stdout.destroy();
+  child.stderr.destroy();
 }
