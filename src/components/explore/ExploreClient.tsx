@@ -178,9 +178,9 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
   const isHackathonMode = directory === "hackathons";
 
   return (
-    <div className="space-y-5 sm:space-y-6 pt-1 pb-4 sm:pb-6 w-full">
+    <div className="space-y-4 sm:space-y-5 pt-0 pb-2 sm:pb-3 w-full">
       {/* Header */}
-      <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 dark:border-[#302B43] pb-4 pt-2 sm:pb-5 sm:pt-3 transition-colors">
+      <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 dark:border-[#302B43] pb-3 pt-1 sm:pb-4 sm:pt-2 transition-colors">
         <div>
           {isHackathonMode ? (
             <>
@@ -257,7 +257,7 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
         isHackathonMode && viewMode === "grid" ? (
           <div className="space-y-5 sm:space-y-6">
             {/* Dedicated Balanced Hackathon Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 max-w-5xl mx-auto">
               {filteredEvents.map((event, index) => (
                 <ScrollReveal key={event.id} staggerIndex={index % 2}>
                   <EventCard
@@ -292,7 +292,7 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
           <div
             className={
               viewMode === "grid"
-                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"
                 : "space-y-4"
             }
           >

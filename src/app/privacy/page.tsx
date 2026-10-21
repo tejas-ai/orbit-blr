@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="pt-6 pb-8 sm:pt-10 sm:pb-12 bg-[#FAF9FF] dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors">
+    <div className="pt-5 pb-6 sm:pt-7 sm:pb-8 bg-[#FAF9FF] dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Link */}
         <Link

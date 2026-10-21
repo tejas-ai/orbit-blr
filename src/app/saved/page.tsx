@@ -78,7 +78,7 @@ export default function SavedEventsPage() {
   };
 
   return (
-    <div className="orbit-wallpaper-page max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-6 pb-6 sm:pb-8 space-y-6 sm:space-y-8 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
+    <div className="orbit-wallpaper-page max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 pb-4 sm:pb-6 space-y-5 sm:space-y-6 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
       {/* Header */}
       <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 dark:border-[#302B43] pb-4 pt-1">
         <div>
@@ -124,17 +124,17 @@ export default function SavedEventsPage() {
           Loading saved events...
         </div>
       ) : savedEventsList.length > 0 ? (
-        <div className="space-y-10">
+        <div className="space-y-6 sm:space-y-7">
           {[
             { title: "Saved Events", href: "/explore", entries: savedRegularEvents },
             { title: "Saved Hackathons", href: "/hackathons", entries: savedHackathons },
           ].filter((group) => group.entries.length > 0).map((group) => (
-            <section key={group.href} className="space-y-5">
+            <section key={group.href} className="space-y-4">
               <div className="flex items-center justify-between gap-3 border-b border-slate-200 dark:border-[#302B43] pb-3">
                 <h2 className="text-lg sm:text-xl font-extrabold text-slate-950 dark:text-[#F7F5FF]">{group.title} ({group.entries.length})</h2>
                 <Link href={group.href} className="text-xs font-semibold text-[#6A38EB] dark:text-[#A78BFA]">Explore {group.title} →</Link>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
                 {group.entries.map((event, index) => (
                   <ScrollReveal key={event.id} staggerIndex={index % 4}>
                     <EventCard event={event} isSaved={isSaved(event.id)} onToggleSave={toggleSave} />

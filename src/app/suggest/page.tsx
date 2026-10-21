@@ -70,7 +70,7 @@ export default function SuggestEventPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto pt-6 pb-8 sm:pt-8 sm:pb-10 px-4 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
+    <div className="max-w-2xl mx-auto pt-4 pb-6 sm:pt-6 sm:pb-8 px-4 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
       {/* Back button */}
       <Link
         href="/explore"
