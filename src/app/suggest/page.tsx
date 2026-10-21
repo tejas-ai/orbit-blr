@@ -70,11 +70,11 @@ export default function SuggestEventPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4 min-h-screen bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
+    <div className="max-w-2xl mx-auto pt-6 pb-8 sm:pt-8 sm:pb-10 px-4 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
       {/* Back button */}
       <Link
         href="/explore"
-        className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#CBD5E1] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] mb-6 transition-colors font-medium"
+        className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-[#CBD5E1] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] mb-4 transition-colors font-medium"
       >
         <ArrowLeft className="w-3.5 h-3.5" />
         <span>Back to Events</span>
