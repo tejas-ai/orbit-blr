@@ -1,0 +1,47 @@
+name: ORBIT BLR Quality Gates
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '30 2 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: orbit-quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-audit
+      - name: TypeScript validation
+        run: npx tsc --noEmit
+      - name: Production build without production secrets
+        run: npm run build
+      - name: Test critical public routes (local SQLite only)
+        run: node scripts/test-route-smoke.mjs
+      - name: Production dependency audit
+        if: always()
+        run: |
+          npm audit --omit=dev --json > dependency-audit.json || true
+          node scripts/summarize-npm-audit.mjs dependency-audit.json
+      - name: Save dependency audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-audit
+          path: dependency-audit.json
+          retention-days: 14
