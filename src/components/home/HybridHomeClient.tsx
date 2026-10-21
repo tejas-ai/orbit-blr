@@ -267,12 +267,12 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFFFF] dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] font-sans antialiased flex flex-col transition-colors duration-300">
+    <div className="orbit-wallpaper-page min-h-screen bg-[#FFFFFF] dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] font-sans antialiased flex flex-col transition-colors duration-300">
       {/* ========================================================= */}
       {/* 1. EDITORIAL HERO & PROMINENT NEARIFY SEARCH DOCK          */}
       {/* Reduced mobile padding & height for faster event discovery */}
       {/* ========================================================= */}
-      <section className="border-b border-slate-200/80 dark:border-[#302B43] bg-gradient-to-b from-white via-[#FAF9FF]/40 to-slate-50/70 dark:from-[#0E0E16] dark:via-[#151522]/60 dark:to-[#0E0E16] pt-4 pb-6 sm:pt-10 sm:pb-12 transition-colors duration-300">
+      <section className="orbit-wallpaper-hero border-b border-slate-200/80 dark:border-[#302B43] bg-gradient-to-b from-white via-[#FAF9FF]/40 to-slate-50/70 dark:from-[#0E0E16] dark:via-[#151522]/60 dark:to-[#0E0E16] pt-4 pb-6 sm:pt-10 sm:pb-12 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Editorial Masthead */}
           <ScrollReveal direction="down" className="max-w-3xl mb-4 sm:mb-6">
@@ -451,7 +451,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       {/* Fixed mobile spacing between heading and registration status*/}
       {/* ========================================================= */}
       {spotlightEvent && spotlightDate && (
-        <section className="py-6 sm:py-8 bg-slate-50/50 dark:bg-[#151522]/30 border-b border-slate-200/70 dark:border-[#302B43] transition-colors duration-300">
+        <section className="orbit-wallpaper-spotlight py-6 sm:py-8 bg-slate-50/50 dark:bg-[#151522]/30 border-b border-slate-200/70 dark:border-[#302B43] transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollReveal direction="down">
               {/* Header row with safe mobile layout */}
