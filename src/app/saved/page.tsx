@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { OrbitEvent } from "@/types/event";
+import { isHackathonEvent } from "@/lib/hackathons";
 import { useSavedEvents } from "@/lib/useSavedEvents";
 import EventCard from "@/components/events/EventCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
@@ -33,6 +34,9 @@ export default function SavedEventsPage() {
   }, []);
 
   const savedEventsList = events.filter((e) => savedIds.includes(e.id));
+
+  const savedRegularEvents = savedEventsList.filter((e) => !isHackathonEvent(e));
+  const savedHackathons = savedEventsList.filter(isHackathonEvent);
 
   // Export all saved events into a unified ICS
   const handleExportAllIcs = () => {
@@ -83,7 +87,7 @@ export default function SavedEventsPage() {
             <span>Personal Schedule</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold text-slate-950 dark:text-[#F7F5FF] tracking-tight font-serif">
-            My Saved Tech Events
+            My Saved Tech Events & Hackathons
           </h1>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-[#CBD5E1] mt-1">
             Stored locally in your browser. Track upcoming dates, register directly, and sync to your calendar.
@@ -120,15 +124,24 @@ export default function SavedEventsPage() {
           Loading saved events...
         </div>
       ) : savedEventsList.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {savedEventsList.map((event, index) => (
-            <ScrollReveal key={event.id} staggerIndex={index % 4}>
-              <EventCard
-                event={event}
-                isSaved={isSaved(event.id)}
-                onToggleSave={toggleSave}
-              />
-            </ScrollReveal>
+        <div className="space-y-10">
+          {[
+            { title: "Saved Events", href: "/explore", entries: savedRegularEvents },
+            { title: "Saved Hackathons", href: "/hackathons", entries: savedHackathons },
+          ].filter((group) => group.entries.length > 0).map((group) => (
+            <section key={group.href} className="space-y-5">
+              <div className="flex items-center justify-between gap-3 border-b border-slate-200 dark:border-[#302B43] pb-3">
+                <h2 className="text-lg sm:text-xl font-extrabold text-slate-950 dark:text-[#F7F5FF]">{group.title} ({group.entries.length})</h2>
+                <Link href={group.href} className="text-xs font-semibold text-[#6A38EB] dark:text-[#A78BFA]">Explore {group.title} →</Link>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {group.entries.map((event, index) => (
+                  <ScrollReveal key={event.id} staggerIndex={index % 4}>
+                    <EventCard event={event} isSaved={isSaved(event.id)} onToggleSave={toggleSave} />
+                  </ScrollReveal>
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       ) : (

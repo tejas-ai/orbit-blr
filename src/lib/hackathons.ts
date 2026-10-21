@@ -25,16 +25,13 @@ export function isHackathonEvent(event: Partial<OrbitEvent>): boolean {
   }
 
   const name = (event.name || "").toLowerCase();
-  const desc = (event.description || "").toLowerCase();
-
+  // A conference/workshop mentioning hackathons in its description is NOT
+  // itself a hackathon. Only structured classification or clear title cues count.
   return (
     name.includes("hackathon") ||
     name.includes("hackman") ||
     name.includes("devforge") ||
-    name.includes("hack day") ||
-    desc.includes("hackathon") ||
-    desc.includes("offline hackathon") ||
-    desc.includes("hack day")
+    name.includes("hack day")
   );
 }
 

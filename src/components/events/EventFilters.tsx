@@ -28,20 +28,21 @@ interface EventFiltersProps {
   filters: FilterState;
   onChange: (filters: FilterState) => void;
   totalResults: number;
+  directory?: "events" | "hackathons";
 }
 
-export default function EventFiltersBar({ filters, onChange, totalResults }: EventFiltersProps) {
+export default function EventFiltersBar({ filters, onChange, totalResults, directory = "events" }: EventFiltersProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const scrollerRef = useRef<HTMLDivElement>(null);
 
   const update = (partial: Partial<FilterState>) => {
-    onChange({ ...filters, ...partial });
+    onChange({ ...filters, ...partial, category: directory === "hackathons" ? "Hackathons" : partial.category ?? filters.category });
   };
 
   const resetFilters = () => {
     onChange({
       search: "",
-      category: "all",
+      category: directory === "hackathons" ? "Hackathons" : "all",
       benefits: "all",
       dateFilter: "all",
       registrationStatus: "all",
@@ -88,7 +89,7 @@ export default function EventFiltersBar({ filters, onChange, totalResults }: Eve
             type="text"
             value={filters.search || ""}
             onChange={(e) => update({ search: e.target.value })}
-            placeholder="Search meetups, hackathons, AI topics, venues..."
+            placeholder={directory === "hackathons" ? "Search hackathons, build sprints, teams..." : "Search meetups, workshops, AI topics, venues..."}
             className="w-full pl-10 pr-9 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-slate-50 hover:bg-slate-100/70 dark:bg-[#151522] dark:hover:bg-[#151522]/90 focus:bg-white dark:focus:bg-[#151522] border border-slate-200/80 dark:border-[#302B43] focus:border-[#6A38EB] dark:focus:border-[#8B5CF6] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] text-xs sm:text-sm text-slate-900 dark:text-[#F7F5FF] placeholder:text-slate-400 dark:placeholder:text-[#C4C0D6]/60 transition-all shadow-inner"
           />
           {filters.search && (
@@ -195,24 +196,24 @@ export default function EventFiltersBar({ filters, onChange, totalResults }: Eve
             <div
               ref={scrollerRef}
               role="tablist"
-              aria-label="Filter categories"
+              aria-label={directory === "hackathons" ? "Hackathon filters" : "Event categories"}
               className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar flex-1 scroll-smooth snap-x touch-pan-x"
             >
               <button
                 type="button"
                 role="tab"
                 aria-selected={filters.category === "all" || !filters.category}
-                onClick={() => update({ category: "all" })}
+                onClick={() => update({ category: directory === "hackathons" ? "Hackathons" : "all" })}
                 className={`px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full transition-all shrink-0 text-xs font-bold shadow-sm snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#1D1B2C] ${
                   filters.category === "all" || !filters.category
                     ? "bg-[#6A38EB] dark:bg-[#8B5CF6] text-white shadow-purple-500/25 scale-[1.02]"
                     : "bg-slate-50 dark:bg-[#151522] text-slate-700 dark:text-[#CBD5E1] border border-slate-200/80 dark:border-[#302B43] hover:bg-purple-50/40 dark:hover:bg-[#26233A] hover:border-purple-300 dark:hover:border-[#8B5CF6]/40 hover:text-[#101223] dark:hover:text-[#F7F5FF]"
                 }`}
               >
-                All Gatherings ({totalResults})
+                {directory === "hackathons" ? "All Hackathons" : "All Events"} ({totalResults})
               </button>
 
-              {CATEGORIES.map((cat) => {
+              {((directory === "hackathons" ? [] : CATEGORIES.filter((cat) => cat !== "Hackathons")) as typeof CATEGORIES).map((cat) => {
                 const isHack = cat === "Hackathons";
                 const isActive = filters.category?.toLowerCase() === cat.toLowerCase();
                 return (

@@ -41,7 +41,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/explore?category=Hackathons" className="text-slate-600 dark:text-[#CBD5E1] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] rounded">
+                <Link href="/hackathons" className="text-slate-600 dark:text-[#CBD5E1] hover:text-[#6A38EB] dark:hover:text-[#A78BFA] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] rounded">
                   Free Offline Hackathons
                 </Link>
               </li>

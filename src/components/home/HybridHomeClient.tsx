@@ -118,7 +118,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
   // Category Configuration
   const categories = [
     { id: "all", label: "All Gatherings", icon: Sparkles },
-    { id: "Hackathons", label: "Free Hackathons", icon: Zap },
+    // Hackathons now have their own directory.
     { id: "developer", label: "Developer Meetups", icon: Code },
     { id: "ai", label: "AI & World Models", icon: Layers },
     { id: "security", label: "Cybersecurity", icon: Shield },
@@ -145,6 +145,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
     const now = Date.now();
 
     const viableEvents = initialEvents.filter((e) => {
+      if (isHackathonEvent(e)) return false;
       // Must not be in the past
       const end = e.end_at ? new Date(e.end_at).getTime() : e.start_at ? new Date(e.start_at).getTime() : 0;
       if (end > 0 && end < now) return false;
@@ -159,7 +160,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       return true;
     });
 
-    if (viableEvents.length === 0) return initialEvents[0];
+    if (viableEvents.length === 0) return initialEvents.find((e) => !isHackathonEvent(e)) || null;
 
     // Rank candidates:
     // 1. Open registration status
@@ -196,6 +197,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
   // Filter & Search Logic
   const filteredEvents = useMemo(() => {
     return initialEvents.filter((e) => {
+      if (isHackathonEvent(e)) return false;
       // 1. Text Search
       const q = search.toLowerCase().trim();
       const matchesSearch =
@@ -207,13 +209,9 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
         (q.includes("hack") && isHackathonEvent(e)) ||
         (e.topics_covered && e.topics_covered.some((t) => t.toLowerCase().includes(q)));
 
-      // 2. Category Filter (with robust Hackathons support)
-      const isHack = isHackathonEvent(e);
-      let matchesCat = true;
-      if (selectedCategory !== "all") {
-        if (selectedCategory === "Hackathons") matchesCat = isHack;
-        else matchesCat = e.category.toLowerCase() === selectedCategory.toLowerCase();
-      }
+      // 2. Regular-event category filter only.
+      const matchesCat = selectedCategory === "all" ||
+        e.category.toLowerCase() === selectedCategory.toLowerCase();
 
       // 3. Area / Neighborhood Filter
       const matchesArea =
@@ -604,12 +602,10 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
         <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-6">
           <div>
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-[#F7F5FF] font-serif tracking-tight">
-              {selectedCategory === "Hackathons"
-                ? "Bengaluru Hackathons & Build Sprints"
-                : "Upcoming Verified Gatherings"}
+              {"Upcoming Verified Tech Events"}
             </h2>
             <p className="text-xs text-slate-500 dark:text-[#CBD5E1] mt-0.5">
-              Showing {filteredEvents.length} of {initialEvents.length} verified events • Benefits shown strictly when confirmed by organisers
+              Showing {filteredEvents.length} of {initialEvents.filter((e) => !isHackathonEvent(e)).length} verified events • Benefits shown strictly when confirmed by organisers
             </p>
           </div>
 
@@ -647,6 +643,14 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
           </div>
         )}
 
+        {/* Hackathons have a dedicated directory, never mixed cards. */}
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 dark:border-amber-900/60 bg-amber-50/70 dark:bg-[#2A1D0D] p-4 sm:p-5">
+          <div>
+            <p className="font-bold text-amber-950 dark:text-amber-200 text-sm">Looking for hackathons?</p>
+            <p className="text-xs text-amber-900/80 dark:text-amber-200/80">{hackathonEvents.length} verified hackathons have a separate directory.</p>
+          </div>
+          <Link href="/hackathons" className="rounded-full bg-amber-600 px-5 py-2.5 text-white text-xs font-bold hover:bg-amber-700">Explore Hackathons →</Link>
+        </div>
         {/* Natural District Feed Search CTA */}
         <ScrollReveal direction="down" className="flex justify-center mt-12 mb-6">
           <Link

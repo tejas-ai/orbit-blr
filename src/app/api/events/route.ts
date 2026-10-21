@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getFilteredEvents } from "@/lib/db";
 import { EventFilters } from "@/types/event";
+import { isHackathonEvent } from "@/lib/hackathons";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,14 @@ export async function GET(request: NextRequest) {
       sortBy: (searchParams.get("sort") as any) || "date_asc",
     };
 
-    const events = await getFilteredEvents(filters, { includeUnpublished: false });
+    // Preserve unfiltered API responses for existing consumers. Directory
+    // screens explicitly query ?type=events or ?type=hackathons.
+    const type = searchParams.get("type");
+    if (type && !["all", "events", "hackathons"].includes(type)) {
+      return NextResponse.json({ success: false, error: "Invalid type" }, { status: 400 });
+    }
+    const events = (await getFilteredEvents(filters, { includeUnpublished: false }))
+      .filter((e) => type === "hackathons" ? isHackathonEvent(e) : type === "events" ? !isHackathonEvent(e) : true);
 
     return NextResponse.json({
       success: true,

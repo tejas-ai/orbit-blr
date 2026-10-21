@@ -13,16 +13,17 @@ import Link from "next/link";
 
 interface ExploreClientProps {
   initialEvents: OrbitEvent[];
+  directory: "events" | "hackathons";
 }
 
-export default function ExploreClient({ initialEvents }: ExploreClientProps) {
+export default function ExploreClient({ initialEvents, directory }: ExploreClientProps) {
   const searchParams = useSearchParams();
   const { isSaved, toggleSave } = useSavedEvents();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   const [filters, setFilters] = useState<FilterStateType>({
     search: searchParams.get("q") || "",
-    category: (searchParams.get("category") as any) || "all",
+    category: directory === "hackathons" ? "Hackathons" : (searchParams.get("category") as any) || "all",
     benefits: (searchParams.get("benefits") as any) || "all",
     dateFilter: (searchParams.get("date") as any) || "all",
     registrationStatus: (searchParams.get("status") as any) || "all",
@@ -35,17 +36,21 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
   // The previous effect only applied truthy values, trapping users in Hackathons
   // even after navigating back to /explore.
   useEffect(() => {
-    const category = (searchParams.get("category") || "all") as FilterStateType["category"];
+    const category = (directory === "hackathons" ? "Hackathons" : searchParams.get("category") || "all") as FilterStateType["category"];
     const area = searchParams.get("area") || "all";
     const search = searchParams.get("q") || "";
     setFilters((prev) => {
       if (prev.category === category && prev.area === area && prev.search === search) return prev;
       return { ...prev, category, area, search };
     });
-  }, [searchParams]);
+  }, [searchParams, directory]);
 
   const filteredEvents = useMemo(() => {
-    let result = [...initialEvents];
+    // Defence-in-depth: never let a filter or query put a record
+    // from the other directory back into this page.
+    let result = initialEvents.filter((e) =>
+      directory === "hackathons" ? isHackathonEvent(e) : !isHackathonEvent(e)
+    );
 
     if (filters.search && filters.search.trim() !== "") {
       const q = filters.search.toLowerCase().trim();
@@ -62,11 +67,11 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
       );
     }
 
-    if (filters.category && filters.category !== "all") {
+    if (filters.category && filters.category !== "all" && directory === "events") {
       if (filters.category === "Hackathons") {
         result = result.filter((e) => isHackathonEvent(e));
       } else {
-        result = result.filter((e) => e.category.toLowerCase() === filters.category!.toLowerCase());
+        result = result.filter((e) => !isHackathonEvent(e) && e.category.toLowerCase() === filters.category!.toLowerCase());
       }
     }
 
@@ -168,9 +173,9 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
     }
 
     return result;
-  }, [initialEvents, filters]);
+  }, [initialEvents, filters, directory]);
 
-  const isHackathonMode = filters.category === "Hackathons";
+  const isHackathonMode = directory === "hackathons";
 
   return (
     <div className="space-y-6 sm:space-y-8 py-2 pb-20 lg:pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -200,7 +205,7 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
                 Explore Free Tech Events in Bengaluru
               </h1>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-[#CBD5E1] mt-1 max-w-2xl font-normal">
-                Filter through verified developer meetups, AI workshops, and hackathons with authentic event posters and ₹0 admission.
+                Filter through verified developer meetups, AI workshops and conferences with authentic event posters and ₹0 admission. Hackathons have their own dedicated directory.
               </p>
             </>
           )}
@@ -244,11 +249,12 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
         filters={filters}
         onChange={setFilters}
         totalResults={filteredEvents.length}
+        directory={directory}
       />
 
       {/* Events Listing */}
       {filteredEvents.length > 0 ? (
-        filters.category === "Hackathons" && viewMode === "grid" ? (
+        isHackathonMode && viewMode === "grid" ? (
           <div className="space-y-8">
             {/* Dedicated Balanced Hackathon Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
@@ -338,7 +344,7 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
               onClick={() =>
                 setFilters({
                   search: "",
-                  category: "all",
+                  category: isHackathonMode ? "Hackathons" : "all",
                   benefits: "all",
                   dateFilter: "all",
                   registrationStatus: "all",
