@@ -272,10 +272,10 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       {/* 1. EDITORIAL HERO & PROMINENT NEARIFY SEARCH DOCK          */}
       {/* Reduced mobile padding & height for faster event discovery */}
       {/* ========================================================= */}
-      <section className="orbit-wallpaper-hero border-b border-slate-200/80 dark:border-[#302B43] bg-gradient-to-b from-white via-[#FAF9FF]/40 to-slate-50/70 dark:from-[#0E0E16] dark:via-[#151522]/60 dark:to-[#0E0E16] pt-4 pb-5 sm:pt-7 sm:pb-8 transition-colors duration-300">
+      <section className="orbit-wallpaper-hero border-b border-slate-200/80 dark:border-[#302B43] bg-gradient-to-b from-white via-[#FAF9FF]/40 to-slate-50/70 dark:from-[#0E0E16] dark:via-[#151522]/60 dark:to-[#0E0E16] pt-4 pb-4 sm:pt-6 sm:pb-6 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Editorial Masthead */}
-          <ScrollReveal direction="down" className="max-w-3xl mb-4 sm:mb-6">
+          <ScrollReveal direction="down" className="max-w-3xl mb-4 sm:mb-5">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-50 dark:bg-[#1D1B2C] border border-purple-200/60 dark:border-[#302B43] text-[#6A38EB] dark:text-[#A78BFA] text-[11px] font-bold uppercase tracking-wider mb-2 sm:mb-3">
               <Sparkles className="w-3.5 h-3.5 text-[#6A38EB] dark:text-[#A78BFA]" />
               <span>Bengaluru Verified Tech Calendar</span>
@@ -451,7 +451,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       {/* Fixed mobile spacing between heading and registration status*/}
       {/* ========================================================= */}
       {spotlightEvent && spotlightDate && (
-        <section className="orbit-wallpaper-spotlight py-5 sm:py-6 bg-slate-50/50 dark:bg-[#151522]/30 border-b border-slate-200/70 dark:border-[#302B43] transition-colors duration-300">
+        <section className="orbit-wallpaper-spotlight py-4 sm:py-5 bg-slate-50/50 dark:bg-[#151522]/30 border-b border-slate-200/70 dark:border-[#302B43] transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollReveal direction="down">
               {/* Header row with safe mobile layout */}
@@ -475,7 +475,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
               </div>
 
               <div className="rounded-3xl bg-gradient-to-r from-purple-50 via-white to-indigo-50/60 dark:from-[#1D1B2C] dark:via-[#191629] dark:to-[#1D1B2C] border border-purple-200/80 dark:border-[#302B43] p-4 sm:p-7 shadow-sm transition-all hover:shadow-md dark:hover:shadow-[0_12px_32px_rgba(0,0,0,0.5)]">
-                <div className="flex flex-col lg:flex-row items-center gap-5 sm:gap-8">
+                <div className="flex flex-col lg:flex-row items-center gap-4 sm:gap-6">
                   {/* Spotlight Banner Graphic — 16:9 Aspect Ratio, Zero Overlays, Minimal Empty Space */}
                   <div className="relative w-full lg:w-[400px] aspect-[16/9] rounded-2xl overflow-hidden shrink-0 shadow-sm bg-[#FAF9FF] dark:bg-[#151022] border border-purple-100/70 dark:border-[#2D224C] flex items-center justify-center transition-colors">
                     <div className="relative w-full h-full">
@@ -597,9 +597,9 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       {/* ========================================================= */}
       {/* 3. MAIN EVENT CARDS FEED (DISTRICT PORTRAIT CARDS)         */}
       {/* ========================================================= */}
-      <section id="events-feed" className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6 pb-4 sm:pt-8 sm:pb-5">
+      <section id="events-feed" className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-5 pb-5 sm:pt-6 sm:pb-6">
         {/* Section Heading & Result Stats */}
-        <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-4 sm:mb-5">
+        <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-4">
           <div>
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-[#F7F5FF] font-serif tracking-tight">
               {"Upcoming Verified Tech Events"}
@@ -644,23 +644,14 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
         )}
 
         {/* Hackathons have a dedicated directory, never mixed cards. */}
-        <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 dark:border-amber-900/60 bg-amber-50/70 dark:bg-[#2A1D0D] p-4 sm:p-5">
+        <div className="mt-4 sm:mt-5 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 dark:border-amber-900/60 bg-amber-50/70 dark:bg-[#2A1D0D] p-4 sm:p-5">
           <div>
             <p className="font-bold text-amber-950 dark:text-amber-200 text-sm">Looking for hackathons?</p>
             <p className="text-xs text-amber-900/80 dark:text-amber-200/80">{hackathonEvents.length} verified hackathons have a separate directory.</p>
           </div>
           <Link href="/hackathons" className="rounded-full bg-amber-600 px-5 py-2.5 text-white text-xs font-bold hover:bg-amber-700">Explore Hackathons →</Link>
         </div>
-        {/* Natural District Feed Search CTA */}
-        <ScrollReveal direction="down" className="flex justify-center mt-5 sm:mt-6 mb-0">
-          <Link
-            href="/explore"
-            className="px-6 py-3 rounded-full bg-[#6A38EB] hover:bg-[#5826D4] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] text-white font-bold text-xs shadow-lg shadow-purple-500/25 flex items-center gap-2 active:scale-95 transition-all"
-          >
-            <span>Explore All Bengaluru Events</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </ScrollReveal>
+        
       </section>
     </div>
   );
