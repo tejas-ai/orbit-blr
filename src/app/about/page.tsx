@@ -10,21 +10,23 @@ import {
   HelpCircle,
   Users,
   ArrowRight,
+  Github,
+  ArrowUpRight,
 } from "lucide-react";
 import VerificationEngineExplainer from "@/components/home/VerificationEngineExplainer";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "About ORBIT BLR — Bengaluru's Free In-Person Tech Directory",
+  title: "About ORBIT BLR — Created by Tejas Handigol",
   description:
-    "Learn about ORBIT BLR's mission, our strict 7-point event verification standard, and how we help developers and students in Bengaluru discover authentic free tech opportunities.",
+    "Learn about ORBIT BLR, created by Tejas Handigol, and how the platform helps Bengaluru discover verified free in-person tech events and hackathons.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
-    title: "About ORBIT BLR — Bengaluru's Free In-Person Tech Directory",
+    title: "About ORBIT BLR — Created by Tejas Handigol",
     description:
-      "Learn about ORBIT BLR's mission, our strict 7-point event verification standard, and how we help developers and students in Bengaluru discover authentic free tech opportunities.",
+      "Learn about ORBIT BLR, created by Tejas Handigol, and how the platform helps Bengaluru discover verified free in-person tech events and hackathons.",
     url: `${SITE_URL}/about`,
     siteName: SITE_NAME,
     locale: "en_IN",
@@ -40,7 +42,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About ORBIT BLR — Bengaluru's Free In-Person Tech Directory",
+    title: "About ORBIT BLR — Created by Tejas Handigol",
     description:
       "Learn about ORBIT BLR's mission and strict 7-point verification standard.",
     images: ["/og-image.png"],
@@ -67,7 +69,7 @@ export default function AboutPage() {
     },
     {
       q: "Is ORBIT BLR affiliated with Google, AWS, Microsoft, or other organizers?",
-      a: "No. ORBIT BLR is an independent public directory built by the Bengaluru developer community. All company names, logos, and trademarks belong to their respective owners.",
+      a: "No. ORBIT BLR is an independent public directory created by Tejas Handigol for the Bengaluru developer community. All company names, logos, and trademarks belong to their respective owners.",
     },
   ];
 
@@ -109,6 +111,28 @@ export default function AboutPage() {
           </p>
         </ScrollReveal>
       </div>
+
+      {/* Public creator attribution; rendered on the server for accessibility and discoverability. */}
+      <section id="creator" aria-labelledby="creator-heading" className="relative overflow-hidden rounded-3xl border border-[#4B3A72]/80 bg-[#171526]/95 p-5 sm:p-7">
+        <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-[#6A38EB]/10 blur-3xl" />
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
+          <div aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#6A38EB]/50 bg-gradient-to-br from-[#6A38EB]/25 to-[#261C3D] text-sm font-extrabold text-[#D6C7FF]">
+            TH
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#B99EFF]">Creator &amp; Developer</p>
+            <h2 id="creator-heading" className="mt-1 font-serif text-2xl font-extrabold tracking-tight text-[#F7F5FF] sm:text-3xl">Tejas Handigol</h2>
+            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#CBD5E1]">
+              ORBIT BLR was conceived, designed, and developed by Tejas Handigol, a Computer Science (AI &amp; ML) student in Bengaluru. The platform helps people discover genuinely free, in-person tech events and hackathons across the city.
+            </p>
+            <a href="https://github.com/tejas-ai" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#544373] bg-[#241D39] px-4 py-2 text-xs font-semibold text-[#E5DBFF] transition-colors hover:border-[#A78BFA] hover:bg-[#33264C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A78BFA]">
+              <Github className="h-4 w-4" aria-hidden="true" />
+              View creator on GitHub
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Verification Engine Explainer Section */}
       <VerificationEngineExplainer />
