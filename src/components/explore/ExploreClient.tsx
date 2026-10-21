@@ -31,14 +31,17 @@ export default function ExploreClient({ initialEvents }: ExploreClientProps) {
     sortBy: (searchParams.get("sort") as any) || "date_asc",
   });
 
-  // Sync with searchParams if navigated from external link or hackathon button
+  // Keep the UI in sync when navigation removes a filter from the URL.
+  // The previous effect only applied truthy values, trapping users in Hackathons
+  // even after navigating back to /explore.
   useEffect(() => {
-    const areaParam = searchParams.get("area");
-    const catParam = searchParams.get("category");
-    const qParam = searchParams.get("q");
-    if (areaParam) setFilters((prev) => ({ ...prev, area: areaParam }));
-    if (catParam) setFilters((prev) => ({ ...prev, category: catParam as any }));
-    if (qParam) setFilters((prev) => ({ ...prev, search: qParam }));
+    const category = (searchParams.get("category") || "all") as FilterStateType["category"];
+    const area = searchParams.get("area") || "all";
+    const search = searchParams.get("q") || "";
+    setFilters((prev) => {
+      if (prev.category === category && prev.area === area && prev.search === search) return prev;
+      return { ...prev, category, area, search };
+    });
   }, [searchParams]);
 
   const filteredEvents = useMemo(() => {
