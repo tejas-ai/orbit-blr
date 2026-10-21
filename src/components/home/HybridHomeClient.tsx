@@ -267,12 +267,12 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
   };
 
   return (
-    <div className="orbit-wallpaper-page min-h-screen bg-[#FFFFFF] dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] font-sans antialiased flex flex-col transition-colors duration-300">
+    <div className="orbit-wallpaper-page bg-[#FFFFFF] dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] font-sans antialiased flex flex-col transition-colors duration-300">
       {/* ========================================================= */}
       {/* 1. EDITORIAL HERO & PROMINENT NEARIFY SEARCH DOCK          */}
       {/* Reduced mobile padding & height for faster event discovery */}
       {/* ========================================================= */}
-      <section className="orbit-wallpaper-hero border-b border-slate-200/80 dark:border-[#302B43] bg-gradient-to-b from-white via-[#FAF9FF]/40 to-slate-50/70 dark:from-[#0E0E16] dark:via-[#151522]/60 dark:to-[#0E0E16] pt-4 pb-6 sm:pt-10 sm:pb-12 transition-colors duration-300">
+      <section className="orbit-wallpaper-hero border-b border-slate-200/80 dark:border-[#302B43] bg-gradient-to-b from-white via-[#FAF9FF]/40 to-slate-50/70 dark:from-[#0E0E16] dark:via-[#151522]/60 dark:to-[#0E0E16] pt-4 pb-5 sm:pt-7 sm:pb-8 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Editorial Masthead */}
           <ScrollReveal direction="down" className="max-w-3xl mb-4 sm:mb-6">
@@ -451,7 +451,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       {/* Fixed mobile spacing between heading and registration status*/}
       {/* ========================================================= */}
       {spotlightEvent && spotlightDate && (
-        <section className="orbit-wallpaper-spotlight py-6 sm:py-8 bg-slate-50/50 dark:bg-[#151522]/30 border-b border-slate-200/70 dark:border-[#302B43] transition-colors duration-300">
+        <section className="orbit-wallpaper-spotlight py-5 sm:py-6 bg-slate-50/50 dark:bg-[#151522]/30 border-b border-slate-200/70 dark:border-[#302B43] transition-colors duration-300">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <ScrollReveal direction="down">
               {/* Header row with safe mobile layout */}
@@ -597,9 +597,9 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       {/* ========================================================= */}
       {/* 3. MAIN EVENT CARDS FEED (DISTRICT PORTRAIT CARDS)         */}
       {/* ========================================================= */}
-      <main id="events-feed" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex-1">
+      <section id="events-feed" className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 pt-6 pb-4 sm:pt-8 sm:pb-5">
         {/* Section Heading & Result Stats */}
-        <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-6">
+        <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-4 sm:mb-5">
           <div>
             <h2 className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-[#F7F5FF] font-serif tracking-tight">
               {"Upcoming Verified Tech Events"}
@@ -630,7 +630,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-7">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
             {filteredEvents.map((event, index) => (
               <ScrollReveal key={event.id} staggerIndex={index % 4}>
                 <EventCard
@@ -644,7 +644,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
         )}
 
         {/* Hackathons have a dedicated directory, never mixed cards. */}
-        <div className="mt-8 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 dark:border-amber-900/60 bg-amber-50/70 dark:bg-[#2A1D0D] p-4 sm:p-5">
+        <div className="mt-5 sm:mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-amber-200 dark:border-amber-900/60 bg-amber-50/70 dark:bg-[#2A1D0D] p-4 sm:p-5">
           <div>
             <p className="font-bold text-amber-950 dark:text-amber-200 text-sm">Looking for hackathons?</p>
             <p className="text-xs text-amber-900/80 dark:text-amber-200/80">{hackathonEvents.length} verified hackathons have a separate directory.</p>
@@ -652,7 +652,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
           <Link href="/hackathons" className="rounded-full bg-amber-600 px-5 py-2.5 text-white text-xs font-bold hover:bg-amber-700">Explore Hackathons →</Link>
         </div>
         {/* Natural District Feed Search CTA */}
-        <ScrollReveal direction="down" className="flex justify-center mt-12 mb-6">
+        <ScrollReveal direction="down" className="flex justify-center mt-5 sm:mt-6 mb-0">
           <Link
             href="/explore"
             className="px-6 py-3 rounded-full bg-[#6A38EB] hover:bg-[#5826D4] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] text-white font-bold text-xs shadow-lg shadow-purple-500/25 flex items-center gap-2 active:scale-95 transition-all"
@@ -661,7 +661,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </ScrollReveal>
-      </main>
+      </section>
     </div>
   );
 }

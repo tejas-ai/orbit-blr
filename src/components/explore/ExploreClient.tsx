@@ -178,9 +178,9 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
   const isHackathonMode = directory === "hackathons";
 
   return (
-    <div className="space-y-6 sm:space-y-8 py-2 pb-20 lg:pb-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="space-y-5 sm:space-y-6 pt-1 pb-4 sm:pb-6 w-full">
       {/* Header */}
-      <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 dark:border-[#302B43] pb-6 pt-4 transition-colors">
+      <ScrollReveal direction="down" className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 dark:border-[#302B43] pb-4 pt-2 sm:pb-5 sm:pt-3 transition-colors">
         <div>
           {isHackathonMode ? (
             <>
@@ -255,7 +255,7 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
       {/* Events Listing */}
       {filteredEvents.length > 0 ? (
         isHackathonMode && viewMode === "grid" ? (
-          <div className="space-y-8">
+          <div className="space-y-5 sm:space-y-6">
             {/* Dedicated Balanced Hackathon Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
               {filteredEvents.map((event, index) => (

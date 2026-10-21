@@ -189,45 +189,50 @@ html.dark .district-card-hover {
   overflow: hidden;
   pointer-events: none;
   isolation: isolate;
-  background: #090b1d;
+  background: #10234b;
 }
 
 .orbit-liquid-wallpaper__panel {
   position: absolute;
   inset-block: 0;
-  width: 57%;
+  width: 66%;
   overflow: hidden;
   background-size: cover;
   background-position: center;
   transform: translateZ(0);
+  filter: brightness(1.12) saturate(1.12);
 }
 .orbit-liquid-wallpaper__panel--left {
   left: 0;
   background-image: url("/wallpapers/liquid-cobalt.webp");
+  -webkit-mask-image: linear-gradient(to right, #000 0%, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 0%, #000 58%, transparent 100%);
 }
 .orbit-liquid-wallpaper__panel--right {
   right: 0;
   background-image: url("/wallpapers/electric-azure.webp");
+  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 0%, #000 58%, transparent 100%);
 }
 .orbit-liquid-wallpaper__video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0.72;
-  filter: saturate(1.1);
+  opacity: 0.85;
+  filter: brightness(1.08) saturate(1.1);
 }
 .orbit-liquid-wallpaper__veil {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(246,248,255,.84), rgba(241,244,255,.77)),
-    linear-gradient(180deg, rgba(251,252,255,.62), rgba(239,241,252,.70));
+    linear-gradient(90deg, rgba(246,248,255,.74), rgba(241,246,255,.68)),
+    linear-gradient(180deg, rgba(251,252,255,.49), rgba(239,244,255,.59));
 }
 html.dark .orbit-liquid-wallpaper__veil {
   background:
-    linear-gradient(90deg, rgba(8,9,21,.70), rgba(10,8,24,.62)),
-    linear-gradient(180deg, rgba(10,10,25,.50), rgba(11,8,22,.70));
+    linear-gradient(90deg, rgba(8,11,31,.44), rgba(9,16,43,.39)),
+    linear-gradient(180deg, rgba(10,13,34,.27), rgba(11,12,32,.46));
 }
 
 /* Keep layout containers translucent but leave cards and inputs opaque. */
@@ -238,28 +243,32 @@ html.dark .orbit-liquid-wallpaper__veil {
   background: linear-gradient(180deg, rgba(255,255,255,.50), rgba(248,249,255,.18)) !important;
 }
 html.dark .orbit-wallpaper-hero {
-  background: linear-gradient(180deg, rgba(14,14,22,.36), rgba(12,11,27,.18)) !important;
+  background: linear-gradient(180deg, rgba(14,16,36,.28), rgba(12,17,40,.15)) !important;
 }
 .orbit-wallpaper-spotlight {
   background: rgba(250,249,255,.34) !important;
   backdrop-filter: blur(8px);
 }
 html.dark .orbit-wallpaper-spotlight {
-  background: rgba(20,17,36,.38) !important;
+  background: rgba(20,24,52,.27) !important;
 }
 
 /* Keep page content above the wallpaper without covering its colors. */
 body > .orbit-liquid-wallpaper { z-index: 0; }
 @media (max-width: 639px) {
-  .orbit-liquid-wallpaper__panel { width: 100%; }
+  .orbit-liquid-wallpaper__panel { width: 100%; filter: brightness(1.13) saturate(1.12); }
   .orbit-liquid-wallpaper__panel--left { display: none; }
-  .orbit-liquid-wallpaper__panel--right { left: 0; }
-  .orbit-liquid-wallpaper__video { opacity: .65; }
+  .orbit-liquid-wallpaper__panel--right {
+    left: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .orbit-liquid-wallpaper__video { opacity: .79; }
   .orbit-liquid-wallpaper__veil {
-    background: linear-gradient(180deg, rgba(249,250,255,.81), rgba(246,248,255,.88));
+    background: linear-gradient(180deg, rgba(249,250,255,.74), rgba(246,248,255,.78));
   }
   html.dark .orbit-liquid-wallpaper__veil {
-    background: linear-gradient(180deg, rgba(12,10,25,.62), rgba(9,8,22,.75));
+    background: linear-gradient(180deg, rgba(10,15,35,.40), rgba(9,13,34,.54));
   }
 }
 @media (prefers-reduced-motion: reduce) {
