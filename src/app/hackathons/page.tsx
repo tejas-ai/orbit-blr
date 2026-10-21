@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 export default async function HackathonsPage() {
   const events = (await getAllEvents({ includeUnpublished: false })).filter(isHackathonEvent);
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-3 sm:pt-6 sm:pb-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 sm:pt-5 sm:pb-3">
       <Suspense fallback={<div className="p-12 text-center">Loading hackathons...</div>}>
         <ExploreClient initialEvents={events} directory="hackathons" />
       </Suspense>
