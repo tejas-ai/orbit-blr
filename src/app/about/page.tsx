@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Metadata } from "next";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 import {
@@ -11,6 +12,7 @@ import {
   Users,
   ArrowRight,
   Github,
+  Linkedin,
   ArrowUpRight,
 } from "lucide-react";
 import VerificationEngineExplainer from "@/components/home/VerificationEngineExplainer";
@@ -116,8 +118,14 @@ export default function AboutPage() {
       <section id="creator" aria-labelledby="creator-heading" className="relative overflow-hidden rounded-3xl border border-[#4B3A72]/80 bg-[#171526]/95 p-5 sm:p-7">
         <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-[#6A38EB]/10 blur-3xl" />
         <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
-          <div aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#6A38EB]/50 bg-gradient-to-br from-[#6A38EB]/25 to-[#261C3D] text-sm font-extrabold text-[#D6C7FF]">
-            TH
+          <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-[#6A38EB]/50 bg-[#261C3D] shadow-lg shadow-violet-950/40 sm:h-28 sm:w-28">
+            <Image
+              src="/creator/tejas-handigol.webp"
+              alt="Tejas Handigol, creator and developer of ORBIT BLR"
+              fill
+              sizes="(max-width: 640px) 96px, 112px"
+              className="object-cover"
+            />
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#B99EFF]">Creator &amp; Developer</p>
@@ -125,11 +133,18 @@ export default function AboutPage() {
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#CBD5E1]">
               ORBIT BLR was conceived, designed, and developed by Tejas Handigol, a Computer Science (AI &amp; ML) student in Bengaluru. The platform helps people discover genuinely free, in-person tech events and hackathons across the city.
             </p>
-            <a href="https://github.com/tejas-ai" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#544373] bg-[#241D39] px-4 py-2 text-xs font-semibold text-[#E5DBFF] transition-colors hover:border-[#A78BFA] hover:bg-[#33264C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A78BFA]">
-              <Github className="h-4 w-4" aria-hidden="true" />
-              View creator on GitHub
-              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </a>
+            <div className="mt-4 flex flex-wrap items-center gap-2.5">
+              <a href="https://github.com/tejas-ai" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[#544373] bg-[#241D39] px-4 py-2.5 text-xs font-semibold text-[#E5DBFF] transition-colors hover:border-[#A78BFA] hover:bg-[#33264C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A78BFA]">
+                <Github className="h-4 w-4" aria-hidden="true" />
+                GitHub
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+              <a href="https://www.linkedin.com/in/tejashandigol/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-[#3B82F6]/40 bg-[#1C2438] px-4 py-2.5 text-xs font-semibold text-[#E8F1FF] transition-colors hover:border-[#60A5FA] hover:bg-[#24304A] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#60A5FA]">
+                <Linkedin className="h-4 w-4" aria-hidden="true" />
+                LinkedIn
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
