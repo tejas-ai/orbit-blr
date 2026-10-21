@@ -24,33 +24,7 @@ export default function Navbar() {
   const { savedCount } = useSavedEvents();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-
   const isEventDetailPage = pathname.startsWith("/events/");
-
-  useEffect(() => {
-    const syncCategory = () => {
-      setActiveCategory(new URLSearchParams(window.location.search).get("category"));
-    };
-    syncCategory();
-    window.addEventListener("popstate", syncCategory);
-    return () => window.removeEventListener("popstate", syncCategory);
-  }, [pathname]);
-
-  // Explore already holds all published events in memory. Switching its two
-  // primary tabs must not trigger a fresh server navigation and database query.
-  const handleExploreNavigation = (
-    event: React.MouseEvent<HTMLAnchorElement>,
-    href: string
-  ) => {
-    if (pathname !== "/explore" || (href !== "/explore" && href !== "/explore?category=Hackathons")) return;
-    event.preventDefault();
-    if (window.location.pathname + window.location.search !== href) {
-      // Next.js synchronizes history.pushState with useSearchParams.
-      window.history.pushState(null, "", href);
-    }
-    setActiveCategory(href.includes("Hackathons") ? "Hackathons" : null);
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,17 +37,12 @@ export default function Navbar() {
   const navLinks = [
     { label: "For You", href: "/", icon: Home },
     { label: "Explore Events", href: "/explore", icon: Compass },
-    { label: "Hackathons", href: "/explore?category=Hackathons", icon: Zap },
+    { label: "Hackathons", href: "/hackathons", icon: Zap },
     { label: "Verification Standard", href: "/about#verification", icon: ShieldCheck },
   ];
 
   const isActive = (href: string) => {
-    if (href === "/explore?category=Hackathons") {
-      return pathname === "/explore" && activeCategory === "Hackathons";
-    }
-    if (href === "/explore") {
-      return pathname === "/explore" && activeCategory !== "Hackathons";
-    }
+    if (href === "/hackathons" || href === "/explore") return pathname === href;
     if (href.startsWith("/about#")) return pathname === "/about";
     return pathname === href;
   };
@@ -121,7 +90,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  onClick={(event) => handleExploreNavigation(event, link.href)}
+                  
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] ${
                     active
                       ? "bg-purple-50 text-[#6A38EB] dark:bg-[#1D1B2C] dark:text-[#A78BFA] dark:border dark:border-[#302B43] font-bold"
@@ -144,7 +113,7 @@ export default function Navbar() {
             {/* Quick Search Shortcut */}
             <Link
               href="/explore"
-              onClick={(event) => handleExploreNavigation(event, "/explore")}
+              
               className="p-2 rounded-full bg-slate-50 hover:bg-slate-100 dark:bg-[#151522] dark:hover:bg-[#1D1B2C] border border-slate-200 dark:border-[#302B43] text-slate-600 hover:text-slate-900 dark:text-[#CBD5E1] dark:hover:text-[#F7F5FF] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]"
               title="Search verified events"
               aria-label="Search verified events"
@@ -285,7 +254,7 @@ export default function Navbar() {
             <Link
               href="/explore"
               className={`flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] ${
-                pathname === "/explore" && activeCategory !== "Hackathons"
+                pathname === "/explore"
                   ? "text-[#6A38EB] dark:text-[#A78BFA] font-bold"
                   : "text-slate-500 dark:text-[#CBD5E1] hover:text-slate-900 dark:hover:text-[#F7F5FF]"
               }`}
@@ -295,10 +264,10 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="/explore?category=Hackathons"
-              onClick={(event) => handleExploreNavigation(event, "/explore?category=Hackathons")}
+              href="/hackathons"
+              
               className={`flex flex-col items-center justify-center gap-1 py-1 rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] ${
-                activeCategory === "Hackathons"
+                pathname === "/hackathons"
                   ? "text-amber-600 dark:text-amber-400 font-bold"
                   : "text-slate-500 dark:text-[#CBD5E1] hover:text-slate-900 dark:hover:text-[#F7F5FF]"
               }`}
