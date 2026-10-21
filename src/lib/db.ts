@@ -241,7 +241,7 @@ export async function getFilteredEvents(
     if (targetCat === "hackathons" || targetCat === "hackathon") {
       events = events.filter((e) => isHackathonEvent(e));
     } else {
-      events = events.filter((e) => e.category && e.category.toLowerCase() === targetCat);
+      events = events.filter((e) => !isHackathonEvent(e) && e.category && e.category.toLowerCase() === targetCat);
     }
   }
 
