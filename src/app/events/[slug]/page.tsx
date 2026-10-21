@@ -186,7 +186,7 @@ export default async function EventPage({ params }: EventPageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="orbit-wallpaper-page max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 pb-8 sm:pb-10 space-y-5 sm:space-y-6 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
+      <div className="orbit-wallpaper-page max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 pb-5 sm:pb-6 space-y-4 sm:space-y-5 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center gap-2 text-xs text-slate-500 dark:text-[#CBD5E1] font-medium">
           <Link href="/" className="hover:text-[#6A38EB] dark:hover:text-[#A78BFA] transition-colors flex items-center gap-1 shrink-0">
@@ -230,7 +230,7 @@ export default async function EventPage({ params }: EventPageProps) {
         {/* 3. TWO-COLUMN EDITORIAL CONTENT GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           {/* Left Column: Event Details & Specifications */}
-          <div className="lg:col-span-8 space-y-6 sm:space-y-8">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-5">
             {/* 3.1 Overview */}
             <section
               id="overview"
@@ -607,7 +607,7 @@ export default async function EventPage({ params }: EventPageProps) {
           </div>
 
           {/* Right Column: District Sticky Action Rail */}
-          <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
+          <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-4 sm:space-y-5">
             <EventDetailsActions event={event} />
           </div>
         </div>
