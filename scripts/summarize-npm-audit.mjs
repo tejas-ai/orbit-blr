@@ -11,6 +11,14 @@ if (!fs.existsSync(p)) {
   if (data) {
     const v = data.metadata?.vulnerabilities || {};
     console.log("Production dependency audit:", JSON.stringify(v));
+    for (const [name, advisory] of Object.entries(data.vulnerabilities || {})) {
+      console.log("Advisory:", JSON.stringify({
+        name, severity: advisory.severity,
+        direct: advisory.isDirect,
+        via: (advisory.via || []).map(x => typeof x === "string" ? x : x.title),
+        range: advisory.range, fixAvailable: advisory.fixAvailable
+      }));
+    }
     if ((v.critical || 0) > 0 || (v.high || 0) > 0) {
       console.error("ACTION REQUIRED: high/critical production dependency advisories remain.");
       process.exitCode = 1;
