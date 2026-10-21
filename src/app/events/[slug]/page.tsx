@@ -194,9 +194,9 @@ export default async function EventPage({ params }: EventPageProps) {
             <span>Home</span>
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-300 dark:text-[#302B43] shrink-0" />
-          <Link href="/explore" className="hover:text-[#6A38EB] dark:hover:text-[#A78BFA] transition-colors shrink-0">
-            Explore Events
-          </Link>
+          <Link href={isHack ? "/hackathons" : "/explore"} className="hover:text-[#6A38EB] dark:hover:text-[#A78BFA] transition-colors shrink-0">
+             {isHack ? "Hackathons" : "Explore Events"}
+           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-slate-300 dark:text-[#302B43] shrink-0" />
           <span className="text-slate-900 dark:text-[#F7F5FF] truncate max-w-[140px] xs:max-w-[200px] sm:max-w-xs md:max-w-md font-semibold">
             {event.name}
