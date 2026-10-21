@@ -213,7 +213,7 @@ export default function EventFiltersBar({ filters, onChange, totalResults, direc
                 {directory === "hackathons" ? "All Hackathons" : "All Events"} ({totalResults})
               </button>
 
-              {(directory === "hackathons" ? [] : CATEGORIES.filter((cat) => cat !== "Hackathons")).map((cat) => {
+              {((directory === "hackathons" ? [] : CATEGORIES.filter((cat) => cat !== "Hackathons")) as typeof CATEGORIES).map((cat) => {
                 const isHack = cat === "Hackathons";
                 const isActive = filters.category?.toLowerCase() === cat.toLowerCase();
                 return (
