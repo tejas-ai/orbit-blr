@@ -113,7 +113,7 @@ function SignInContent() {
 
 export default function SignInPage() {
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-[#FFFFFF] dark:bg-[#0B0813] transition-colors">
+    <div className="flex items-center justify-center px-4 py-8 sm:py-12 bg-[#FFFFFF] dark:bg-[#0B0813] transition-colors">
       <Suspense
         fallback={
           <div className="w-full max-w-md p-12 text-center text-slate-400">
