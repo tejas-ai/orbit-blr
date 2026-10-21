@@ -13,6 +13,10 @@ child.stderr.on("data", c => { output += c.toString(); });
 const tests = [
   ["/", 200],
   ["/explore", 200],
+  ["/hackathons", 200],
+  ["/explore?category=Hackathons", 307],
+  ["/api/events?type=events", 200],
+  ["/api/events?type=hackathons", 200],
   ["/saved", 200],
   ["/suggest", 200],
   ["/api/events", 200],
@@ -34,7 +38,10 @@ try {
   for (const [path, expected] of tests) {
     const response = await fetch(origin + path, { redirect: "manual", signal: AbortSignal.timeout(12000) });
     if (response.status !== expected) throw new Error(`${path}: expected ${expected}, got ${response.status}`);
-    if (path === "/api/events") {
+    if (path === "/explore?category=Hackathons" && response.headers.get("location") !== "/hackathons") {
+      throw new Error("Old hackathon link must redirect to /hackathons");
+    }
+    if (path.startsWith("/api/events")) {
       const data = await response.json();
       if (data.success !== true || !Array.isArray(data.events)) throw new Error("Event API response invalid");
       if (data.events.some(e => e.publication_status !== "published")) throw new Error("Unpublished event leaked into public API");
