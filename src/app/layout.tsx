@@ -43,7 +43,8 @@ export const metadata: Metadata = {
     "HSR Layout hackathons",
     "Bengaluru hackathons 2026",
   ],
-  authors: [{ name: "ORBIT BLR Team" }],
+  authors: [{ name: "Tejas Handigol", url: "https://github.com/tejas-ai" }],
+  creator: "Tejas Handigol",
   openGraph: {
     title: HOMEPAGE_TITLE,
     description: HOMEPAGE_DESCRIPTION,
