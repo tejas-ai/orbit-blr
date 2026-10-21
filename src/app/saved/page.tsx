@@ -42,7 +42,7 @@ export default function SavedEventsPage() {
       .map((e) => {
         const content = generateIcsContent(e);
         const lines = content.split("\r\n");
-        return lines.slice(6, -2).join("\r\n"); // Extract VEVENT block
+        return lines.slice(5, -1).join("\r\n"); // Include BEGIN:VEVENT and END:VEVENT
       })
       .join("\r\n");
 
