@@ -38,7 +38,7 @@ try {
   for (const [path, expected] of tests) {
     const response = await fetch(origin + path, { redirect: "manual", signal: AbortSignal.timeout(12000) });
     if (response.status !== expected) throw new Error(`${path}: expected ${expected}, got ${response.status}`);
-    if (path === "/explore?category=Hackathons" && response.headers.get("location") !== "/hackathons") {
+    if (path === "/explore?category=Hackathons" && new URL(response.headers.get("location") || "/", origin).pathname !== "/hackathons") {
       throw new Error("Old hackathon link must redirect to /hackathons");
     }
     if (path.startsWith("/api/events")) {
