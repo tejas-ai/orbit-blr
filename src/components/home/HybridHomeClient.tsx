@@ -93,7 +93,7 @@ function DefensivePosterImage({
       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
       className={className}
       priority={priority}
-      loading="eager"
+      loading={priority ? undefined : "lazy"}
       onError={() => {
         if (src !== fallback) {
           setSrc(fallback);

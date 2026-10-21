@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { OrbitEvent } from "@/types/event";
 import { getEventThumbnail, getCategoryFallback } from "@/lib/thumbnails";
@@ -76,10 +77,10 @@ function DefensivePosterImage({
       src={src}
       alt={thumb.alt}
       fill
-      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
       className={className}
       priority={priority}
-      loading="eager"
+      loading={priority ? undefined : "lazy"}
       onError={() => {
         if (src !== fallback) {
           setSrc(fallback);
@@ -96,6 +97,8 @@ export default function EventCard({
   onToggleSave,
   priority = false,
 }: EventCardProps) {
+  const router = useRouter();
+  const prefetchDetails = () => router.prefetch(`/events/${event.slug}`);
   const dateInfo = formatDate(event.start_at);
   const isHack = isHackathonEvent(event);
   const hackathon = extractHackathonDetails(event);
@@ -111,7 +114,7 @@ export default function EventCard({
     >
       {/* 1. CLEAN POSTER CONTAINER — 16:9 INTRINSIC ASPECT RATIO, ZERO OVERLAYS, MINIMAL WASTED SPACE */}
       <div className="relative aspect-[16/9] w-full bg-[#FAF9FF] dark:bg-[#151022] border-b border-purple-100/70 dark:border-[#2D224C] overflow-hidden flex items-center justify-center transition-colors">
-        <Link href={`/events/${event.slug}`} className="relative w-full h-full block">
+        <Link href={`/events/${event.slug}`} prefetch={false} onMouseEnter={prefetchDetails} onFocus={prefetchDetails} className="relative w-full h-full block">
           <DefensivePosterImage
             event={event}
             priority={priority}
@@ -193,7 +196,7 @@ export default function EventCard({
 
           {/* Event Title */}
           <h3 className="text-sm sm:text-base font-bold text-slate-950 dark:text-[#F7F5FF] leading-snug line-clamp-2 group-hover:text-[#6A38EB] dark:group-hover:text-[#A78BFA] transition-colors">
-            <Link href={`/events/${event.slug}`} className="focus-visible:outline-none focus-visible:underline rounded">
+            <Link href={`/events/${event.slug}`} prefetch={false} onMouseEnter={prefetchDetails} onFocus={prefetchDetails} className="focus-visible:outline-none focus-visible:underline rounded">
               {event.name}
             </Link>
           </h3>
@@ -247,6 +250,9 @@ export default function EventCard({
 
           <Link
             href={`/events/${event.slug}`}
+            prefetch={false}
+            onMouseEnter={prefetchDetails}
+            onFocus={prefetchDetails}
             className="px-4 py-1.5 rounded-full bg-[#6A38EB] hover:bg-[#5826D4] dark:bg-[#8B5CF6] dark:hover:bg-[#7C3AED] text-white text-xs font-bold transition-all shadow-sm shadow-purple-500/20 flex items-center gap-1 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#1D1B2C]"
           >
             <span>Details</span>
