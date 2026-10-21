@@ -1,4 +1,4 @@
-import { OrbitEvent } from "@/types/event";
+import type { OrbitEvent } from "../types/event.ts";
 
 export const SEED_EVENTS: OrbitEvent[] = [
   {

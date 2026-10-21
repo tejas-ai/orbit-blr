@@ -51,6 +51,16 @@ export interface EventAgendaItem {
   speaker?: string;
 }
 
+export interface HackathonStructuredDetails {
+  team_size?: string | null;
+  application_deadline?: string | null;
+  eligibility?: string | null;
+  offline_bangalore_round?: boolean;
+  tracks?: string[];
+  prizes_details?: string | null;
+  required_equipment?: string | null;
+}
+
 export interface OrbitEvent {
   id: string;
   slug: string;
@@ -106,6 +116,7 @@ export interface OrbitEvent {
   topics_covered?: string[];
   prerequisites?: string | null;
   agenda?: EventAgendaItem[];
+  hackathon_details?: HackathonStructuredDetails | null;
   featured?: boolean;
   created_at: string;
   updated_at: string;

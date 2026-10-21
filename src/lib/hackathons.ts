@@ -1,4 +1,4 @@
-import { OrbitEvent } from "@/types/event";
+import type { OrbitEvent } from "../types/event.ts";
 
 export interface HackathonMetadata {
   isHackathon: boolean;
@@ -40,34 +40,42 @@ export function extractHackathonDetails(event: OrbitEvent): HackathonMetadata {
     return { isHackathon: false };
   }
 
+  // If structured hackathon_details are present on the record, prioritize them directly
+  const structured = event.hackathon_details;
+
   const desc = event.description || "";
   const notes = event.verification_notes || "";
   const fullText = `${desc} ${notes}`;
 
-  // 1. Team size: only if explicitly stated in verified text (e.g. "Teams of 2–4")
-  let teamSize: string | null = null;
-  const teamMatch = fullText.match(/(?:teams?\s+of\s+|teams?:\s*|members\s*:\s*)(\d+\s*[-–to]\s*\d+)/i);
-  if (teamMatch) {
-    teamSize = `${teamMatch[1].replace(/to/i, "–").trim()} members`;
+  // 1. Team size: from structured details or regex
+  let teamSize: string | null = structured?.team_size || null;
+  if (!teamSize) {
+    const teamMatch = fullText.match(/(?:teams?\s+of\s+|teams?:\s*|members\s*:\s*)(\d+\s*[-–to]\s*\d+)/i);
+    if (teamMatch) {
+      teamSize = `${teamMatch[1].replace(/to/i, "–").trim()} members`;
+    }
   }
 
-  // 2. Registration deadline: check for explicit date/time in description
-  let registrationDeadline: string | null = null;
+  // 2. Registration deadline: check structured or explicit date/time in description
+  let registrationDeadline: string | null = structured?.application_deadline || null;
   let isDeadlinePassed = false;
 
-  let deadlineMatch = fullText.match(
-    /(?:applications?\s+close|registration\s+deadline|closes?)\s*(?:on|at|:)?\s*([0-9]{1,2}\s+[A-Za-z]{3,9}(?:\s+[0-9]{4})?(?:\s+(?:at\s+)?[0-9]{1,2}:[0-9]{2}\s*(?:[AP]M)?(?:\s*IST)?)?)/i
-  );
-  if (!deadlineMatch) {
-    deadlineMatch = fullText.match(
-      /([0-9]{1,2}\s+[A-Za-z]{3,9}(?:\s+[0-9]{4})?(?:\s+(?:at\s+)?[0-9]{1,2}:[0-9]{2}\s*(?:[AP]M)?(?:\s*IST)?)?)\s+(?:registration\s+deadline|application\s+deadline)/i
+  if (!registrationDeadline) {
+    let deadlineMatch = fullText.match(
+      /(?:applications?\s+close|registration\s+deadline|closes?)\s*(?:on|at|:)?\s*([0-9]{1,2}\s+[A-Za-z]{3,9}(?:\s+[0-9]{4})?(?:\s+(?:at\s+)?[0-9]{1,2}:[0-9]{2}\s*(?:[AP]M)?(?:\s*IST)?)?)/i
     );
+    if (!deadlineMatch) {
+      deadlineMatch = fullText.match(
+        /([0-9]{1,2}\s+[A-Za-z]{3,9}(?:\s+[0-9]{4})?(?:\s+(?:at\s+)?[0-9]{1,2}:[0-9]{2}\s*(?:[AP]M)?(?:\s*IST)?)?)\s+(?:registration\s+deadline|application\s+deadline)/i
+      );
+    }
+    if (deadlineMatch && deadlineMatch[1]) {
+      registrationDeadline = deadlineMatch[1].trim();
+    }
   }
 
-  if (deadlineMatch && deadlineMatch[1]) {
-    registrationDeadline = deadlineMatch[1].trim();
+  if (registrationDeadline) {
     try {
-      // Clean string for standard Date parsing (strip 'at', map IST to +05:30)
       const cleaned = registrationDeadline
         .replace(/\bat\b/gi, "")
         .replace(/\bIST\b/gi, "+05:30")
@@ -82,12 +90,14 @@ export function extractHackathonDetails(event: OrbitEvent): HackathonMetadata {
     }
   }
 
-  // 3. Eligibility: only if verified in text or who_should_attend
-  let eligibility: string | null = null;
-  if (event.who_should_attend && event.who_should_attend.length > 0) {
-    eligibility = event.who_should_attend[0];
-  } else if (/student|college/i.test(desc)) {
-    eligibility = "College / University Students";
+  // 3. Eligibility: from structured or verified text
+  let eligibility: string | null = structured?.eligibility || null;
+  if (!eligibility) {
+    if (event.who_should_attend && event.who_should_attend.length > 0) {
+      eligibility = event.who_should_attend[0];
+    } else if (/student|college/i.test(desc)) {
+      eligibility = "College / University Students";
+    }
   }
 
   // 4. Duration: strictly from verified description or exact start/end hours

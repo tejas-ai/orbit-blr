@@ -2,14 +2,15 @@ import pg from "pg";
 import { DatabaseSync } from "node:sqlite";
 import fs from "node:fs";
 import path from "node:path";
-import {
+import type {
   OrbitEvent,
   EventSuggestion,
   AuditLogEntry,
   EventFilters,
   PublicationStatus,
-} from "@/types/event";
-import { SEED_EVENTS } from "./seed-data";
+} from "../types/event.ts";
+import { SEED_EVENTS } from "./seed-data.ts";
+import { isHackathonEvent } from "./hackathons.ts";
 
 const { Pool } = pg;
 
@@ -169,6 +170,11 @@ function mapRowToEvent(row: Record<string, unknown>): OrbitEvent {
     topics_covered: parseJsonField(row.topics_covered),
     prerequisites: row.prerequisites ? String(row.prerequisites) : null,
     agenda: parseJsonField(row.agenda),
+    hackathon_details: row.hackathon_details
+      ? typeof row.hackathon_details === "object"
+        ? (row.hackathon_details as any)
+        : parseJsonField(row.hackathon_details)
+      : null,
     featured: Boolean(row.featured),
     thumbnail_url: row.thumbnail_url ? String(row.thumbnail_url) : null,
     thumbnail_source_url: row.thumbnail_source_url ? String(row.thumbnail_source_url) : null,
@@ -231,7 +237,12 @@ export async function getFilteredEvents(
   }
 
   if (filters.category && filters.category !== "all") {
-    events = events.filter((e) => e.category === filters.category);
+    const targetCat = filters.category.toLowerCase();
+    if (targetCat === "hackathons" || targetCat === "hackathon") {
+      events = events.filter((e) => isHackathonEvent(e));
+    } else {
+      events = events.filter((e) => e.category && e.category.toLowerCase() === targetCat);
+    }
   }
 
   if (filters.area && filters.area !== "all") {
