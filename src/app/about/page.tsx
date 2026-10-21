@@ -72,9 +72,9 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="space-y-10 py-6 max-w-4xl mx-auto px-4 sm:px-6 min-h-screen bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
+    <div className="space-y-7 sm:space-y-8 pt-5 pb-8 sm:pt-6 sm:pb-10 max-w-4xl mx-auto px-4 sm:px-6 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
       {/* Hero Header */}
-      <ScrollReveal direction="down" className="border-b border-slate-200/80 dark:border-[#302B43] pb-8 space-y-3 pt-2">
+      <ScrollReveal direction="down" className="border-b border-slate-200/80 dark:border-[#302B43] pb-5 space-y-3 pt-2">
         <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6A38EB] dark:text-[#A78BFA] uppercase tracking-wider">
           <Building2 className="w-4 h-4" />
           <span>About the Platform</span>
