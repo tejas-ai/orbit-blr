@@ -8,7 +8,42 @@ import { BENGALURU_AREAS } from "@/types/event";
 export default function Footer() {
   return (
     <footer className="relative z-10 isolate w-full border-t border-slate-200/90 dark:border-[#383052] bg-white/95 dark:bg-[#101325]/95 backdrop-blur-xl text-xs text-slate-500 dark:text-[#CBD5E1] pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
+      
+      {/* Mobile: keep this compact; the fixed bottom nav already links to Events/Hackathons/Saved. */}
+      <div className="mx-auto max-w-xl px-5 pt-4 pb-3 md:hidden">
+        <div className="flex items-center justify-between gap-3">
+          <Link href="/" aria-label="ORBIT BLR home" className="inline-flex items-center gap-2 min-w-0">
+            <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-gradient-to-tr from-[#6A38EB] to-[#9333EA] text-xs font-extrabold text-white">
+              O
+            </span>
+            <span className="whitespace-nowrap font-serif text-base font-extrabold tracking-tight text-slate-950 dark:text-[#F7F5FF]">
+              ORBIT <span className="text-[#6A38EB] dark:text-[#A78BFA]">BLR</span>
+            </span>
+          </Link>
+          <Link
+            href="/about#verification"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-emerald-200/70 bg-emerald-50/80 px-2.5 py-1.5 text-[10px] font-semibold text-emerald-800 transition-colors hover:bg-emerald-100 dark:border-emerald-800/60 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-950/70"
+          >
+            <ShieldCheck className="h-3.5 w-3.5" aria-hidden="true" />
+            Verified · ₹0
+          </Link>
+        </div>
+        <p className="mt-2 text-[11px] leading-[1.5] text-slate-600 dark:text-[#CBD5E1]">
+          Free Bengaluru tech events and hackathons, independently verified.
+        </p>
+        <nav aria-label="Footer" className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium">
+          <Link href="/about" className="text-slate-700 transition-colors hover:text-[#6A38EB] dark:text-[#CDD0E7] dark:hover:text-[#A78BFA]">About</Link>
+          <Link href="/suggest" className="text-slate-700 transition-colors hover:text-[#6A38EB] dark:text-[#CDD0E7] dark:hover:text-[#A78BFA]">Submit an event</Link>
+          <Link href="/about#verification" className="text-slate-700 transition-colors hover:text-[#6A38EB] dark:text-[#CDD0E7] dark:hover:text-[#A78BFA]">Verification</Link>
+        </nav>
+        <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-200/70 pt-2.5 text-[10px] text-slate-500 dark:border-[#383052] dark:text-[#9B98AE]">
+          <span>© 2026 ORBIT BLR</span>
+          <span>Bengaluru, India</span>
+        </div>
+      </div>
+
+      {/* Desktop retains the full directory, tech hubs and verification statement. */}
+      <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
         <div className="grid grid-cols-2 md:grid-cols-12 gap-x-4 gap-y-5 md:gap-8 mb-4 md:mb-5">
           {/* Col 1: Brand & Mission */}
           <div className="col-span-2 md:col-span-5 space-y-2.5 md:space-y-3.5">
