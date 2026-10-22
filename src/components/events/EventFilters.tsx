@@ -99,7 +99,7 @@ export default function EventFiltersBar({ filters, onChange, totalResults, direc
               <select className={control} value={category}
                 onChange={e => update({ category: e.target.value as FilterState["category"] })}>
                 <option value="all">All topics</option>
-                {categories.map(item => <option key={item} value={item}>{item === "ai" ? "AI & ML" : item === "security" ? "Cybersecurity" : item.charAt(0).toUpperCase() + item.slice(1)}</option>)}
+                {categories.map(item => { const key = String(item).toLowerCase(); return <option key={item} value={item}>{key === "ai" ? "AI & ML" : key === "security" ? "Cybersecurity" : item.charAt(0).toUpperCase() + item.slice(1)}</option>; })}
               </select>
             </label>
           )}
