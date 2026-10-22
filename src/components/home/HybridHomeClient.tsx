@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { OrbitEvent } from "@/types/event";
@@ -8,6 +8,7 @@ import { getEventThumbnail, getCategoryFallback } from "@/lib/thumbnails";
 import { isHackathonEvent, extractHackathonDetails } from "@/lib/hackathons";
 import { useSavedEvents } from "@/lib/useSavedEvents";
 import EventCard from "@/components/events/EventCard";
+import EventCountdown from "@/components/events/EventCountdown";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import {
   Search,
@@ -59,8 +60,8 @@ function formatDate(iso?: string | null) {
       hour12: true,
       timeZone: "Asia/Kolkata",
     });
-    const dayOfWeek = d.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const weekday=d.toLocaleDateString("en-US",{weekday:"short",timeZone:"Asia/Kolkata"});
+    const isWeekend=weekday==="Sat"||weekday==="Sun";
     return { month, day, full, time, isWeekend };
   } catch {
     return { month: "TBA", day: "--", full: "Date TBA", time: "", isWeekend: false };
@@ -106,7 +107,15 @@ function DefensivePosterImage({
 
 export default function HybridHomeClient({ initialEvents }: HybridHomeClientProps) {
   const { isSaved, toggleSave, savedCount } = useSavedEvents();
-  const categoryScrollRef = useRef<HTMLDivElement>(null);
+  const [spotlightIndex,setSpotlightIndex] = useState(0);
+  const [clockNow,setClockNow] = useState(0);
+  useEffect(() => {
+    const tick = () => setClockNow(Date.now());
+    tick();
+    const minute = window.setInterval(tick,60000);
+    const rotation = window.setInterval(() => setSpotlightIndex(i => i+1),18000);
+    return () => { window.clearInterval(minute);window.clearInterval(rotation); };
+  }, []);
 
   // Filter States
   const [search, setSearch] = useState("");
@@ -115,89 +124,33 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
   const [selectedDate, setSelectedDate] = useState("all");
   const [selectedPerk, setSelectedPerk] = useState("all");
 
-  // Category Configuration
-  const categories = [
-    { id: "all", label: "All Gatherings", icon: Sparkles },
-    // Hackathons now have their own directory.
-    { id: "developer", label: "Developer Meetups", icon: Code },
-    { id: "ai", label: "AI & World Models", icon: Layers },
-    { id: "security", label: "Cybersecurity", icon: Shield },
-  ];
+  const categories = useMemo(() => {
+    const kinds = Array.from(new Set(initialEvents.filter(e=>!isHackathonEvent(e)).map(e=>e.category)));
+    const labels: Record<string,string> = {ai:"AI & ML",developer:"Developer",security:"Cybersecurity",startup:"Startups"};
+    return [{id:"all",label:"All Events"},...kinds.sort().map(k=>({id:k.toLowerCase(),label:labels[k.toLowerCase()]||k}))];
+  },[initialEvents]);
+  const areas = useMemo(()=>Array.from(new Set(initialEvents.filter(e=>!isHackathonEvent(e)).map(e=>e.area).filter(Boolean))).sort(),[initialEvents]);
+  const hackathonEvents = useMemo(()=>initialEvents.filter(e=>isHackathonEvent(e)&&(clockNow===0||new Date(e.end_at).getTime()>clockNow)),[initialEvents,clockNow]);
 
-  // Distinct Hackathons & Regular Events
-  const hackathonEvents = useMemo(
-    () => initialEvents.filter((e) => isHackathonEvent(e)),
-    [initialEvents]
-  );
-
-  // Horizontal category scroll helpers
-  const handleScrollCategories = (direction: "left" | "right") => {
-    if (categoryScrollRef.current) {
-      const scrollAmount = direction === "left" ? -240 : 240;
-      categoryScrollRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
-  };
-
-  // DYNAMIC FEATURED SPOTLIGHT SELECTION:
-  // Strictly filters out expired deadlines and closed events.
-  // Prioritizes open registration events with confirmed organizer perks.
-  const spotlightEvent = useMemo(() => {
-    const now = Date.now();
-
-    const viableEvents = initialEvents.filter((e) => {
-      if (isHackathonEvent(e)) return false;
-      // Must not be in the past
-      const end = e.end_at ? new Date(e.end_at).getTime() : e.start_at ? new Date(e.start_at).getTime() : 0;
-      if (end > 0 && end < now) return false;
-
-      // Must not have closed registration
-      if (e.registration_status === "closed" || e.registration_status === "full") return false;
-
-      // If it is a hackathon, ensure application deadline has not expired
-      const hack = extractHackathonDetails(e);
-      if (hack.isHackathon && hack.isDeadlinePassed) return false;
-
-      return true;
-    });
-
-    if (viableEvents.length === 0) return initialEvents.find((e) => !isHackathonEvent(e)) || null;
-
-    // Rank candidates:
-    // 1. Open registration status
-    // 2. Confirmed perks (meals, swags, or certificate)
-    // 3. Chronological proximity
-    return viableEvents.sort((a, b) => {
-      const aOpen = a.registration_status === "open" ? 1 : 0;
-      const bOpen = b.registration_status === "open" ? 1 : 0;
-      if (aOpen !== bOpen) return bOpen - aOpen;
-
-      const aPerks =
-        a.goodies_status === "confirmed" ||
-        a.food_status === "complimentary_meals_confirmed" ||
-        a.food_status === "refreshments_confirmed"
-          ? 1
-          : 0;
-      const bPerks =
-        b.goodies_status === "confirmed" ||
-        b.food_status === "complimentary_meals_confirmed" ||
-        b.food_status === "refreshments_confirmed"
-          ? 1
-          : 0;
-      if (aPerks !== bPerks) return bPerks - aPerks;
-
-      const aTime = a.start_at ? new Date(a.start_at).getTime() : 0;
-      const bTime = b.start_at ? new Date(b.start_at).getTime() : 0;
-      return aTime - bTime;
-    })[0];
-  }, [initialEvents]);
-
+  // Spotlight ONLY for fully confirmed general-attendee goodies AND attendance certificates.
+  // Winner-only, limited and conditional perks never qualify.
+  const eligibleSpotlights = useMemo(()=>{
+    const now = clockNow||Date.now();
+    return initialEvents.filter(e=>!isHackathonEvent(e)&&e.publication_status==="published"&&
+      e.is_free&&e.is_in_person&&e.goodies_status==="confirmed"&&e.certificate_status==="confirmed"&&
+      !!e.last_verified_at&&!!e.source_urls?.length&&new Date(e.start_at).getTime()>now&&
+      (e.registration_status==="open"||e.registration_status==="approval_required"))
+      .sort((x,y)=>new Date(x.start_at).getTime()-new Date(y.start_at).getTime());
+  },[initialEvents,clockNow]);
+  // Every 18 sec rotate through trustworthy candidates, or retain the sole qualifying event.
+  const spotlightEvent = eligibleSpotlights[spotlightIndex%eligibleSpotlights.length]||null;
   const spotlightDate = spotlightEvent ? formatDate(spotlightEvent.start_at) : null;
   const spotlightHack = spotlightEvent ? extractHackathonDetails(spotlightEvent) : null;
 
   // Filter & Search Logic
   const filteredEvents = useMemo(() => {
     return initialEvents.filter((e) => {
-      if (isHackathonEvent(e)) return false;
+      if (isHackathonEvent(e) || (clockNow!==0&&new Date(e.end_at).getTime()<=clockNow)) return false;
       // 1. Text Search
       const q = search.toLowerCase().trim();
       const matchesSearch =
@@ -248,8 +201,8 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       }
 
       return matchesSearch && matchesCat && matchesArea && matchesDate && matchesPerk;
-    });
-  }, [initialEvents, search, selectedCategory, selectedArea, selectedDate, selectedPerk]);
+    }).sort((x,y)=>new Date(x.start_at).getTime()-new Date(y.start_at).getTime());
+  }, [initialEvents, search, selectedCategory, selectedArea, selectedDate, selectedPerk,clockNow]);
 
   const hasActiveFilters =
     Boolean(search) ||
@@ -306,7 +259,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search meetups, hackathons, AI topics, organizers, or venues..."
+                  placeholder="Search events, AI topics, speakers or venues…"
                   className="w-full pl-10 pr-9 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-slate-50 hover:bg-slate-100/70 dark:bg-[#151522] dark:hover:bg-[#151522]/90 focus:bg-white dark:focus:bg-[#151522] border border-slate-200/80 dark:border-[#302B43] focus:border-[#6A38EB] dark:focus:border-[#8B5CF6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] text-slate-900 dark:text-[#F7F5FF] text-xs sm:text-sm placeholder:text-slate-400 dark:placeholder:text-[#CBD5E1]/60 outline-none transition-all shadow-inner"
                 />
                 {search && (
@@ -328,14 +281,8 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
                   onChange={(e) => setSelectedArea(e.target.value)}
                   className="w-full pl-8 pr-7 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-slate-50 hover:bg-slate-100/70 dark:bg-[#151522] dark:hover:bg-[#151522]/90 border border-slate-200/80 dark:border-[#302B43] text-slate-800 dark:text-[#F7F5FF] text-xs font-semibold outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] cursor-pointer appearance-none transition-colors"
                 >
-                  <option value="all">All Neighborhoods</option>
-                  <option value="kodihalli">Kodihalli (Indiranagar)</option>
-                  <option value="whitefield">Whitefield</option>
-                  <option value="bellandur">Bellandur / Bhoganahalli</option>
-                  <option value="koramangala">Koramangala</option>
-                  <option value="electronic city">Electronic City</option>
-                  <option value="kumaraswamy layout">Kumaraswamy Layout</option>
-                  <option value="kanakapura road">Kanakapura Road</option>
+                  <option value="all">All Bengaluru areas</option>
+                  {areas.map(area=><option key={area} value={area.toLowerCase()}>{area}</option>)}
                 </select>
                 <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 pointer-events-none" />
               </div>
@@ -356,91 +303,10 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
               </div>
             </div>
 
-            {/* Horizontal Category Navigation with Scrolling Affordances & Controls */}
-            <div className="mt-3 pt-3 border-t border-slate-100 dark:border-[#302B43]">
-              <div className="relative flex items-center">
-                {/* Scroll Left Button */}
-                <button
-                  type="button"
-                  onClick={() => handleScrollCategories("left")}
-                  aria-label="Scroll categories left"
-                  className="hidden sm:flex shrink-0 w-7 h-7 rounded-full bg-white dark:bg-[#151522] border border-slate-200 dark:border-[#302B43] text-slate-600 dark:text-[#CBD5E1] hover:text-slate-950 dark:hover:text-[#F7F5FF] hover:bg-slate-50 dark:hover:bg-[#1D1B2C] shadow-sm items-center justify-center mr-1 transition-all z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-
-                {/* Left gradient fade cue */}
-                <div className="hidden sm:block absolute left-8 top-0 bottom-0 w-6 bg-gradient-to-r from-white dark:from-[#1D1B2C] to-transparent pointer-events-none z-10" />
-
-                {/* Scrollable Categories Row */}
-                <div
-                  ref={categoryScrollRef}
-                  role="tablist"
-                  aria-label="Event categories"
-                  className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar flex-1 scroll-smooth snap-x snap-mandatory touch-pan-x"
-                >
-                  {categories.map((cat) => {
-                    const Icon = cat.icon;
-                    const isActive = selectedCategory === cat.id;
-                    const isHack = cat.id === "Hackathons";
-                    return (
-                      <button
-                        key={cat.id}
-                        role="tab"
-                        aria-selected={isActive}
-                        onClick={() => setSelectedCategory(cat.id)}
-                        className={`whitespace-nowrap flex items-center gap-1.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-bold transition-all shadow-sm shrink-0 snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#1D1B2C] ${
-                          isActive
-                            ? "bg-[#6A38EB] dark:bg-[#8B5CF6] text-white shadow-purple-500/25 scale-[1.02]"
-                            : isHack
-                            ? "bg-amber-50/90 dark:bg-[#2A1D0D] text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-900/60 hover:border-amber-300 hover:bg-amber-100/60 dark:hover:bg-[#382611]"
-                            : "bg-slate-50 dark:bg-[#151522] text-slate-700 dark:text-[#CBD5E1] border border-slate-200/80 dark:border-[#302B43] hover:border-purple-300 dark:hover:border-[#8B5CF6]/40 hover:bg-purple-50/40 dark:hover:bg-[#1D1B2C] hover:text-[#101223] dark:hover:text-[#F7F5FF]"
-                        }`}
-                      >
-                        <Icon
-                          className={`w-3.5 h-3.5 ${
-                            isActive
-                              ? "text-white"
-                              : isHack
-                              ? "text-amber-600 dark:text-amber-400"
-                              : "text-[#6A38EB] dark:text-[#A78BFA]"
-                          }`}
-                        />
-                        <span>{cat.label}</span>
-                        {isHack && (
-                          <span className="ml-1 px-1.5 py-0.2 rounded-full bg-amber-200/80 dark:bg-amber-900/80 text-amber-950 dark:text-amber-200 text-[10px] font-extrabold">
-                            {hackathonEvents.length}
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Right gradient fade cue */}
-                <div className="hidden sm:block absolute right-8 top-0 bottom-0 w-6 bg-gradient-to-l from-white dark:from-[#1D1B2C] to-transparent pointer-events-none z-10" />
-
-                {/* Scroll Right Button */}
-                <button
-                  type="button"
-                  onClick={() => handleScrollCategories("right")}
-                  aria-label="Scroll categories right"
-                  className="hidden sm:flex shrink-0 w-7 h-7 rounded-full bg-white dark:bg-[#151522] border border-slate-200 dark:border-[#302B43] text-slate-600 dark:text-[#CBD5E1] hover:text-slate-950 dark:hover:text-[#F7F5FF] hover:bg-slate-50 dark:hover:bg-[#1D1B2C] shadow-sm items-center justify-center ml-1 transition-all z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-
-                {/* Clear Filters Indicator */}
-                {hasActiveFilters && (
-                  <button
-                    onClick={clearAllFilters}
-                    className="text-xs font-semibold text-rose-600 dark:text-rose-400 hover:text-rose-700 dark:hover:text-rose-300 hover:underline flex items-center gap-1 shrink-0 ml-3"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                    <span>Reset</span>
-                  </button>
-                )}
-              </div>
+            <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-[#302B43] pt-3">
+              {categories.map(cat=><button key={cat.id} type="button" aria-pressed={selectedCategory===cat.id} onClick={()=>setSelectedCategory(cat.id)}
+                className={`rounded-full border px-3 py-1.5 text-xs font-semibold focus-visible:ring-2 focus-visible:ring-violet-500 ${selectedCategory===cat.id?"border-violet-500 bg-violet-600 text-white":"border-[#302B43] bg-[#151522] text-[#CBD5E1] hover:border-violet-500"}`}>{cat.label}</button>)}
+              {hasActiveFilters&&<button type="button" onClick={clearAllFilters} className="ml-auto text-xs text-violet-300 hover:text-white">Clear</button>}
             </div>
           </ScrollReveal>
         </div>
@@ -459,7 +325,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#6A38EB] dark:bg-[#8B5CF6]" />
                   <h2 className="text-xs font-extrabold text-slate-800 dark:text-[#F7F5FF] uppercase tracking-wider">
-                    Featured Official Spotlight
+                    Verified Goodies + Certificate Spotlight
                   </h2>
                 </div>
                 <div>
@@ -467,8 +333,8 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
                     <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
                     <span>
                       {spotlightEvent.registration_status === "open"
-                        ? "Open Registration Verified"
-                        : "Organiser-Verified Event"}
+                        ? "Attendee perks confirmed"
+                        : "Attendee perks confirmed"}
                     </span>
                   </span>
                 </div>
@@ -493,7 +359,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
                       {/* Top Badges Row (Moved outside the image) */}
                       <div className="flex flex-wrap items-center gap-2 mb-2.5">
                         <span className="px-3 py-1 rounded-full bg-purple-100 dark:bg-[#251D3D] text-[#6A38EB] dark:text-[#A78BFA] font-extrabold text-[11px] tracking-wide uppercase border border-purple-200/80 dark:border-[#382C58]">
-                          {spotlightHack?.isHackathon ? "Offline Hackathon" : "Verified Spotlight"}
+                          Organizer-confirmed attendee perks
                         </span>
                         <span className="px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 font-bold text-[11px] uppercase tracking-wide border border-emerald-200/60 dark:border-emerald-800/50">
                           ₹0 Free Admission
@@ -558,6 +424,16 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
                       )}
                     </div>
 
+                    <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-violet-500/30 bg-violet-500/10 px-3 py-2">
+                      <EventCountdown startAt={spotlightEvent.start_at} endAt={spotlightEvent.end_at} prominent />
+                      {eligibleSpotlights.length>1&&<div className="ml-auto flex items-center gap-2 text-xs text-[#CBD5E1]">
+                        <button type="button" aria-label="Previous spotlight" onClick={()=>setSpotlightIndex(i=>(i-1+eligibleSpotlights.length)%eligibleSpotlights.length)} className="rounded-full border border-[#302B43] p-1.5 hover:border-violet-400"><ChevronLeft className="h-4 w-4"/></button>
+                        {spotlightIndex%eligibleSpotlights.length+1} / {eligibleSpotlights.length}
+                        <button type="button" aria-label="Next spotlight" onClick={()=>setSpotlightIndex(i=>i+1)} className="rounded-full border border-[#302B43] p-1.5 hover:border-violet-400"><ChevronRight className="h-4 w-4"/></button>
+                      </div>}
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-3 text-[11px] text-emerald-300"><span className="inline-flex items-center gap-1"><Gift className="h-3.5 w-3.5"/> Goodies confirmed</span><span className="inline-flex items-center gap-1"><Award className="h-3.5 w-3.5"/> Certificate confirmed for attendees meeting organizer conditions</span></div>
+
                     {/* Pricing & CTA */}
                     <div className="mt-5 pt-3.5 border-t border-purple-200/60 dark:border-[#302B43] flex items-center justify-between gap-4">
                       <div className="flex items-center gap-2">
@@ -605,12 +481,12 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
               {"Upcoming Verified Tech Events"}
             </h2>
             <p className="text-xs text-slate-500 dark:text-[#CBD5E1] mt-0.5">
-              Showing {filteredEvents.length} of {initialEvents.filter((e) => !isHackathonEvent(e)).length} verified events • Benefits shown strictly when confirmed by organisers
+              Showing {filteredEvents.length} of {initialEvents.filter(e=>!isHackathonEvent(e)&&(clockNow===0||new Date(e.end_at).getTime()>clockNow)).length} verified events • Benefits shown strictly when confirmed by organisers
             </p>
           </div>
 
           <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-[#CBD5E1] font-medium">
-            <span>Chronological order</span>
+            <span>Soonest first · Bengaluru time</span>
           </div>
         </ScrollReveal>
 

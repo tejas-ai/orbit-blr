@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import EventCountdown from "@/components/events/EventCountdown";
 import { OrbitEvent } from "@/types/event";
 import { getEventThumbnail, getCategoryFallback } from "@/lib/thumbnails";
 import { extractHackathonDetails, isHackathonEvent } from "@/lib/hackathons";
@@ -193,6 +194,8 @@ export default function EventCard({
               </>
             )}
           </div>
+
+          <div className="mb-2"><EventCountdown startAt={event.start_at} endAt={event.end_at} /></div>
 
           {/* Event Title */}
           <h3 className="text-sm sm:text-base font-bold text-slate-950 dark:text-[#F7F5FF] leading-snug line-clamp-2 group-hover:text-[#6A38EB] dark:group-hover:text-[#A78BFA] transition-colors">
