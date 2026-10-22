@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { OrbitEvent, EventFilters as FilterStateType } from "@/types/event";
 import EventFiltersBar from "@/components/events/EventFilters";
 import EventCard from "@/components/events/EventCard";
+import EventCountdown from "@/components/events/EventCountdown";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useSavedEvents } from "@/lib/useSavedEvents";
 import { isHackathonEvent } from "@/lib/hackathons";
@@ -22,6 +23,8 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
   const searchParams = useSearchParams();
   const { isSaved, toggleSave } = useSavedEvents();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [clockNow, setClockNow] = useState(0);
+  useEffect(() => { const update = () => setClockNow(Date.now()); update(); const timer = window.setInterval(update, 60_000); return () => window.clearInterval(timer); }, []);
 
   const [filters, setFilters] = useState<FilterStateType>({
     search: searchParams.get("q") || "",
@@ -51,7 +54,8 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
     // Defence-in-depth: never let a filter or query put a record
     // from the other directory back into this page.
     let result = liveEvents.filter((e) =>
-      directory === "hackathons" ? isHackathonEvent(e) : !isHackathonEvent(e)
+      (directory === "hackathons" ? isHackathonEvent(e) : !isHackathonEvent(e)) &&
+      (clockNow === 0 || new Date(e.end_at).getTime() > clockNow)
     );
 
     if (filters.search && filters.search.trim() !== "") {
@@ -70,11 +74,7 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
     }
 
     if (filters.category && filters.category !== "all" && directory === "events") {
-      if (filters.category === "Hackathons") {
-        result = result.filter((e) => isHackathonEvent(e));
-      } else {
-        result = result.filter((e) => !isHackathonEvent(e) && e.category.toLowerCase() === filters.category!.toLowerCase());
-      }
+      result = result.filter((e) => !isHackathonEvent(e) && e.category.toLowerCase() === filters.category!.toLowerCase());
     }
 
     if (filters.area && filters.area !== "all") {
@@ -93,16 +93,15 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
       if (filters.benefits === "both_confirmed") {
         result = result.filter(
           (e) =>
-            (e.goodies_status === "confirmed" || e.goodies_status === "limited") &&
-            (e.certificate_status === "confirmed" || e.certificate_status === "conditional")
+            e.goodies_status === "confirmed" && e.certificate_status === "confirmed"
         );
       } else if (filters.benefits === "certificates_confirmed") {
         result = result.filter(
-          (e) => e.certificate_status === "confirmed" || e.certificate_status === "conditional"
+          (e) => e.certificate_status === "confirmed"
         );
       } else if (filters.benefits === "goodies_confirmed") {
         result = result.filter(
-          (e) => e.goodies_status === "confirmed" || e.goodies_status === "limited"
+          (e) => e.goodies_status === "confirmed"
         );
       } else if (filters.benefits === "complimentary_food") {
         result = result.filter(
@@ -113,69 +112,35 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
       }
     }
 
+    // Calendar shortcuts always use Bengaluru's local calendar, not UTC.
     if (filters.dateFilter && filters.dateFilter !== "all") {
-      const now = new Date();
-      const todayStr = now.toISOString().split("T")[0];
-
+      const localParts = (value: Date) => {
+        const p = new Intl.DateTimeFormat("en-CA", {
+          timeZone: "Asia/Kolkata", year: "numeric", month: "2-digit", day: "2-digit", weekday: "short",
+        }).formatToParts(value);
+        const get = (key: string) => p.find(x => x.type === key)?.value || "";
+        return { y: get("year"), m: get("month"), d: get("day"), weekday: get("weekday") };
+      };
+      const current = new Date(clockNow || Date.now());
+      const today = localParts(current);
+      const nextDay = localParts(new Date(current.getTime() + 86_400_000));
       result = result.filter((e) => {
-        const eventDateStr = e.start_at.split("T")[0];
-        const eventDate = new Date(e.start_at);
-
-        if (filters.dateFilter === "today") return eventDateStr === todayStr;
-        if (filters.dateFilter === "tomorrow") {
-          const tom = new Date(now);
-          tom.setDate(now.getDate() + 1);
-          return eventDateStr === tom.toISOString().split("T")[0];
-        }
-        if (filters.dateFilter === "weekend") {
-          const day = eventDate.getDay();
-          return day === 0 || day === 6;
-        }
-        if (filters.dateFilter === "next_7_days") {
-          const next7 = new Date(now);
-          next7.setDate(now.getDate() + 7);
-          return eventDate >= now && eventDate <= next7;
-        }
-        if (filters.dateFilter === "this_month") {
-          return (
-            eventDate.getMonth() === now.getMonth() &&
-            eventDate.getFullYear() === now.getFullYear()
-          );
-        }
+        const startDate = new Date(e.start_at);
+        const p = localParts(startDate);
+        if (filters.dateFilter === "today") return p.y === today.y && p.m === today.m && p.d === today.d;
+        if (filters.dateFilter === "tomorrow") return p.y === nextDay.y && p.m === nextDay.m && p.d === nextDay.d;
+        if (filters.dateFilter === "weekend") return p.weekday === "Sat" || p.weekday === "Sun";
+        if (filters.dateFilter === "next_7_days") return startDate.getTime() >= current.getTime() && startDate.getTime() <= current.getTime() + 7 * 86_400_000;
+        if (filters.dateFilter === "this_month") return p.y === today.y && p.m === today.m;
         return true;
       });
     }
 
-    if (filters.sortBy === "date_asc") {
-      result.sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime());
-    } else if (filters.sortBy === "date_desc") {
-      result.sort((a, b) => new Date(b.start_at).getTime() - new Date(a.start_at).getTime());
-    } else if (filters.sortBy === "urgency") {
-      const priority: Record<string, number> = {
-        open: 1,
-        approval_required: 2,
-        waitlist: 3,
-        not_yet_open: 4,
-        full: 5,
-        closed: 6,
-      };
-      result.sort((a, b) => (priority[a.registration_status] || 99) - (priority[b.registration_status] || 99));
-    } else if (filters.sortBy === "benefits") {
-      const score = (e: OrbitEvent) => {
-        let s = 0;
-        if (e.goodies_status === "confirmed") s += 3;
-        if (e.goodies_status === "limited") s += 1;
-        if (e.certificate_status === "confirmed") s += 3;
-        if (e.certificate_status === "conditional") s += 2;
-        if (e.food_status === "complimentary_meals_confirmed") s += 2;
-        if (e.food_status === "refreshments_confirmed") s += 1;
-        return s;
-      };
-      result.sort((a, b) => score(b) - score(a));
-    }
+    // Fixed chronological sort in BOTH directories. No alternative ranking can obscure nearby events.
+    result.sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime());
 
     return result;
-  }, [liveEvents, filters, directory]);
+  }, [liveEvents, filters, directory, clockNow]);
 
   const isHackathonMode = directory === "hackathons";
 
@@ -252,7 +217,16 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
         onChange={setFilters}
         totalResults={filteredEvents.length}
         directory={directory}
+        availableEvents={liveEvents.filter((e) => (directory === "hackathons" ? isHackathonEvent(e) : !isHackathonEvent(e)) && (clockNow === 0 || new Date(e.end_at).getTime() > clockNow))}
       />
+
+      {/* Nearest upcoming event countdown, with no fabricated RSVP urgency. */}
+      {filteredEvents.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#302B43] bg-[#1D1B2C] px-3 py-2 text-xs text-[#CBD5E1]">
+          <span>Next up: <strong className="text-[#F7F5FF]">{filteredEvents[0].name}</strong></span>
+          <EventCountdown startAt={filteredEvents[0].start_at} endAt={filteredEvents[0].end_at} />
+        </div>
+      )}
 
       {/* Events Listing */}
       {filteredEvents.length > 0 ? (
