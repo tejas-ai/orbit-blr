@@ -201,8 +201,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       }
 
       return matchesSearch && matchesCat && matchesArea && matchesDate && matchesPerk;
-    });
-  }).sort((x,y)=>new Date(x.start_at).getTime()-new Date(y.start_at).getTime());
+    }).sort((x,y)=>new Date(x.start_at).getTime()-new Date(y.start_at).getTime());
   }, [initialEvents, search, selectedCategory, selectedArea, selectedDate, selectedPerk,clockNow]);
 
   const hasActiveFilters =
