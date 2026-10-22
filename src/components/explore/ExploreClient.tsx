@@ -8,6 +8,7 @@ import EventCard from "@/components/events/EventCard";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import { useSavedEvents } from "@/lib/useSavedEvents";
 import { isHackathonEvent } from "@/lib/hackathons";
+import { useLiveEvents } from "@/lib/useLiveEvents";
 import { Compass, LayoutGrid, List, SearchX, ShieldCheck, Zap } from "lucide-react";
 import Link from "next/link";
 
@@ -17,6 +18,7 @@ interface ExploreClientProps {
 }
 
 export default function ExploreClient({ initialEvents, directory }: ExploreClientProps) {
+  const liveEvents = useLiveEvents(initialEvents, directory);
   const searchParams = useSearchParams();
   const { isSaved, toggleSave } = useSavedEvents();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -48,7 +50,7 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
   const filteredEvents = useMemo(() => {
     // Defence-in-depth: never let a filter or query put a record
     // from the other directory back into this page.
-    let result = initialEvents.filter((e) =>
+    let result = liveEvents.filter((e) =>
       directory === "hackathons" ? isHackathonEvent(e) : !isHackathonEvent(e)
     );
 
@@ -173,7 +175,7 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
     }
 
     return result;
-  }, [initialEvents, filters, directory]);
+  }, [liveEvents, filters, directory]);
 
   const isHackathonMode = directory === "hackathons";
 
@@ -307,7 +309,7 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
             ))}
           </div>
         )
-      ) : initialEvents.length === 0 ? (
+      ) : liveEvents.length === 0 ? (
         <div className="bg-white dark:bg-[#1D1B2C] border border-purple-100 dark:border-[#302B43] rounded-3xl p-8 sm:p-12 text-center max-w-xl mx-auto my-8 shadow-sm">
           <div className="w-12 h-12 rounded-full bg-purple-50 dark:bg-[#151522] flex items-center justify-center mx-auto mb-4 border border-purple-200 dark:border-[#302B43]">
             <ShieldCheck className="w-6 h-6 text-[#6A38EB] dark:text-[#A78BFA]" />
