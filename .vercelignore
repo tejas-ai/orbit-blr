@@ -1,0 +1,12 @@
+.next/
+.next-discovery/
+node_modules/
+qa-results/
+data/
+*.mp4
+*.jpeg
+*.jpg
+orbit-blr-district-*
+linkedin-screenshots/
+linkedin-showcase/
+.tmp_record_frames/
