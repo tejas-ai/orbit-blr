@@ -1,9 +1,31 @@
 import type { Metadata, Viewport } from "next";
-// Load brand fonts at runtime with font-display: swap; cloud builds require no Google Fonts API access.
+import { DM_Sans, IBM_Plex_Mono, Syne } from "next/font/google";
 import "./globals.css";
+import "./discovery.css";
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-dmsans",
+  display: "swap",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["700", "800"],
+  variable: "--font-syne",
+  display: "swap",
+});
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import LiquidWallpaper from "@/components/layout/LiquidWallpaper";
+
 import { ThemeProvider } from "@/context/ThemeContext";
 import AuthProvider from "@/components/auth/AuthProvider";
 import { Analytics } from "@vercel/analytics/react";
@@ -57,7 +79,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "ORBIT BLR — Discover Free Tech Events & Hackathons in Bengaluru",
+        alt: "ORBIT BLR — Discover Events & Hackathons Across India",
       },
     ],
   },
@@ -79,27 +101,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth overflow-x-hidden">
+    <html lang="en" className={`dark scroll-smooth overflow-x-hidden ${dmSans.variable} ${ibmPlexMono.variable} ${syne.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=Syne:wght@700;800&display=swap"
-        />
+        <meta name="description" content={HOMEPAGE_DESCRIPTION} />
       </head>
       <body
         className="bg-[#0E0E16] text-[#F7F5FF] font-sans antialiased selection:bg-[#6A38EB] selection:text-white min-h-screen flex flex-col overflow-x-hidden w-full max-w-full"
       >
         <ThemeProvider>
           <AuthProvider>
-            <LiquidWallpaper />
             <Navbar />
-            <main className="relative z-10 flex-1 w-full max-w-full overflow-x-hidden">
+            <main id="main-content" tabIndex={-1} className="relative z-10 flex-1 w-full max-w-full overflow-x-hidden">
               {children}
             </main>
             <Footer />
-            <Analytics />
+            {process.env.VERCEL && <Analytics />}
           </AuthProvider>
         </ThemeProvider>
       </body>

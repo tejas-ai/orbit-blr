@@ -16,6 +16,7 @@ export interface HackathonMetadata {
  */
 export function isHackathonEvent(event: Partial<OrbitEvent>): boolean {
   if (!event) return false;
+  if (event.event_type) return event.event_type === "hackathons";
   if (
     event.category === "Hackathons" ||
     (event.category && event.category.toLowerCase() === "hackathons") ||

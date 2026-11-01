@@ -5,6 +5,7 @@ import { Metadata } from "next";
 import { getEventBySlug } from "@/lib/db";
 import { getEventThumbnail, getEventSocialImage } from "@/lib/thumbnails";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { eventCity, eventFormat, locationLabel, priceStatus, verifiedFee } from "@/lib/discovery";
 import { isHackathonEvent, extractHackathonDetails } from "@/lib/hackathons";
 import {
   RegistrationBadge,
@@ -65,13 +66,13 @@ export async function generateMetadata({ params }: EventPageProps): Promise<Meta
   const eventUrl = `${SITE_URL}/events/${event.slug}`;
 
   return {
-    title: `${event.name} — Free Tech Event in Bengaluru | ORBIT BLR`,
+    title: `${event.name} — ${locationLabel(event)} | ORBIT BLR`,
     description: cleanDescription,
     alternates: {
       canonical: eventUrl,
     },
     openGraph: {
-      title: `${event.name} — Free Tech Event in Bengaluru`,
+      title: `${event.name} — ${locationLabel(event)}`,
       description: cleanDescription,
       url: eventUrl,
       siteName: SITE_NAME,
@@ -119,8 +120,8 @@ export default async function EventPage({ params }: EventPageProps) {
   const offersObj: Record<string, any> = {
     "@type": "Offer",
     url: event.registration_url,
-    price: "0",
-    priceCurrency: "INR",
+    ...(verifiedFee(event) !== null ? { price: String(verifiedFee(event)) } : {}),
+    priceCurrency: event.fee_currency || "INR",
     validFrom: event.created_at,
   };
 
@@ -142,19 +143,16 @@ export default async function EventPage({ params }: EventPageProps) {
     startDate: event.start_at,
     endDate: event.end_at,
     eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode: event.is_in_person
-      ? "https://schema.org/OfflineEventAttendanceMode"
-      : "https://schema.org/OnlineEventAttendanceMode",
-    isAccessibleForFree: true,
-    location: {
+    eventAttendanceMode: eventFormat(event) === "hybrid" ? "https://schema.org/MixedEventAttendanceMode" : eventFormat(event) === "in_person" ? "https://schema.org/OfflineEventAttendanceMode" : "https://schema.org/OnlineEventAttendanceMode",
+    ...(priceStatus(event) !== "unknown" ? { isAccessibleForFree: priceStatus(event) === "free" } : {}),
+    location: eventFormat(event) === "online" ? { "@type": "VirtualLocation", url: event.registration_url } : {
       "@type": "Place",
       name: event.venue,
       address: {
         "@type": "PostalAddress",
         streetAddress: event.address || event.venue,
-        addressLocality: event.area,
-        addressRegion: "Karnataka",
-        postalCode: "560001",
+        addressLocality: eventCity(event) || undefined,
+        addressRegion: event.state || undefined,
         addressCountry: "IN",
       },
     },
@@ -183,7 +181,7 @@ export default async function EventPage({ params }: EventPageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
 
       <div className="orbit-wallpaper-page max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-5 pb-5 sm:pb-6 space-y-4 sm:space-y-5 bg-white dark:bg-[#0E0E16] text-slate-900 dark:text-[#F7F5FF] transition-colors duration-300">
@@ -538,7 +536,7 @@ export default async function EventPage({ params }: EventPageProps) {
                       Need directions?
                     </strong>
                     <p className="text-xs text-slate-600 dark:text-[#CBD5E1]">
-                      Open location directly in Google Maps for turn-by-turn navigation across Bengaluru traffic.
+                      Open location directly in Google Maps for turn-by-turn navigation to the event venue.
                     </p>
                   </div>
 
@@ -546,7 +544,7 @@ export default async function EventPage({ params }: EventPageProps) {
                     href={
                       event.map_url ||
                       `https://maps.google.com/?q=${encodeURIComponent(
-                        `${event.venue}, ${event.area}, Bengaluru`
+                        `${event.venue}, ${event.area}, ${eventCity(event) || "India"}`
                       )}`
                     }
                     target="_blank"

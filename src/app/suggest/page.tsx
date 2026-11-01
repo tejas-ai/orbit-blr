@@ -86,17 +86,17 @@ export default function SuggestEventPage() {
           <span>Community Submissions</span>
         </div>
         <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-[#F7F5FF] tracking-tight font-serif">
-          Suggest a Free Tech Event in Bengaluru
+          Suggest an Event in India
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-[#CBD5E1] mt-2 leading-relaxed">
-          Know about an authentic upcoming free developer meetup, open source workshop, or AI hackathon in Bengaluru? Submit the official link below.
+          Know about an authentic upcoming developer meetup, workshop, or hackathon in India? Submit the official link below.
         </p>
 
         {/* Verification Guarantee Notice */}
         <div className="my-6 p-4 rounded-2xl bg-purple-50/50 dark:bg-[#151522] border border-purple-100 dark:border-[#302B43] text-xs text-slate-600 dark:text-[#CBD5E1] flex items-start gap-3">
           <ShieldCheck className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
           <p className="leading-relaxed">
-            <strong className="text-slate-900 dark:text-[#F7F5FF]">Vetting Policy:</strong> Community suggestions are never published automatically. Every submission enters our verification review queue to verify organizer authenticity, zero admission cost, and physical Bengaluru venue details.
+            <strong className="text-slate-900 dark:text-[#F7F5FF]">Vetting Policy:</strong> Community suggestions are never published automatically. Every submission enters our verification review queue to verify organizer authenticity, actual fees, eligibility, event format, and venue details.
           </p>
         </div>
 

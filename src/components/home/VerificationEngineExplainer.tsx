@@ -26,14 +26,14 @@ export default function VerificationEngineExplainer() {
     },
     {
       step: "03",
-      title: "In-Person Physical Bengaluru Venue",
-      desc: "Every event is confirmed to happen in physical Bengaluru premises with exact address, landmark, and nearest Namma Metro station.",
+      title: "City, Venue & Event Format",
+      desc: "We check the city, physical venue and online or hybrid format against event-specific organiser information.",
       icon: MapPin,
     },
     {
       step: "04",
-      title: "Genuinely Zero Cost Admission",
-      desc: "No hidden charges, no 'free tier' sales pitches, and no paywalled certifications. 100% free entry is non-negotiable.",
+      title: "Transparent Admission Costs",
+      desc: "Free and paid events are distinguished. Unconfirmed amounts stay unconfirmed, and prizes are never shown as participation fees.",
       icon: CheckCircle2,
     },
     {
@@ -51,7 +51,7 @@ export default function VerificationEngineExplainer() {
     {
       step: "07",
       title: "Continuous Auditing & Pruning",
-      desc: "Expired, moved, or cancelled events are immediately updated. Every listing showcases its exact last verification timestamp.",
+      desc: "Expired events are excluded from upcoming results. Changed and cancelled events are reviewed. Every listing showcases its exact last verification timestamp.",
       icon: RefreshCw,
     },
   ];

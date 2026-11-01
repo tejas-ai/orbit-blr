@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { OrbitEvent } from "@/types/event";
 import { useSavedEvents } from "@/lib/useSavedEvents";
 import { getGoogleCalendarUrl, generateIcsContent, formatEventDate, formatEventTime } from "@/lib/utils";
+import { priceLabel, priceStatus, locationLabel } from "@/lib/discovery";
 import { extractHackathonDetails } from "@/lib/hackathons";
 import {
   ExternalLink,
@@ -32,7 +33,7 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
   const isClosed =
     event.registration_status === "closed" ||
     event.registration_status === "full" ||
-    Boolean(hackathon.isDeadlinePassed);
+    Boolean(hackathon.isDeadlinePassed) || new Date(event.end_at).getTime() <= Date.now();
   const isWaitlist = event.registration_status === "waitlist" && !isClosed;
   const isApprovalRequired = event.registration_status === "approval_required" && !isClosed;
 
@@ -47,7 +48,7 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
     if (isClosed) return "Closed";
     if (isWaitlist) return "Join Waitlist";
     if (isApprovalRequired) return "Apply to Attend";
-    return "Register Free";
+    return "Register";
   };
 
   const handleDownloadIcs = () => {
@@ -69,7 +70,7 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
       try {
         await navigator.share({
           title: event.name,
-          text: `Verified 100% free tech event in Bengaluru: ${event.name}`,
+          text: `${event.name} · ${locationLabel(event)}`,
           url,
         });
         return;
@@ -97,16 +98,17 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
         <div className="flex items-start justify-between pb-4 border-b border-slate-100 dark:border-[#302B43]">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-[#F7F5FF] tracking-tight font-serif">
-                ₹0
+              <span className="text-xl sm:text-2xl font-extrabold text-slate-950 dark:text-[#F7F5FF] tracking-tight font-serif">
+                {priceLabel(event)}
               </span>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-transparent dark:border-emerald-800/40">
-                FREE ADMISSION
+                {priceStatus(event) === "free" ? "FREE" : priceStatus(event) === "paid" ? "PAID" : "UNCONFIRMED"}
               </span>
             </div>
             <p className="text-xs text-slate-600 dark:text-[#CBD5E1] mt-1">
-              100% Free Entry • Verified Tech Gathering
+              {hackathon.isHackathon ? "Participation fee · prizes are separate" : "Admission · check ticket conditions with the organiser"}
             </p>
+            {event.fee_notes && <p className="text-xs text-slate-600 dark:text-[#CBD5E1] mt-2">{event.fee_notes}</p>}
           </div>
 
           <button
@@ -140,7 +142,7 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
             <MapPin className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
             <div className="leading-snug truncate">
               <span className="font-semibold text-slate-900 dark:text-[#F7F5FF] block truncate">{event.venue}</span>
-              <span className="text-[11px] text-slate-500 dark:text-[#CBD5E1]">Hub: {event.area}, Bengaluru</span>
+              <span className="text-[11px] text-slate-500 dark:text-[#CBD5E1]">{locationLabel(event)}</span>
             </div>
           </div>
         </div>
@@ -270,7 +272,7 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
           <ul className="text-[11px] text-slate-600 dark:text-[#CBD5E1] space-y-1">
             <li className="flex items-center gap-1.5">
               <span className="w-1 h-1 rounded-full bg-emerald-500" />
-              <span>100% Free Entry Guaranteed</span>
+              <span>{priceLabel(event)} · check official admission terms</span>
             </li>
             <li className="flex items-center gap-1.5">
               <span className="w-1 h-1 rounded-full bg-emerald-500" />
@@ -292,9 +294,9 @@ export default function EventDetailsActions({ event }: EventDetailsActionsProps)
           {/* Price & Date Info */}
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
-              <span className="text-base font-extrabold text-slate-950 dark:text-[#F7F5FF] font-serif">₹0</span>
+              <span className="text-base font-extrabold text-slate-950 dark:text-[#F7F5FF] font-serif">{priceLabel(event)}</span>
               <span className="px-1.5 py-0.2 rounded text-[10px] font-bold uppercase bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-transparent dark:border-emerald-800/40">
-                FREE
+                {priceStatus(event).toUpperCase()}
               </span>
             </div>
             <p className="text-[11px] text-slate-500 dark:text-[#CBD5E1] truncate">

@@ -73,6 +73,7 @@ export function formatRelativeTime(isoString: string | null): string {
   }
 }
 
+import { locationLabel } from "@/lib/discovery";
 import { SITE_URL } from "@/lib/site";
 
 // Generate Google Calendar Link
@@ -84,7 +85,7 @@ export function getGoogleCalendarUrl(event: OrbitEvent): string {
 
   const startUtc = formatUtcDate(event.start_at);
   const endUtc = formatUtcDate(event.end_at);
-  const location = `${event.venue}, ${event.area}, Bengaluru, Karnataka, India`;
+  const location = `${event.venue}, ${locationLabel(event)}`;
   const details = `${event.description}\n\nOfficial Registration: ${event.registration_url}\n\nDiscovered via ORBIT BLR (${SITE_URL}/events/${event.slug})`;
 
   const params = new URLSearchParams({
@@ -108,12 +109,12 @@ export function generateIcsContent(event: OrbitEvent): string {
   const nowIcs = formatIcsDate(new Date().toISOString());
   const startIcs = formatIcsDate(event.start_at);
   const endIcs = formatIcsDate(event.end_at);
-  const location = `${event.venue}, ${event.area}, Bengaluru`;
+  const location = `${event.venue}, ${locationLabel(event)}`;
 
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Orbit BLR//Bengaluru Free Tech Events//EN",
+    "PRODID:-//Orbit BLR//India Tech Events//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",

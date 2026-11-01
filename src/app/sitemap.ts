@@ -2,6 +2,8 @@ import { MetadataRoute } from "next";
 import { getAllEvents } from "@/lib/db";
 import { SITE_URL } from "@/lib/site";
 
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL;
   const events = await getAllEvents({ includeUnpublished: false });

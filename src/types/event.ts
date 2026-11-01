@@ -62,6 +62,18 @@ export interface HackathonStructuredDetails {
 }
 
 export interface OrbitEvent {
+  // Additive discovery fields; absent until the reviewed migration is approved.
+  city?: string | null;
+  state?: string | null;
+  event_format?: "in_person" | "online" | "hybrid" | null;
+  event_type?: "events" | "hackathons" | null;
+  price_status?: "free" | "paid" | "unknown" | null;
+  fee_amount?: number | null;
+  fee_currency?: string | null;
+  fee_is_from?: boolean;
+  fee_notes?: string | null;
+  fee_source_url?: string | null;
+  fee_verified_at?: string | null;
   id: string;
   slug: string;
   name: string;
@@ -143,10 +155,13 @@ export interface AuditLogEntry {
 }
 
 export interface EventFilters {
+  city?: string;
+  type?: "all" | "events" | "hackathons";
+  price?: "all" | "free" | "paid";
   search?: string;
   category?: EventCategory | "all";
   benefits?: "all" | "both_confirmed" | "certificates_confirmed" | "goodies_confirmed" | "complimentary_food";
-  dateFilter?: "all" | "today" | "tomorrow" | "weekend" | "next_7_days" | "this_month" | "custom";
+  dateFilter?: "all" | "today" | "tomorrow" | "weekend" | "weekday" | "next_7_days" | "this_month" | "custom";
   customDate?: string;
   registrationStatus?: RegistrationStatus | "all";
   area?: string | "all";

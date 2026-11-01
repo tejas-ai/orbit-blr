@@ -24,9 +24,9 @@ export const SITE_URL = getResolvedSiteUrl();
 export const SITE_NAME = "ORBIT BLR";
 
 export const HOMEPAGE_TITLE =
-  "ORBIT BLR — Discover Free Tech Events & Hackathons in Bengaluru";
+  "ORBIT BLR — Discover Events & Hackathons Across India";
 
 export const HOMEPAGE_DESCRIPTION =
-  "Discover independently verified free tech meetups, AI workshops, developer conferences and hackathons in Bengaluru. Explore events and register through official organiser links.";
+  "Discover tech events, AI workshops and hackathons across India. Find free and paid events, check the details, and register with the organiser.";
 
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.png`;

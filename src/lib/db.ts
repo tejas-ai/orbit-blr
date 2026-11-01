@@ -11,6 +11,7 @@ import type {
 } from "../types/event.ts";
 import { SEED_EVENTS } from "./seed-data.ts";
 import { isHackathonEvent } from "./hackathons.ts";
+import { filterDiscovery, matchesDate } from "./discovery.ts";
 
 const { Pool } = pg;
 
@@ -43,7 +44,7 @@ function getSqliteDb(): DatabaseSync {
     fs.mkdirSync(dataDir, { recursive: true });
   }
 
-  const dbPath = path.join(dataDir, "orbit.db");
+  const dbPath = process.env.ORBIT_SQLITE_PATH || path.join(dataDir, "orbit.db");
   const db = new DatabaseSync(dbPath);
 
   // Initialize SQLite Schema
@@ -134,6 +135,17 @@ function mapRowToEvent(row: Record<string, unknown>): OrbitEvent {
   };
 
   return {
+    city: row.city ? String(row.city) : null,
+    state: row.state ? String(row.state) : null,
+    event_format: (row.event_format as OrbitEvent["event_format"]) || null,
+    event_type: (row.event_type as OrbitEvent["event_type"]) || null,
+    price_status: (row.price_status as OrbitEvent["price_status"]) || null,
+    fee_amount: row.fee_amount != null ? Number(row.fee_amount) : null,
+    fee_currency: row.fee_currency ? String(row.fee_currency) : null,
+    fee_is_from: Boolean(row.fee_is_from),
+    fee_notes: row.fee_notes ? String(row.fee_notes) : null,
+    fee_source_url: row.fee_source_url ? String(row.fee_source_url) : null,
+    fee_verified_at: row.fee_verified_at ? new Date(String(row.fee_verified_at)).toISOString() : null,
     id: String(row.id),
     slug: String(row.slug),
     name: String(row.name),
@@ -193,26 +205,30 @@ export async function getAllEvents(options?: { includeUnpublished?: boolean }): 
     try {
       const query = options?.includeUnpublished
         ? "SELECT * FROM events ORDER BY start_at ASC"
-        : "SELECT * FROM events WHERE publication_status = 'published' ORDER BY start_at ASC";
+        : "SELECT * FROM events WHERE publication_status = 'published' AND end_at > NOW() ORDER BY start_at ASC";
       const res = await pool.query(query);
       return res.rows.map(mapRowToEvent);
     } catch (err: unknown) {
-      console.warn("PostgreSQL getAllEvents warning (falling back):", err instanceof Error ? err.message : err);
+      // A configured database outage must never resurrect local or discredited seeds.
+      console.error("Event database unavailable");
+      throw new Error("Event listings are temporarily unavailable");
     }
   }
 
   // SQLite fallback
+  if (process.env.VERCEL) throw new Error("Event listings are temporarily unavailable");
   try {
     const db = getSqliteDb();
     const query = options?.includeUnpublished
       ? "SELECT * FROM events ORDER BY start_at ASC"
       : "SELECT * FROM events WHERE publication_status = 'published' ORDER BY start_at ASC";
     const rows = db.prepare(query).all() as Record<string, unknown>[];
-    return rows.map(mapRowToEvent);
+    const events = rows.map(mapRowToEvent);
+    return options?.includeUnpublished ? events : filterDiscovery(events, {});
   } catch {
     return options?.includeUnpublished
       ? SEED_EVENTS
-      : SEED_EVENTS.filter((e) => e.publication_status === "published");
+      : [];
   }
 }
 
@@ -221,20 +237,7 @@ export async function getFilteredEvents(
   options?: { includeUnpublished?: boolean }
 ): Promise<OrbitEvent[]> {
   let events = await getAllEvents(options);
-
-  if (filters.search && filters.search.trim() !== "") {
-    const q = filters.search.toLowerCase().trim();
-    events = events.filter(
-      (e) =>
-        e.name.toLowerCase().includes(q) ||
-        e.description.toLowerCase().includes(q) ||
-        e.organizer.toLowerCase().includes(q) ||
-        e.venue.toLowerCase().includes(q) ||
-        e.area.toLowerCase().includes(q) ||
-        e.category.toLowerCase().includes(q) ||
-        (e.topics_covered && e.topics_covered.some((t) => t.toLowerCase().includes(q)))
-    );
-  }
+  if (!options?.includeUnpublished) events = filterDiscovery(events, filters);
 
   if (filters.category && filters.category !== "all") {
     const targetCat = filters.category.toLowerCase();
@@ -279,36 +282,7 @@ export async function getFilteredEvents(
   }
 
   if (filters.dateFilter && filters.dateFilter !== "all") {
-    const now = new Date();
-    const todayStr = now.toISOString().split("T")[0];
-
-    events = events.filter((e) => {
-      const eventDateStr = e.start_at.split("T")[0];
-      const eventDate = new Date(e.start_at);
-
-      if (filters.dateFilter === "today") return eventDateStr === todayStr;
-      if (filters.dateFilter === "tomorrow") {
-        const tomorrow = new Date(now);
-        tomorrow.setDate(now.getDate() + 1);
-        return eventDateStr === tomorrow.toISOString().split("T")[0];
-      }
-      if (filters.dateFilter === "weekend") {
-        const day = eventDate.getDay();
-        return day === 0 || day === 6;
-      }
-      if (filters.dateFilter === "next_7_days") {
-        const next7 = new Date(now);
-        next7.setDate(now.getDate() + 7);
-        return eventDate >= now && eventDate <= next7;
-      }
-      if (filters.dateFilter === "this_month") {
-        return eventDate.getMonth() === now.getMonth() && eventDate.getFullYear() === now.getFullYear();
-      }
-      if (filters.dateFilter === "custom" && filters.customDate) {
-        return eventDateStr === filters.customDate;
-      }
-      return true;
-    });
+    events = events.filter(e => matchesDate(e, filters.dateFilter, Date.now(), filters.customDate));
   }
 
   // Sorting
@@ -348,9 +322,9 @@ export async function getEventBySlug(slug: string): Promise<OrbitEvent | null> {
   if (pool) {
     try {
       const res = await pool.query("SELECT * FROM events WHERE slug = $1", [slug]);
-      if (res.rows[0]) return mapRowToEvent(res.rows[0]);
+      return res.rows[0] ? mapRowToEvent(res.rows[0]) : null;
     } catch (err: unknown) {
-      console.warn("PostgreSQL getEventBySlug warning (falling back):", err instanceof Error ? err.message : err);
+      throw new Error("Event details are temporarily unavailable");
     }
   }
 
@@ -362,8 +336,7 @@ export async function getEventBySlug(slug: string): Promise<OrbitEvent | null> {
     // ignore
   }
 
-  const seed = SEED_EVENTS.find((e) => e.slug === slug);
-  return seed || null;
+  return null;
 }
 
 export async function getEventById(id: string): Promise<OrbitEvent | null> {

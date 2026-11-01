@@ -1,5 +1,6 @@
 "use client";
 
+import { priceLabel, locationLabel } from "@/lib/discovery";
 import React, { useState } from "react";
 import { OrbitEvent } from "@/types/event";
 import { getCategoryFallback } from "@/lib/thumbnails";
@@ -77,9 +78,9 @@ export default function EventHeroBanner({
             <span>{displayCategory}</span>
           </span>
 
-          {/* ₹0 Free Entry Pill */}
+          {/* {priceLabel(event)} Pill */}
           <span className="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-800/60 shadow-sm">
-            ₹0 Free Entry
+            {priceLabel(event)}
           </span>
 
           {/* Registration Status Pill */}
@@ -96,7 +97,9 @@ export default function EventHeroBanner({
               ? "RSVP Open"
               : event.registration_status === "approval_required"
               ? "Approval Required"
-              : "Waitlist"}
+              : event.registration_status === "waitlist" ? "Waitlist"
+              : event.registration_status === "not_yet_open" ? "Registration opens soon"
+              : event.registration_status === "full" ? "Full" : "Registration closed"}
           </span>
 
           {/* Organiser Verified Pill */}
@@ -137,7 +140,7 @@ export default function EventHeroBanner({
 
           <div className="flex items-center gap-1.5 text-slate-700 dark:text-[#CBD5E1]">
             <MapPin className="w-4 h-4 text-[#6A38EB] dark:text-[#A78BFA]" />
-            <span>{event.area}, Bengaluru</span>
+            <span>{locationLabel(event)}</span>
           </div>
 
           {event.metro_station && (

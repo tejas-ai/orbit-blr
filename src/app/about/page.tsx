@@ -19,14 +19,14 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 export const metadata: Metadata = {
   title: "About ORBIT BLR — Created by Tejas Handigol",
   description:
-    "Learn about ORBIT BLR, created by Tejas Handigol, and how the platform helps Bengaluru discover verified free in-person tech events and hackathons.",
+    "Learn about ORBIT BLR, created by Tejas Handigol, and how the platform helps people discover tech events and hackathons across India.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
     title: "About ORBIT BLR — Created by Tejas Handigol",
     description:
-      "Learn about ORBIT BLR, created by Tejas Handigol, and how the platform helps Bengaluru discover verified free in-person tech events and hackathons.",
+      "Learn about ORBIT BLR, created by Tejas Handigol, and how the platform helps people discover tech events and hackathons across India.",
     url: `${SITE_URL}/about`,
     siteName: SITE_NAME,
     locale: "en_IN",
@@ -52,8 +52,8 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   const faqs = [
     {
-      q: "Are all events listed on ORBIT BLR really 100% free?",
-      a: "Yes. Absolutely. We enforce a strict zero-admission policy. If an event charges for tickets, hides workshops behind paid entry passes, or requires paid subscriptions, it is permanently barred from our directory.",
+      q: "Are all events free?",
+      a: "ORBIT BLR supports free and paid events. Use the Price filter and check ticket or participation conditions on each listing. An unconfirmed amount is never presented as free.",
     },
     {
       q: "How does ORBIT BLR verify attendee goodies and swag?",
@@ -61,15 +61,15 @@ export default function AboutPage() {
     },
     {
       q: "What does 'Approval Required' mean?",
-      a: "Many premier corporate tech offices in Bengaluru (such as Google RMZ Infinity, Amazon WTC, Cisco Cessna BP) require physical security pre-clearance. While registration is 100% free, you must wait for the organiser to approve your RSVP and send a confirmation email before arriving at the gate.",
+      a: "Many premier corporate tech offices in Bengaluru (such as Google RMZ Infinity, Amazon WTC, Cisco Cessna BP) require physical security pre-clearance. You must wait for the organiser to approve your RSVP and send a confirmation email before arriving at the gate.",
     },
     {
       q: "How can community members submit or suggest an event?",
-      a: "Anyone in the Bengaluru developer community can submit events via our 'Suggest an Event' form. Every submission enters our verification review queue and undergoes strict manual checks before going live.",
+      a: "Anyone in the Indian developer community can submit events via our 'Suggest an Event' form. Every submission enters our verification review queue and undergoes strict manual checks before going live.",
     },
     {
       q: "Is ORBIT BLR affiliated with Google, AWS, Microsoft, or other organizers?",
-      a: "No. ORBIT BLR is an independent public directory created by Tejas Handigol for the Bengaluru developer community. All company names, logos, and trademarks belong to their respective owners.",
+      a: "No. ORBIT BLR is an independent public directory created by Tejas Handigol for the Indian developer community. All company names, logos, and trademarks belong to their respective owners.",
     },
   ];
 
@@ -82,10 +82,10 @@ export default function AboutPage() {
           <span>About the Platform</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-950 dark:text-[#F7F5FF] tracking-tight font-serif">
-          Built for Bengaluru&apos;s Builders, Hackers &amp; Dreamers.
+          Built in Bengaluru. Open to India.
         </h1>
         <p className="text-base sm:text-lg text-slate-600 dark:text-[#CBD5E1] leading-relaxed font-normal">
-          Discover. Connect. Build. We believe that your next career opportunity, co-founder, or mentor in Bengaluru shouldn&apos;t be hidden behind fragmented event portals and paid paywalls.
+          Discover. Connect. Build. We believe that your next career opportunity, co-founder, or mentor shouldn&apos;t be hidden across fragmented event portals.
         </p>
       </ScrollReveal>
 
@@ -97,7 +97,7 @@ export default function AboutPage() {
           </div>
           <h2 className="font-bold text-lg text-slate-950 dark:text-[#F7F5FF] font-serif">The Problem We Solve</h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
-            Finding genuine free in-person tech events in Bengaluru requires searching through Meetup, Luma, Bevy, Discord servers, and LinkedIn posts. Many events claim to be free but sneak in paid fees later, or provide zero clarity on whether lunch or certificates are actually provided.
+            Finding genuine tech events across India requires searching through Meetup, Luma, Bevy, Discord servers, and LinkedIn posts. Many events claim to be free but sneak in paid fees later, or provide zero clarity on whether lunch or certificates are actually provided.
           </p>
         </ScrollReveal>
 
@@ -107,7 +107,7 @@ export default function AboutPage() {
           </div>
           <h2 className="font-bold text-lg text-slate-950 dark:text-[#F7F5FF] font-serif">Our Verification Promise</h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-[#CBD5E1] leading-relaxed">
-            Every listing on ORBIT BLR is independently vetted. We record the exact last verification timestamp, verify physical venues across Bengaluru tech corridors, and separate verified facts from optimistic assumptions.
+            Every listing on ORBIT BLR is independently vetted. We record the exact last verification timestamp, check venues and event formats, and separate verified facts from optimistic assumptions.
           </p>
         </ScrollReveal>
       </div>
@@ -123,7 +123,7 @@ export default function AboutPage() {
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#B99EFF]">Creator &amp; Developer</p>
             <h2 id="creator-heading" className="mt-1 font-serif text-2xl font-extrabold tracking-tight text-[#F7F5FF] sm:text-3xl">Tejas Handigol</h2>
             <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#CBD5E1]">
-              ORBIT BLR was conceived, designed, and developed by Tejas Handigol, a Computer Science (AI &amp; ML) student in Bengaluru. The platform helps people discover genuinely free, in-person tech events and hackathons across the city.
+              ORBIT BLR was conceived, designed, and developed by Tejas Handigol, a Computer Science (AI &amp; ML) student in Bengaluru. The platform helps people discover tech events and hackathons across India.
             </p>
             <a href="https://github.com/tejas-ai" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#544373] bg-[#241D39] px-4 py-2 text-xs font-semibold text-[#E5DBFF] transition-colors hover:border-[#A78BFA] hover:bg-[#33264C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A78BFA]">
               <Github className="h-4 w-4" aria-hidden="true" />
@@ -166,7 +166,7 @@ export default function AboutPage() {
       {/* Suggest CTA */}
       <ScrollReveal direction="down" className="p-8 rounded-3xl bg-gradient-to-r from-purple-50 via-white to-indigo-50/50 dark:from-[#1D1B2C] dark:via-[#191629] dark:to-[#1D1B2C] border border-purple-200 dark:border-[#302B43] text-center space-y-3 shadow-sm">
         <h3 className="text-xl font-extrabold text-slate-950 dark:text-[#F7F5FF] font-serif">
-          Know an upcoming free tech event in Bengaluru?
+          Know an upcoming tech event in India?
         </h3>
         <p className="text-xs sm:text-sm text-slate-600 dark:text-[#CBD5E1] max-w-md mx-auto">
           Help the community by submitting the official event link for independent verification.
