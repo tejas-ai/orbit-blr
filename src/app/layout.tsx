@@ -1,28 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, IBM_Plex_Mono, Syne } from "next/font/google";
 import "./globals.css";
 import "./discovery.css";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-dmsans",
-  display: "swap",
-});
-
-const ibmPlexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-mono",
-  display: "swap",
-});
-
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["700", "800"],
-  variable: "--font-syne",
-  display: "swap",
-});
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
@@ -101,7 +80,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`dark scroll-smooth overflow-x-hidden ${dmSans.variable} ${ibmPlexMono.variable} ${syne.variable}`}>
+    <html lang="en" className="dark scroll-smooth overflow-x-hidden">
       <head>
         <meta name="description" content={HOMEPAGE_DESCRIPTION} />
       </head>
