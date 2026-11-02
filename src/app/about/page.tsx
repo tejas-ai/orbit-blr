@@ -112,24 +112,23 @@ export default function AboutPage() {
         </ScrollReveal>
       </div>
 
-      {/* Public creator attribution; rendered on the server for accessibility and discoverability. */}
-      <section id="creator" aria-labelledby="creator-heading" className="relative overflow-hidden rounded-3xl border border-[#4B3A72]/80 bg-[#171526]/95 p-5 sm:p-7">
-        <div aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-48 w-48 rounded-full bg-[#6A38EB]/10 blur-3xl" />
-        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-5">
-          <div aria-hidden="true" className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-[#6A38EB]/50 bg-gradient-to-br from-[#6A38EB]/25 to-[#261C3D] text-sm font-extrabold text-[#D6C7FF]">
-            TH
+      {/* Editorial creator card: clear attribution, real portrait and direct professional links. */}
+      <section id="creator" aria-labelledby="creator-heading" className="relative overflow-hidden rounded-[28px] border border-[#403650] bg-[#151421] p-6 sm:p-9">
+        <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#A78BFA]/70 to-transparent" aria-hidden="true" />
+        <div className="relative grid gap-6 sm:grid-cols-[112px_minmax(0,1fr)] sm:items-center sm:gap-8">
+          <div className="h-28 w-28 overflow-hidden rounded-[22px] border border-white/15 bg-[#211C30] shadow-[0_12px_30px_rgba(0,0,0,0.25)]">
+            <img src="/tejas-profile.svg" width="112" height="112" alt="Portrait of Tejas Handigol, creator of ORBIT BLR" className="h-full w-full object-cover" loading="lazy" />
           </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#B99EFF]">Creator &amp; Developer</p>
-            <h2 id="creator-heading" className="mt-1 font-serif text-2xl font-extrabold tracking-tight text-[#F7F5FF] sm:text-3xl">Tejas Handigol</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[#CBD5E1]">
-              ORBIT BLR was conceived, designed, and developed by Tejas Handigol, a Computer Science (AI &amp; ML) student in Bengaluru. The platform helps people discover genuinely free, in-person tech events and hackathons across the city.
-            </p>
-            <a href="https://github.com/tejas-ai" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-2 rounded-full border border-[#544373] bg-[#241D39] px-4 py-2 text-xs font-semibold text-[#E5DBFF] transition-colors hover:border-[#A78BFA] hover:bg-[#33264C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A78BFA]">
-              <Github className="h-4 w-4" aria-hidden="true" />
-              View creator on GitHub
-              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </a>
+          <div className="min-w-0">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#BBA9DB]">Behind the platform</p>
+            <h2 id="creator-heading" className="mt-2 font-serif text-2xl font-bold tracking-tight text-white sm:text-3xl">Tejas Handigol</h2>
+            <p className="mt-1 text-xs font-medium text-[#C4B5FD]">Founder &amp; Developer · ORBIT BLR</p>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-[#CBC6D8]">Computer Science (AI &amp; ML) student building practical technology that makes opportunities easier to discover. ORBIT connects people with verified free tech events and hackathons.</p>
+            <nav aria-label="Tejas Handigol social profiles" className="mt-5 flex flex-wrap gap-2">
+              <a href="https://www.linkedin.com/in/tejashandigol" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-[#615773] bg-[#292337] px-3.5 py-2.5 text-xs font-semibold text-white transition-colors hover:border-[#BBA9DB] hover:bg-[#352D46] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BBA9DB]">LinkedIn <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" /></a>
+              <a href="https://github.com/tejas-ai" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-[#615773] bg-[#292337] px-3.5 py-2.5 text-xs font-semibold text-white transition-colors hover:border-[#BBA9DB] hover:bg-[#352D46] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BBA9DB]"><Github className="h-3.5 w-3.5" aria-hidden="true" /> GitHub <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" /></a>
+              <a href="https://www.instagram.com/tejas__8055/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-[#615773] bg-[#292337] px-3.5 py-2.5 text-xs font-semibold text-white transition-colors hover:border-[#BBA9DB] hover:bg-[#352D46] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#BBA9DB]">Instagram <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" /></a>
+            </nav>
           </div>
         </div>
       </section>

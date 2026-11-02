@@ -24,6 +24,10 @@ export default function Footer() {
         <p className="mt-2 text-[11px] leading-[1.5] text-slate-600 dark:text-[#CBD5E1]">
           Free Bengaluru tech events and hackathons, independently verified.
         </p>
+        <Link href="/about#creator" className="mt-3 inline-flex items-center gap-2.5 rounded-xl border border-slate-200/80 bg-slate-50/70 px-2.5 py-2 dark:border-[#403650] dark:bg-[#201C2C]">
+          <img src="/tejas-profile.svg" width="32" height="32" alt="" className="h-8 w-8 rounded-lg object-cover" loading="lazy" />
+          <span className="text-[11px] font-medium text-slate-800 dark:text-[#EDE8F6]">Built by <strong>Tejas Handigol</strong> <span aria-hidden="true">↗</span></span>
+        </Link>
         <nav aria-label="Footer" className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 text-[11px] font-medium">
           <Link href="/about" className="text-slate-700 transition-colors hover:text-[#6A38EB] dark:text-[#CDD0E7] dark:hover:text-[#A78BFA]">About</Link>
           <Link href="/suggest" className="text-slate-700 transition-colors hover:text-[#6A38EB] dark:text-[#CDD0E7] dark:hover:text-[#A78BFA]">Submit an event</Link>
@@ -51,6 +55,10 @@ export default function Footer() {
             <p className="text-slate-600 dark:text-[#CBD5E1] leading-relaxed text-xs max-w-sm">
               Bengaluru&apos;s verified public registry for 100% free, in-person developer meetups, workshops, and hackathons. Always ₹0 admission, direct organiser registration links, and zero commercial paywalls.
             </p>
+            <Link href="/about#creator" className="inline-flex max-w-full items-center gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-2.5 pr-4 transition-colors hover:border-[#A78BFA] dark:border-[#403650] dark:bg-[#201C2C] dark:hover:border-[#A78BFA]">
+              <img src="/tejas-profile.svg" width="40" height="40" alt="" className="h-10 w-10 shrink-0 rounded-xl object-cover" loading="lazy" />
+              <span className="min-w-0"><span className="block text-[10px] uppercase tracking-widest text-slate-500 dark:text-[#AFA7C2]">Created by</span><span className="block text-xs font-semibold text-slate-900 dark:text-white">Tejas Handigol ↗</span></span>
+            </Link>
             <div className="pt-1 text-[11px] font-medium text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Bengaluru Tech Nodes Synchronized</span>
