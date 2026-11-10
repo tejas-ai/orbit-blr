@@ -23,6 +23,7 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
   const searchParams = useSearchParams();
   const { isSaved, toggleSave } = useSavedEvents();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [sortOrder, setSortOrder] = useState<"date_asc" | "date_desc" | "latest">("date_asc");
   const [clockNow, setClockNow] = useState(0);
   useEffect(() => { const update = () => setClockNow(Date.now()); update(); const timer = window.setInterval(update, 60_000); return () => window.clearInterval(timer); }, []);
 
@@ -136,11 +137,15 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
       });
     }
 
-    // Fixed chronological sort in BOTH directories. No alternative ranking can obscure nearby events.
-    result.sort((a, b) => new Date(a.start_at).getTime() - new Date(b.start_at).getTime());
+    // Sort only within the already-filtered directory. Never mix hackathons and events.
+    result.sort((a, b) => sortOrder === "latest"
+      ? new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      : sortOrder === "date_desc"
+        ? new Date(b.start_at).getTime() - new Date(a.start_at).getTime()
+        : new Date(a.start_at).getTime() - new Date(b.start_at).getTime());
 
     return result;
-  }, [liveEvents, filters, directory, clockNow]);
+  }, [liveEvents, filters, directory, clockNow, sortOrder]);
 
   const isHackathonMode = directory === "hackathons";
 
@@ -180,6 +185,13 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
 
         {/* View Switcher */}
         <div className="flex items-center gap-2 self-start sm:self-auto">
+          <label htmlFor="directory-sort" className="sr-only">Sort events</label>
+          <select id="directory-sort" value={sortOrder} onChange={e=>setSortOrder(e.target.value as typeof sortOrder)} aria-label="Sort events" className="rounded-xl border border-slate-200 dark:border-[#302B43] bg-white dark:bg-[#1D1B2C] px-2 py-2 text-xs font-semibold">
+            <option value="date_asc">Oldest event first</option>
+            <option value="date_desc">Newest event first</option>
+            <option value="latest">Latest added</option>
+            <option value="popular" disabled>Most popular — coming soon</option>
+          </select>
           <div className="flex items-center bg-slate-100 dark:bg-[#151522] border border-slate-200 dark:border-[#302B43] p-1 rounded-xl">
             <button
               type="button"
@@ -223,7 +235,7 @@ export default function ExploreClient({ initialEvents, directory }: ExploreClien
       {/* Nearest upcoming event countdown, with no fabricated RSVP urgency. */}
       {filteredEvents.length > 0 && (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#302B43] bg-[#1D1B2C] px-3 py-2 text-xs text-[#CBD5E1]">
-          <span>Next up: <strong className="text-[#F7F5FF]">{filteredEvents[0].name}</strong></span>
+          <span>Featured: <strong className="text-[#F7F5FF]">{filteredEvents[0].name}</strong></span>
           <EventCountdown startAt={filteredEvents[0].start_at} endAt={filteredEvents[0].end_at} />
         </div>
       )}
