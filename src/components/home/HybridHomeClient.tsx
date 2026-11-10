@@ -123,6 +123,7 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
   const [selectedArea, setSelectedArea] = useState("all");
   const [selectedDate, setSelectedDate] = useState("all");
   const [selectedPerk, setSelectedPerk] = useState("all");
+  const [sortOrder, setSortOrder] = useState<"date_asc" | "latest" | "date_desc">("date_asc");
 
   const categories = useMemo(() => {
     const kinds = Array.from(new Set(initialEvents.filter(e=>!isHackathonEvent(e)).map(e=>e.category)));
@@ -201,8 +202,8 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
       }
 
       return matchesSearch && matchesCat && matchesArea && matchesDate && matchesPerk;
-    }).sort((x,y)=>new Date(x.start_at).getTime()-new Date(y.start_at).getTime());
-  }, [initialEvents, search, selectedCategory, selectedArea, selectedDate, selectedPerk,clockNow]);
+    }).sort((x,y)=>sortOrder === "latest" ? new Date(y.created_at).getTime()-new Date(x.created_at).getTime() : sortOrder === "date_desc" ? new Date(y.start_at).getTime()-new Date(x.start_at).getTime() : new Date(x.start_at).getTime()-new Date(y.start_at).getTime());
+  }, [initialEvents, search, selectedCategory, selectedArea, selectedDate, selectedPerk,sortOrder,clockNow]);
 
   const hasActiveFilters =
     Boolean(search) ||
@@ -486,7 +487,13 @@ export default function HybridHomeClient({ initialEvents }: HybridHomeClientProp
           </div>
 
           <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-[#CBD5E1] font-medium">
-            <span>Soonest first · Bengaluru time</span>
+            <label htmlFor="home-sort" className="sr-only">Sort events</label>
+            <select id="home-sort" value={sortOrder} onChange={e=>setSortOrder(e.target.value as typeof sortOrder)} className="rounded-xl border border-slate-200 dark:border-[#302B43] bg-white dark:bg-[#1D1B2C] px-3 py-2 text-xs font-semibold" aria-label="Sort events">
+              <option value="date_asc">Oldest event first</option>
+              <option value="date_desc">Newest event first</option>
+              <option value="latest">Latest added</option>
+              <option disabled value="popular">Most popular — coming soon</option>
+            </select>
           </div>
         </ScrollReveal>
 
